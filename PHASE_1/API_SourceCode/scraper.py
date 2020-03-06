@@ -82,14 +82,21 @@ def scrape_url(link):
 
     for header, main_text, date in zip(headers, main_texts, dates):
         print("######################################################")
-        print('url: {}'.format(main_text.a.get('href')))
-        print('date_of_publication: {}'.format(date))
-        print('headline: {}'.format(header.get_text()))
-        print('main_text: {}'.format(main_text.get_text()))
+        # print('url: {}'.format(main_text.a.get('href')))
+        # print('date_of_publication: {}'.format(date))
+        # print('headline: {}'.format(header.get_text()))
+        # print('main_text: {}'.format(main_text.get_text()))
+
+        tmp = {}
+        tmp['url'] = main_text.a.get('href')
+        tmp['date_of_publication'] = date
+        tmp['headline'] = header.get_text()
+        tmp['main_text'] = main_text.get_text()
+        tmp['reports'] = []
 
         # Very bad method but best so far
         # TODO: Syndrome
-        print('country: {}'.format(country_text_is_refering(header, main_text)))
+        # print('country: {}'.format(country_text_is_refering(header, main_text)))
 
 
 
