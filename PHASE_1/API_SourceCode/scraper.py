@@ -5,8 +5,11 @@ import time                     # Time conversion
 import datetime                 # Used for scraping article by days
 from datetime import timedelta  # Used to increment day
 import json                     # JSON Parser
+from article import *
+from reports import *
 
 # from fuzzywuzzy import fuzz     # Temporary text matcher
+import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB IS OUT)
 
 # Load list of disease
 with open('dataset/disease_list.json') as data_file:
@@ -20,20 +23,40 @@ with open('dataset/syndrome_list.json') as data_file:
 
 ##### To determine what country the article is talking about #####
 def country_text_is_refering(header, main_text):
-    country_found = ""
+    country_found = []
     for country in data_country:
-        if country['name'] in header.get_text():
+        if country['name'].lower() in header.get_text().lower():
+            # print(country['name'])
+            country_found.append(country['name'])
+            # break
+
+    # Unable to found country in header, try main_text
+    # if country_found == :
+    for country in data_country:
+        if country['name'].lower() in main_text.get_text().lower():
             print(country['name'])
-            country_found = country['name']
+            country_found.append(country['name'])
+                # break
+
+    return list(dict.fromkeys(country_found))
+
+def disease_text_is_refering(header, main_text):
+    disease_found = ""
+    for disease in data_disease:
+        if disease['name'].lower() in header.get_text().lower():
+            print(disease['name'])
+            disease_found = disease['name']
             break
 
     # Unable to found country in header, try main_text
-    if country_found == "":
-        for country in data_country:
-            if country['name'] in main_text.get_text():
-                print(country['name'])
-                country_found = country['name']
+    if disease_found == "":
+        for disease in data_disease:
+            if disease['name'].lower() in main_text.get_text().lower():
+                print(disease['name'])
+                disease_found = disease['name']
                 break
+
+    return disease_found
 
 ##### Scraping process #####
 def scrape_url(link):
@@ -53,7 +76,7 @@ def scrape_url(link):
         # print(date.split())
 
         # print(date.split()[2])
-        # print(time.strptime(date.split()[0], "%B").tm_mon)
+        # print(type(time.strptime(date.split()[0], "%B").tm_mon))
         # print(date.split()[1][:-1])
 
         # TODO: CONVERT TIME INTO 24 HR
@@ -62,7 +85,7 @@ def scrape_url(link):
         # out_time = datetime.strftime(in_time, "%H:%M")
         # print(out_time)
 
-        datetime = "{}-{}-{} {}".format(date.split()[2], time.strptime(date.split()[0], "%B").tm_mon, date.split()[1][:-1], date.split()[4])
+        datetime = "{}-{:02d}-{} {}:{}".format(date.split()[2], time.strptime(date.split()[0], "%B").tm_mon, date.split()[1][:-1], date.split()[4], "00")
         # print(datetime)
         dates.append(datetime)
 
@@ -80,6 +103,7 @@ def scrape_url(link):
         # indexs = [i for i, j in enumerate(numbers) if j == m]
         # print(data[indexs[0]])
 
+    articles = []
     for header, main_text, date in zip(headers, main_texts, dates):
         print("######################################################")
         # print('url: {}'.format(main_text.a.get('href')))
@@ -87,18 +111,28 @@ def scrape_url(link):
         # print('headline: {}'.format(header.get_text()))
         # print('main_text: {}'.format(main_text.get_text()))
 
+            # Very bad method but best so far
+            # TODO: Syndrome
+            # print('country: {}'.format(country_text_is_refering(header, main_text)))
+            # print('country: {}'.format(disease_text_is_refering(header, main_text)))
+
         tmp = {}
         tmp['url'] = main_text.a.get('href')
         tmp['date_of_publication'] = date
         tmp['headline'] = header.get_text()
         tmp['main_text'] = main_text.get_text()
-        tmp['reports'] = []
+        tmp['reports'] = Reports("", country_text_is_refering(header, main_text), disease_text_is_refering(header, main_text), "");
 
         # Very bad method but best so far
         # TODO: Syndrome
         # print('country: {}'.format(country_text_is_refering(header, main_text)))
 
+        article = Article(tmp['url'], tmp['date_of_publication'], tmp['headline'], tmp['main_text'], tmp['reports'])
+        print(article)
+        articles.append(article)
 
+    with open('output.pickle', 'wb') as p:
+        pickle.dump(articles, p)
 
 ##### Use to scrape all articles from start to end date #####
 # def main_function():
