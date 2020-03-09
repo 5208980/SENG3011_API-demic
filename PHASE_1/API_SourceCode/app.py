@@ -8,6 +8,8 @@ import re                    # For regex
 import datetime
 import json
 
+import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB IS OUT)
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -20,29 +22,58 @@ class Article(Resource):
         print(request.args['location'])
         print(request.args['key_term'])
 
-        # Error Handling and Logging Status
+        ## Error Handling and Logging Status ##
+        # Validate Date
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
-        if not ( date_regex.match(request.args['start_date']) or date_regex.match(request.args['start_date']) ):
+        if not ( date_regex.match(request.args['start_date']) or date_regex.match(request.args['start_date']) ) and request.args['start_date'] > request.args['end_date']:
             # Maybe print file error msg, not sure
-            info("success")
-            return {"status": 400, "message": "Invalid Query Parameters" }, 400
+            return {"status": 400, "message": "Invalid Query Parameters (Date)" }, 400
 
+        # Validate Location
+        with open('dataset/country.json') as data_file:
+            data_country = json.load(data_file)
+
+        found_country = False
+        for country in data_country:
+            if country['name'].lower() in request.args['location'].lower():
+                found_country = True
+                break
+
+        if not found_country:
+            return {"status": 400, "message": "Invalid Query Parameters (Country)" }, 400
+
+        # Validate Key Term
+
+        ## Log ##
         info(request.url)
 
-        # DB Query
-        with open('sample.json') as data_file:
-            data = json.load(data_file)
+        ## DB Query ##
+        with open('output.pickle', 'rb') as p:
+            articles = pickle.load(p)
+
+        data = {}
+        data['articles'] = []
+        for article in articles:
+            dict_article = {}
+            dict_article['url'] = article.get_url()
+            dict_article['date_of_publication'] = article.get_date_of_publication()
+            dict_article['headline'] = article.get_headline()
+            dict_article['main_text'] = article.get_main_text()
+
+            dict_reports = {}
+            dict_reports["event_date"] = article.get_reports().get_event_date()
+            dict_reports["locations"] = article.get_reports().get_locations()
+            dict_reports["disease"] = article.get_reports().get_disease()
+            dict_reports["syndrome"] = article.get_reports().get_syndrome()
+            dict_article['reports'] = dict_reports
+
+            data['articles'].append(dict_article)
+        # Should return Article class
 
         return data, 200
 api.add_resource(Article, '/articles')
 
 # File Log: Should I create a logger class?
-# Note: There can be two types of logs for your API- You can return a json snippet
-# with your API response to the end user, which includes the details such as team
-# name, accessed time, data source. Also you can keep a log file in back-end that
-# contain details such as which API end point was accessed at what time, how long
-# it took to address the request, resource utilization etc. that are useful for
-# API monitoring and performance improvement.
 def info(msg):
     f = open("log.txt", "a")
     f.write("Log: {} {}\n".format(msg, datetime.datetime.now()))
