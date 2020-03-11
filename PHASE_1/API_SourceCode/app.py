@@ -20,12 +20,53 @@ class Article(Resource):
         print(request.args['location'])
         print(request.args['key_term'])
 
+        #print("{} {}".format(int(request.args['start_date'].split('-')[0]), request.args['end_date'].split('-')))
+
         # Error Handling and Logging Status
-        date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
-        if not ( date_regex.match(request.args['start_date']) or date_regex.match(request.args['start_date']) ):
+        date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx) (\d\d|xx):(\d\d|xx):(\d\d|xx)$')
+        if not date_regex.match(request.args['start_date']) or not date_regex.match(request.args['end_date']):
             # Maybe print file error msg, not sure
-            info("success")
             return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+        elif request.args['start_date'].split('-')[0] != 'xxxx' and request.args['end_date'].split('-')[0] != 'xxxx':
+            # This if year of start date higher than end date
+            if int(request.args['start_date'].split('-')[0]) > int(request.args['end_date'].split('-')[0]):
+                return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+            elif request.args['start_date'].split('-')[1] == 'xx' or request.args['end_date'].split('-')[1] == 'xx':
+                if int(request.args['start_date'].split('-')[0]) == int(request.args['end_date'].split('-')[0]):
+                    return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+        elif request.args['start_date'].split('-')[1] != 'xx' and request.args['end_date'].split('-')[1] != 'xx':
+        # This if month of start date higher than end date
+            print("HERE")
+            if int(request.args['start_date'].split('-')[1]) > int(request.args['end_date'].split('-')[1]):
+                return {"status": 400, "message": "Invalid Query Parameters" }, 400
+            elif request.args['start_date'].split('-')[2][0:1] == 'xx' or request.args['end_date'].split('-')[2][0:1] == 'xx':
+                if int(request.args['start_date'].split('-')[1]) == int(request.args['end_date'].split('-')[1]):
+                    return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+
+        elif request.args['start_date'].split('-')[2][0:1] != 'xx' and request.args['end_date'].split('-')[2][0:1] != 'xx':
+        # This if day of start date higher than end date
+            if int(request.args['start_date'].split('-')[2][0:1]) > int(request.args['end_date'].split('-')[2][0:1]):
+                return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+
+        elif request.args['start_date'].split('-')[2][3:4] != 'xx' and request.args['end_date'].split('-')[2][3:4] != 'xx':
+        # This if hour of start date higher than end date
+            if int(request.args['start_date'].split('-')[2][3:4]) > int(request.args['end_date'].split('-')[2][3:4]):
+                return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+        elif request.args['start_date'].split('-')[2][6:7] != 'xx' and request.args['end_date'].split('-')[2][6:7] != 'xx':
+        # This if minute of start date higher than end date
+            if int(request.args['start_date'].split('-')[2][6:7]) > int(request.args['end_date'].split('-')[2][6:7]):
+                return {"status": 400, "message": "Invalid Query Parameters" }, 400
+
+        elif request.args['start_date'].split('-')[2][9:10] != 'xx' and request.args['end_date'].split('-')[2][9:10] != 'xx':
+        # This if second of start date higher than end date
+            if int(request.args['start_date'].split('-')[2][9:10]) > int(request.args['end_date'].split('-')[2][9:10]):
+                return {"status": 400, "message": "Invalid Query Parameters" }, 400
 
         info(request.url)
 
