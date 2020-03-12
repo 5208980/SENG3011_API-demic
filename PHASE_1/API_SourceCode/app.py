@@ -25,29 +25,30 @@ class Article(Resource):
         ## Error Handling and Logging Status ##
         # Validate Date
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
-        if not ( date_regex.match(request.args['start_date']) or date_regex.match(request.args['start_date']) ) and request.args['start_date'] > request.args['end_date']:
+        if not date_regex.search(request.args['start_date']) or not date_regex.search(request.args['end_date']) or request.args['start_date'] > request.args['end_date']:
             # Maybe print file error msg, not sure
             return {"status": 400, "message": "Invalid Query Parameters (Date)" }, 400
 
         # Validate Location
-        with open('dataset/country.json') as data_file:
-            data_country = json.load(data_file)
-
-        found_country = False
-        for country in data_country:
-            if country['name'].lower() in request.args['location'].lower():
-                found_country = True
-                break
-
-        if not found_country:
-            return {"status": 400, "message": "Invalid Query Parameters (Country)" }, 400
+        # with open('dataset/country.json') as data_file:
+        #     data_country = json.load(data_file)
+        #
+        # found_country = False
+        # for country in data_country:
+        #     if country['name'].lower() in request.args['location'].lower():
+        #         found_country = True
+        #         break
+        #
+        # if not found_country:
+        #     return {"status": 400, "message": "Invalid Query Parameters (Country)" }, 400
 
         # Validate Key Term
-
+        print("HERE")
         ## Log ##
         info(request.url)
 
         ## DB Query ##
+
         with open('output.pickle', 'rb') as p:
             articles = pickle.load(p)
 
@@ -62,15 +63,26 @@ class Article(Resource):
 
             dict_reports = {}
             dict_reports["event_date"] = article.get_reports().get_event_date()
-            dict_reports["locations"] = article.get_reports().get_locations()
+            dict_reports["locations"] = []
+            for location in article.get_reports().get_locations():
+                dict_location = {}
+                dict_location["country"] = location.get_country()
+                dict_location["location"] = location.get_location()
+                # print(location.get_country())
+                dict_reports["locations"].append(dict_location)
             dict_reports["disease"] = article.get_reports().get_disease()
             dict_reports["syndrome"] = article.get_reports().get_syndrome()
             dict_article['reports'] = dict_reports
 
             data['articles'].append(dict_article)
-        # Should return Article class
 
         return data, 200
+
+        # if data['articles'] != []:
+        #     return data, 200
+        # else:
+        #     return {"status": 404, "message": "No result for query"}, 404
+
 api.add_resource(Article, '/articles')
 
 # File Log: Should I create a logger class?
