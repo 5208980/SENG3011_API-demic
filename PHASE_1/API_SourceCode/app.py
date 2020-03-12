@@ -3,6 +3,7 @@
 
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
+from flask_swagger_ui import get_swaggerui_blueprint    # Swagger UI
 
 import re                    # For regex
 import datetime
@@ -10,9 +11,26 @@ import json
 
 import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB IS OUT)
 
+# import psycopg2                # POSTGRES connection
+# import sys
+
+# conn = psycopg2.connect("dbname={}")
+# cur = conn.cursor()
+# conn.close()
+
 app = Flask(__name__)
 api = Api(app)
 
+SWAGGER_URL = ''
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={ 'app_name': "API-demic" }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT)
+
+# https://api-demic.herokuapp.com/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus
 # Test url: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus
 class Article(Resource):
     def get(self):
@@ -27,7 +45,7 @@ class Article(Resource):
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
         if not date_regex.search(request.args['start_date']) or not date_regex.search(request.args['end_date']) or request.args['start_date'] > request.args['end_date']:
             # Maybe print file error msg, not sure
-            return {"status": 400, "message": "Invalid Query Parameters (Date)" }, 400
+            return {"status": 400, "message": "Invalid Query Parameters (Date)" }
 
         # Validate Location
         # with open('dataset/country.json') as data_file:
@@ -48,6 +66,10 @@ class Article(Resource):
         info(request.url)
 
         ## DB Query ##
+        # cur.execute("", [])       # QUERY using the request.args
+        # data = {}
+        # data['articles'] = []
+        # for article in cur.fetchall():
 
         with open('output.pickle', 'rb') as p:
             articles = pickle.load(p)

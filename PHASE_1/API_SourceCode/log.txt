@@ -65,3 +65,10 @@ Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020
 Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 11:11:19.041457
 Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 11:13:09.822631
 Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 12:08:24.296079
+Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 12:51:17.624910
+Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 12:51:53.154860
+Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 12:52:14.548400
+Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 20:46:53.789732
+Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-12 20:47:15.228593
+Log: http://127.0.0.1:5000/articles?start_date=2020-02-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus 2020-03-12 20:48:31.424820
+Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus 2020-03-12 20:50:19.728311
