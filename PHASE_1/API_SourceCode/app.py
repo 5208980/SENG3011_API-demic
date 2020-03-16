@@ -11,6 +11,8 @@ import json
 
 import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB IS OUT)
 
+import time
+
 # import psycopg2                # POSTGRES connection
 # import sys
 
@@ -34,36 +36,37 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT)
 # Test url: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus
 class Article(Resource):
     def get(self):
+        # File
+        exe_start_time = time.perf_counter()
+
+        # For backend and end user
+        logger = {}
+        logger["method"] = request.method
+        logger["url"] = request.url
+        logger["time"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
         # Query Parameters
-        print(request.args['start_date'])
-        print(request.args['end_date'])
-        print(request.args['location'])
-        print(request.args['key_term'])
+        # print(request.args['start_date'])
+        # print(request.args['end_date'])
+        # print(request.args['location'])
+        # print(request.args['key_term'])
 
         ## Error Handling and Logging Status ##
         # Validate Date
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
         if not date_regex.search(request.args['start_date']) or not date_regex.search(request.args['end_date']) or request.args['start_date'] > request.args['end_date']:
             # Maybe print file error msg, not sure
+            # print("Reponse Status: {}".format(400))
+            exe_end_time = time.perf_counter()
+            logger["runtime"] = round(exe_end_time - exe_start_time, 2)
+            logger["reponse"] = 400
+            print(logger)
+
+            backend_log(logger)
             return {"status": 400, "message": "Invalid Query Parameters (Date)" }
 
-        # Validate Location
-        # with open('dataset/country.json') as data_file:
-        #     data_country = json.load(data_file)
-        #
-        # found_country = False
-        # for country in data_country:
-        #     if country['name'].lower() in request.args['location'].lower():
-        #         found_country = True
-        #         break
-        #
-        # if not found_country:
-        #     return {"status": 400, "message": "Invalid Query Parameters (Country)" }, 400
-
         # Validate Key Term
-        print("HERE")
         ## Log ##
-        info(request.url)
 
         ## DB Query ##
         # cur.execute("", [])       # QUERY using the request.args
@@ -76,8 +79,10 @@ class Article(Resource):
 
         data = {}
         data['articles'] = []
+        urls = []
         for article in articles:
             dict_article = {}
+            # getID()
             dict_article['url'] = article.get_url()
             dict_article['date_of_publication'] = article.get_date_of_publication()
             dict_article['headline'] = article.get_headline()
@@ -96,21 +101,31 @@ class Article(Resource):
             dict_reports["syndrome"] = article.get_reports().get_syndrome()
             dict_article['reports'] = dict_reports
 
+            urls.append(article.get_url())
             data['articles'].append(dict_article)
 
-        return data, 200
+        exe_end_time = time.perf_counter()
+        logger["runtime"] = round(exe_end_time - exe_start_time, 5)
 
-        # if data['articles'] != []:
-        #     return data, 200
-        # else:
-        #     return {"status": 404, "message": "No result for query"}, 404
+        # return data, 200
+
+        if data['articles'] != []:
+            logger["reponse"] = 200
+            print(logger)
+
+            backend_log(logger)
+            return data, 200
+        else:
+            logger["reponse"] = 404
+            print(logger)
+            return {"status": 404, "message": "No result for query"}, 404
 
 api.add_resource(Article, '/articles')
 
 # File Log: Should I create a logger class?
-def info(msg):
+def backend_log(logger):
     f = open("log.txt", "a")
-    f.write("Log: {} {}\n".format(msg, datetime.datetime.now()))
+    f.write("[{}] \"{} {}\" {}\n".format(logger['time'], logger['method'], logger["url"], logger["reponse"]))
     f.close()
 
 # Test Function
@@ -142,7 +157,7 @@ class HelloWorld(Resource):
                     ]
                 }
             ]
-        }
+        }, 200
 api.add_resource(HelloWorld, '/test')
 
 if __name__ == '__main__':
