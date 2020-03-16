@@ -2,9 +2,9 @@
     "swagger": "2.0",
     "info": {
         "description": "
-            API-demic Swagger Documentation. Test out the endpoints that focuses
-            on filtering and getting health related articles.
-            NOTE TO SELF: MAKE SURE TO CHANGE TO HEROKU LINK IN HOST TAG
+            This is the Swagger Documentation for API-demic. The purpose of using API-demic
+            is to assist users with analysising and track health related issues such as epidemics
+            and medical news.
         ",
         "version": "1.0.0",
         "title": "API-demic",
@@ -13,12 +13,12 @@
             "email": ""
         },
     },
-    "host": "127.0.0.1:5000",
+    "host": "api-demic.herokuapp.com",
     "basePath": "",
     "tags": [
         {
             "name": "articles",
-            "description": "Get all types of articles",
+            "description": "article searching",
             "externalDocs": {
                 "description": "",
                 "url": ""
@@ -36,7 +36,7 @@
                 "tags": [
                     "articles"
                 ],
-                "summary": "Found articles according to valid parameters",
+                "summary": "Find articles according to valid parameters",
                 "description": "",
                 "operationId": "",
                 "consumes": [
