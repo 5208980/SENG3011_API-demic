@@ -5,9 +5,10 @@ chardet==3.0.4
 Click==7.0
 Flask==1.1.1
 Flask-RESTful==0.3.8
+flask-swagger-ui==3.25.0
 geotext==0.3.0
-idna==2.9
 gunicorn==20.0.4
+idna==2.9
 itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
