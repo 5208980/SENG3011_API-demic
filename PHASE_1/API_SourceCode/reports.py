@@ -1,6 +1,6 @@
 class Reports:
     def __init__(self, event_date, locations, disease, syndrome):
-        self._event_date = event_date,
+        self._event_date = event_date
         self._locations = locations
         self._disease = disease
         self._syndrome = syndrome
