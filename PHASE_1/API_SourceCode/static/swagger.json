@@ -1,0 +1,200 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "
+            API-demic Swagger Documentation. Test out the endpoints that focuses
+            on filtering and getting health related articles.
+            NOTE TO SELF: MAKE SURE TO CHANGE TO HEROKU LINK IN HOST TAG
+        ",
+        "version": "1.0.0",
+        "title": "API-demic",
+        "termsOfService": "",
+        "contact": {
+            "email": ""
+        },
+    },
+    "host": "127.0.0.1:5000",
+    "basePath": "",
+    "tags": [
+        {
+            "name": "articles",
+            "description": "Get all types of articles",
+            "externalDocs": {
+                "description": "",
+                "url": ""
+            }
+        }
+    ],
+    "schemes": [
+        "https",
+        "http"
+    ],
+
+    "paths": {
+        "/articles": {
+            "get": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Found articles according to valid parameters",
+                "description": "",
+                "operationId": "",
+                "consumes": [
+                    "application/json",
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Datetime for articles after the entered date, replace parameters with xx, Eg. 2020-01-01T12:00:00",
+                        "required": true,
+                        "type": "string",
+                        "format": "YY-MM-DDTHH:MM:SS",
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "Datetime for articles before the entered date, replace parameters with xx, Eg. 2020-02-01T12:00:00",
+                        "required": true,
+                        "type": "string",
+                        "format": "YY-MM-DDTHH:MM:SS",
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "description": "Valid location is needed to consider filter, Eg. australia",
+                        "required": true,
+                        "type": "string",
+                        "format": "",
+                    },
+                    {
+                        "name": "key_term",
+                        "in": "query",
+                        "description": "Valid key terms is needed to consider filter, Eg. coronavirus",
+                        "required": true,
+                        "type": "string",
+                        "format": "",
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "examples": {
+                            "application/json":
+                            {
+                                "articles": [
+                                    {
+                                        "url": "string",
+                                        "date_of_publication": "string",
+                                        "header": "string",
+                                        "main_text": "string",
+                                        "reports": [
+                                            {
+                                                "event_date": "string",
+                                                "locations": [
+                                                    {
+                                                        "country": "string",
+                                                        "location": "string"
+                                                    }
+                                                ],
+                                                "diseases": [ "string" ],
+                                                "syndromes": [ "string" ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Query Parameters (Date)",
+                        "examples": {
+                            "application/json":
+                            {
+                                "status": 400,
+                                "message": "Invalid Query Parameters (Date)"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Invalid Query Parameters (Date)",
+                        "examples": {
+                            "application/json":
+                            {
+                                "status": 404,
+                                "message": "No result for query"
+                            }
+                        }
+                    }
+                }
+            },
+        }
+    },
+
+    "definitions": {
+        "Article": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "format": ""
+                },
+                "date_of_publication": {
+                    "type": "string",
+                    "format": ""
+                },
+                "header": {
+                    "type": "string",
+                    "format": ""
+                },
+                "main_text": {
+                    "type": "string",
+                    "format": ""
+                },
+                "reports": {
+                    "type": "array",
+                    "description": "Reports"
+                }
+            },
+        },
+        "Reports": {
+            "type": "object",
+            "properties": {
+                "event_date": {
+                    "type": "string",
+                    "format": ""
+                },
+                "location": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "disease": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "syndromes": {
+                    "type": "string",
+                    "format": ""
+                }
+            }
+        },
+        "Locations": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string",
+                    "format": ""
+                },
+                "location": {
+                    "type": "string",
+                    "format": ""
+                }
+            }
+        }
+  },
+}

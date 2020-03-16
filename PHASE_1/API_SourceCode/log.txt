@@ -1,6 +1,5 @@
-Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:xx:xx&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-06 14:12:58.165420
-Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-06 14:13:18.420268
-Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-06 14:21:09.269497
-Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-06 14:46:29.877054
-Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-06 14:46:43.033213
-Log: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus 2020-03-06 14:47:01.387299
+[15/03/2020 20:01:45] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus" 200
+[15/03/2020 20:06:35] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01%202%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus" 400
+[15/03/2020 20:06:42] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus" 200
+[15/03/2020 20:10:06] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[16/03/2020 10:09:52] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
