@@ -1,16 +1,30 @@
-# SENG3011_API-demic
+# SENG3011 API-demic Project Overview
 
-##### Student Names
-- Aaron 
-- Amelia
-- Kevin
-- Logann
-- Peter
+This repository is a SENG3011 project. The aim is to collect data about health related articles from different sources to help others analyse and track epidemics.
 
-##### Link to swagger 
-...
+# Team Members
+- **Aaron** (z5208530)
+- **Amelia** (z520971)
+- **Kevin** (z5214693)
+- **Logann** (z5294830)
+- **Peter** (z5208980)
 
-##### Folder Info
-- Phase 1 contains the folders and files all used to complete deliverable 1 of the project.
-- Phase 2 contains the folders and files all used to complete deliverable 2 of the project.
-- There is also a report folder which contains the project report.
+# Folders
+- **Phase 1**
+> Contains the API implementation, Scraper, Database and API Testscripts.
+
+- **Phase 2**
+> Contains Webpage.
+
+- **Reports**
+> Contains Design Details, Management Information Report.
+
+# Links
+> [Swagger Documentation](http://api-demic.herokuapp.com/)
+
+> [API Link](http://api-demic.herokuapp.com/)
+
+> [Website]()
+
+# Endpoints
+**TODO**
