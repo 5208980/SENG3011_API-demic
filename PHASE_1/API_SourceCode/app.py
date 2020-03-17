@@ -4,6 +4,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from flask_swagger_ui import get_swaggerui_blueprint    # Swagger UI
+import database
 
 import re                    # For regex
 import datetime
@@ -12,13 +13,6 @@ import json
 import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB IS OUT)
 
 import time
-
-# import psycopg2                # POSTGRES connection
-# import sys
-
-# conn = psycopg2.connect("dbname={}")
-# cur = conn.cursor()
-# conn.close()
 
 app = Flask(__name__)
 api = Api(app)
