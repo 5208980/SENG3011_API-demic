@@ -8,13 +8,12 @@
         ",
         "version": "1.0.0",
         "title": "API-demic",
-        "termsOfService": "",
         "contact": {
             "email": ""
         },
     },
-    "host": "api-demic.herokuapp.com",
-    "basePath": "",
+    "host": "127.0.0.1:5000",
+    "basePath": "/v1.1",
     "tags": [
         {
             "name": "articles",
@@ -26,7 +25,6 @@
         }
     ],
     "schemes": [
-        "https",
         "http"
     ],
 
