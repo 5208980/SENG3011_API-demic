@@ -60,13 +60,13 @@ def country_text_is_refering(text):
 
     for country in data_country:
         if country['name'] in text:
-            results = GeoText(text, country['code']).cities
+            results = GeoText(text, country['alpha_2']).cities
             if results != []:
                 results = list(dict.fromkeys(results))
                 for result in results:
-                    country_found.append(Locations(country['name'], result))
+                    country_found.append(Locations(country['name'], result, country['alpha_3']))
             else:
-                country_found.append(Locations(country['name'], ""))
+                country_found.append(Locations(country['name'], "", country['alpha_3']))
 
     return country_found
 
@@ -82,7 +82,7 @@ def syndrome_text_is_refering(text):
     syndrome_found = ""
     for syndrome in data_syndrome:
         if syndrome['name'].lower() in text:
-            syndrome_found = disease['name']
+            syndrome_found = syndrome['name']
 
     return syndrome_found
 
