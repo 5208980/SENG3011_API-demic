@@ -1,29 +1,25 @@
-import os
-import psycopg2
-from article import Article
-from reports import Reports
-from locations import Locations
-
-DATABASE_URL = os.environ['DATABASE_URL']
-
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
-cursor = conn.cursor()
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 
-def insert(article):
-    cursor.execute("INSERT INTO articles (url, date_of_publication, headline, main_text) VALUES (%s, %s, %s, %s)",
-                   (article.get_url(), article.get_date_of_publication(), article.get_headline(), article.get_main_text()))
-    
-    report = article.get_reports()
+class Article(db.Model):
+    url = db.Column(db.String(), primary_key=True)
+    date_of_publication = db.Column(db.String())
+    headline = db.Column(db.String())
+    main_text = db.Column(db.String())
+    reports = db.relationship('Report', backref='article')
 
-    cursor.execute("INSERT INTO reports (article_url, syndrome, event_date, disease) VALUES (%s, %s, %s, %s) RETURNING id",
-                (article.get_url(), report.get_syndrome(), report.get_event_date(), report.get_disease()))
 
-    report_id = cursor.fetchone()[0]
+class Report(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    article_url = db.Column(db.String(), db.ForeignKey('article.url'))
+    syndrome = db.Column(db.String())
+    event_date = db.Column(db.String())
+    disease = db.Column(db.String())
+    locations = db.relationship('Location', backref='report')
 
-    for location in report.get_locations():
-        cursor.execute("INSERT INTO locations (report_id, country, location) VALUES (%s, %s, %s)",
-                (report_id, location.get_country(), location.get_location()))
 
-    conn.commit()
+class Location(db.Model):
+    report_id = db.Column(db.Integer, db.ForeignKey('report.id'), primary_key=True)
+    country = db.Column(db.String(), primary_key=True)
+    location = db.Column(db.String(), primary_key=True)

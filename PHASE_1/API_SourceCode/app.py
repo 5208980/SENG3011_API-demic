@@ -4,18 +4,21 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from flask_swagger_ui import get_swaggerui_blueprint    # Swagger UI
-import database
-
+from database import db
 import re                    # For regex
 import datetime
 import json
-
+import os
 import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB IS OUT)
 
 import time
 
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 api = Api(app)
+db.init_app(app)
 
 SWAGGER_URL = ''
 API_URL = '/static/swagger.json'
