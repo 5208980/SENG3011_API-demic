@@ -3,3 +3,92 @@
 [15/03/2020 20:06:42] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus" 200
 [15/03/2020 20:10:06] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
 [16/03/2020 10:09:52] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 20:43:24] "GET http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 20:44:43] "GET http://127.0.0.1:5000/v1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 20:51:22] "GET http://127.0.0.1:5000/v1/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&location=australia&key_term=coronavirus" 200
+[18/03/2020 20:53:16] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:03:28] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:03:59] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:08:03] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:08:24] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:15:23] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:15:48] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:19:15] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 400
+[18/03/2020 21:19:43] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus" 400
+[18/03/2020 21:20:31] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus" 400
+[18/03/2020 21:23:15] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus" 400
+[18/03/2020 21:23:41] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus" 400
+[18/03/2020 21:26:13] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus" 400
+[18/03/2020 21:45:22] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:45:52] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[18/03/2020 21:46:33] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 11:19:52] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 11:20:04] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 11:20:04] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 11:25:34] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 11:25:35] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 11:25:38] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 15:30:20] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus" 200
+[19/03/2020 15:32:14] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2009-01-0112:00:00&end_date=2009-02-01&location=australia&key_term=flu" 400
+[19/03/2020 15:34:20] "GET http://127.0.0.1:5000/v1.1/articles?start_date=2009-01-0112:00:00&end_date=2009-02-01&location=australia&key_term=flu" 400
+{"Time": "19/03/2020 16:13:04", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus", "Status": "400", "Time": "0.0" }
+{"Time": "19/03/2020 16:13:18", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-0112:00:00&end_date=2020-02-01&location=australia&key_term=coronavirus", "Status": "400", "Time": "0.0" }
+{"Time": "19/03/2020 16:13:42", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2009-01-01T12:00:00&end_date=2009-02-01T12:00:00&location=australia&key_term=flu", "Status": "200", "Time": "0.01524" }
+{"Time": "19/03/2020 16:29:27", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2009-01-01T12:00:00&end_date=2009-02-01T12:00:00&location=australia&key_term=flu", "Status": "200", "Time": "0.00507" }
+{"Time": "19/03/2020 16:29:32", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2009-01-01T12:00:00&end_date=2009-02-01T12:00:00&location=australia&key_term=flu", "Status": "200", "Time": "0.0039" }
+{"Time": "19/03/2020 16:38:09", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00781" }
+{"Time": "19/03/2020 16:40:46", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00298" }
+{"Time": "19/03/2020 16:41:22", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00085" }
+{"Time": "19/03/2020 16:41:42", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00096" }
+{"Time": "19/03/2020 16:42:19", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00081" }
+{"Time": "19/03/2020 16:43:05", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00094" }
+{"Time": "19/03/2020 16:47:55", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00187" }
+{"Time": "19/03/2020 16:48:04", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00084" }
+{"Time": "19/03/2020 16:50:51", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00103" }
+{"Time": "19/03/2020 17:08:58", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00395" }
+{"Time": "19/03/2020 17:09:39", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.0009" }
+{"Time": "19/03/2020 17:10:42", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00102" }
+{"Time": "19/03/2020 17:15:37", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00121" }
+{"Time": "19/03/2020 17:16:11", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00088" }
+{"Time": "19/03/2020 17:16:22", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00134" }
+{"Time": "19/03/2020 17:17:56", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00136" }
+{"Time": "19/03/2020 17:18:48", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00092" }
+{"Time": "19/03/2020 17:20:30", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.001" }
+{"Time": "19/03/2020 17:20:51", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00087" }
+{"Time": "19/03/2020 17:21:01", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00135" }
+{"Time": "19/03/2020 17:21:33", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00091" }
+{"Time": "19/03/2020 17:22:58", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00199" }
+{"Time": "19/03/2020 17:23:11", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00283" }
+{"Time": "19/03/2020 17:23:21", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00097" }
+{"Time": "19/03/2020 17:24:21", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00107" }
+{"Time": "20/03/2020 19:33:18", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00701" }
+{"Time": "20/03/2020 19:33:23", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&", "Status": "200", "Time": "0.00095" }
+{"Time": "20/03/2020 19:38:54", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia", "Status": "200", "Time": "0.00637" }
+{"Time": "20/03/2020 19:40:08", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00397" }
+{"Time": "20/03/2020 19:44:07", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&key_term=coronavirus", "Status": "400", "Time": "0.0" }
+{"Time": "20/03/2020 19:46:42", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&key_term=coronavirus", "Status": "400", "Time": "-0.0" }
+{"Time": "20/03/2020 19:46:59", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "-0.01" }
+{"Time": "20/03/2020 19:47:49", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "-0.0" }
+{"Time": "20/03/2020 19:47:56", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "-0.0" }
+{"Time": "20/03/2020 19:48:25", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.0" }
+{"Time": "20/03/2020 19:48:31", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.0" }
+{"Time": "20/03/2020 19:49:37", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "0.00415" }
+{"Time": "20/03/2020 19:50:51", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "3.61" }
+{"Time": "20/03/2020 19:51:22", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "4.79ms" }
+{"Time": "20/03/2020 19:58:32", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia", "Status": "400", "Time": "2.65ms" }
+{"Time": "20/03/2020 20:04:16", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia", "Status": "400", "Time": "2.78ms" }
+{"Time": "20/03/2020 20:04:32", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia", "Status": "400", "Time": "3.9699999999999998ms" }
+{"Time": "20/03/2020 20:04:34", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia", "Status": "400", "Time": "0.75ms" }
+{"Time": "20/03/2020 20:04:41", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia", "Status": "400", "Time": "3.64ms" }
+{"Time": "20/03/2020 20:07:01", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "400", "Time": "2.32ms" }
+{"Time": "20/03/2020 20:07:25", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "8.64ms" }
+{"Time": "20/03/2020 20:07:37", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=23", "Status": "200", "Time": "1.1199999999999999ms" }
+{"Time": "20/03/2020 20:07:42", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=2a", "Status": "200", "Time": "1.07ms" }
+{"Time": "20/03/2020 20:07:52", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=2aasd", "Status": "200", "Time": "1.15ms" }
+{"Time": "20/03/2020 20:12:03", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=2aasd", "Status": "200", "Time": "4.23ms" }
+{"Time": "20/03/2020 20:12:31", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=2", "Status": "400", "Time": "0.39ms" }
+{"Time": "20/03/2020 20:12:45", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=2", "Status": "200", "Time": "6.07ms" }
+{"Time": "20/03/2020 20:12:49", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus&n=2asd", "Status": "400", "Time": "0.49ms" }
+{"Time": "20/03/2020 20:12:56", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "2.33ms" }
+{"Time": "20/03/2020 20:15:23", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "7.34ms" }
+{"Time": "20/03/2020 20:17:59", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus", "Status": "200", "Time": "3.9ms" }
