@@ -1,7 +1,8 @@
 class Locations:
-    def __init__(self, country, location):
+    def __init__(self, country, location, code):
         self._country = country
         self._location = location
+        self._code = code
 
     def get_country(self):
         return self._country
@@ -14,3 +15,6 @@ class Locations:
 
     def set_location(self, location):
         self._location = location
+
+    def get_code(self):
+        return self._code
