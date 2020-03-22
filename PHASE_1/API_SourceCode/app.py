@@ -41,7 +41,6 @@ class ArticleV1(Resource):
         logger["method"] = request.method
         logger["url"] = request.url
         logger["time"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
         ## Error Handling and Logging Status ##
         # Validate Date
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
@@ -88,7 +87,82 @@ class ArticleV11(Resource):
         ## Error Handling ##
         # Validate Date
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
-        if not date_regex.search(request.args['start_date']) or not date_regex.search(request.args['end_date']) or request.args['start_date'] > request.args['end_date']:
+
+        
+        start_date = request.args['start_date']
+
+        # start month = xx then change to 01
+        if start_date[5:7] == 'xx':
+            start_date = start_date[0:5] + '01' + start_date[7:19]
+
+        # start day = xx change to 01
+        if start_date[8:10] == 'xx':
+            start_date = start_date[0:8] + '01' + start_date[10:19]
+
+        # start hour = xx change to 00
+        if start_date[11:13] == 'xx':
+            start_date = start_date[0:11] + '00' + start_date[13:19]
+
+        # start minute = xx change to 00
+        if start_date[14:16] == 'xx':
+            start_date = start_date[0:14] + '00' + start_date[16:19]
+
+        # start second = xx change to 00
+        if start_date[17:19] == 'xx':
+            start_date = start_date[0:17] + '00' 
+        
+        
+        end_date = request.args['end_date']
+
+        # end month = xx then change to 12
+        if end_date[5:7] == 'xx':
+            end_date = end_date[0:5] + '12' + end_date[7:19]
+
+        # end day = xx change to 30 or 31
+        if end_date[8:10] == 'xx':
+            month = end_date[5:7]
+
+            def day(m):
+                switcher={
+                    '01':'31',
+                    '02':'28',
+                    '03':'31',
+                    '04':'30',
+                    '05':'31',
+                    '06':'30',
+                    '07':'31',
+                    '08':'31',
+                    '09':'30',
+                    '10':'31',
+                    '11':'30',
+                    '12':'31'
+                }
+                return switcher.get(m,"30")
+
+            day = day(month)
+
+            if int(end_date[0:4]) % 4 == 0 and day == '28':
+                day = '29'
+
+            end_date = end_date[0:8] + day + end_date[10:19]
+
+        # end hour = xx change to 00
+        if end_date[11:13] == 'xx':
+            end_date = end_date[0:11] + '23' + end_date[13:19]
+
+        # end minute = xx change to 00
+        if end_date[14:16] == 'xx':
+            end_date = end_date[0:14] + '59' + end_date[16:19]
+
+        # end second = xx change to 00
+        if end_date[17:19] == 'xx':
+            end_date = end_date[0:17] + '59' 
+
+        print(start_date)
+        print(end_date)
+ 
+
+        if not date_regex.search(start_date) or not date_regex.search(end_date) or start_date > end_date:
             logger["runtime"] = runtime(start_time, time.perf_counter())
             logger["reponse"] = 400
 
@@ -112,7 +186,7 @@ class ArticleV11(Resource):
             backend_log(logger)
             return {"status": 400, "message": "N needs to be number" }, 400, {'Access-Control-Allow-Origin': '*'}
 
-        data = query_and_convert()          # Main function
+        data = query_and_convert(start_date, end_date)          # Main function
         logger["runtime"] = runtime(start_time, time.perf_counter())
 
         if data['articles'] != []:
@@ -137,12 +211,12 @@ def backend_log(logger):
 def runtime(start, end):
     return round(end-start, 5)*1000
 
-def query_and_convert():
+def query_and_convert(start, end):
     # print(request.args['start_date']) # print(request.args['end_date'])
     # print(request.args['location']) # print(request.args['key_term'])
 
-    start_date = datetime.datetime.strptime(request.args['start_date'], '%Y-%m-%dT%H:%M:%S')
-    end_date = datetime.datetime.strptime(request.args['end_date'], '%Y-%m-%dT%H:%M:%S')
+    start_date = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
+    end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
     requested_location = request.args['location'].lower()
 
     with open('output.pickle', 'rb') as p:
