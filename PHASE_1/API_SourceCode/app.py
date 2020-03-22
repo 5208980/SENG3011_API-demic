@@ -15,7 +15,7 @@ import time
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 api = Api(app)
 db.init_app(app)
@@ -141,10 +141,13 @@ def query_and_convert():
     # print(request.args['start_date']) # print(request.args['end_date'])
     # print(request.args['location']) # print(request.args['key_term'])
 
-    with open('output.pickle', 'rb') as p:
-        articles = pickle.load(p)
+    start_date = datetime.datetime.strptime(request.args['start_date'], '%Y-%m-%dT%H:%M:%S')
+    end_date = datetime.datetime.strptime(request.args['end_date'], '%Y-%m-%dT%H:%M:%S')
+    requested_location = request.args['location'].lower()
 
-    # TODO IF IMPLEMENT: Number of articles to return: 10
+    with open('output.pickle', 'rb') as p:
+        articles = pickle.load(p)           # 1273 articles
+
     n = 10
     if 'n' in request.args:
         n = int(request.args['n'])
@@ -153,29 +156,45 @@ def query_and_convert():
     json['articles'] = []
     urls = []
     for article in articles:
-        dict_article = {}
-        # dict_article['id']
-        dict_article['url'] = article.get_url()
-        dict_article['date_of_publication'] = article.get_date_of_publication()
-        dict_article['headline'] = article.get_headline()
-        dict_article['main_text'] = article.get_main_text()
+        date_of_publication = datetime.datetime.strptime(article.get_date_of_publication(), '%Y-%m-%d %H:%M:%S')
 
-        dict_reports = {}
-        dict_reports["event_date"] = article.get_reports().get_event_date()
-        dict_reports["locations"] = []
-        for location in article.get_reports().get_locations():
-            dict_location = {}
-            dict_location["country"] = location.get_country()
-            dict_location["location"] = location.get_location()
-            dict_location["code"] = location.get_code()
-            # print(location.get_country())
-            dict_reports["locations"].append(dict_location)
-        dict_reports["disease"] = article.get_reports().get_disease()
-        dict_reports["syndrome"] = article.get_reports().get_syndrome()
-        dict_article['reports'] = dict_reports
+        # print("start: {}".format(start_date))
+        # print("dop: {}".format(date_of_publication))
+        if date_of_publication >= start_date and date_of_publication <= end_date:   # Date Query
+            location_query = False
+            for location in article.get_reports().get_locations():
+                if location.get_country().lower() == requested_location or location.get_country().lower() == requested_location:
+                    location_query = True
 
-        urls.append(article.get_url())
-        json['articles'].append(dict_article)
+            key_terms_query = False
+            if request.args['key_term'].lower() in article.get_main_text().lower():
+                key_terms_query = True
+
+            if location_query and key_terms_query:
+                dict_article = {}
+                # dict_article['id']
+                dict_article['url'] = article.get_url()
+                dict_article['date_of_publication'] = article.get_date_of_publication()
+                dict_article['headline'] = article.get_headline()
+                dict_article['main_text'] = article.get_main_text()
+                dict_article['key_terms'] = article.get_key_terms()
+
+                dict_reports = {}
+                dict_reports["event_date"] = article.get_reports().get_event_date()
+                dict_reports["locations"] = []
+                for location in article.get_reports().get_locations():
+                    dict_location = {}
+                    dict_location["country"] = location.get_country()
+                    dict_location["location"] = location.get_location()
+                    dict_location["code"] = location.get_code()
+                    # print(location.get_country())
+                    dict_reports["locations"].append(dict_location)
+                dict_reports["disease"] = article.get_reports().get_disease()
+                dict_reports["syndrome"] = article.get_reports().get_syndrome()
+                dict_article['reports'] = dict_reports
+
+                urls.append(article.get_url())
+                json['articles'].append(dict_article)
 
     return json
 
