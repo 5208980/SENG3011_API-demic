@@ -141,8 +141,9 @@ class ArticleV11(Resource):
 
             day = day(month)
 
-            if int(end_date[0:4]) % 4 == 0 and day == '28':
-                day = '29'
+            if end_date[0:4] != 'xxxx':
+                if int(end_date[0:4]) % 4 == 0 and day == '28':
+                    day = '29'
 
             end_date = end_date[0:8] + day + end_date[10:19]
 
@@ -162,7 +163,7 @@ class ArticleV11(Resource):
         print(end_date)
  
 
-        if not date_regex.search(start_date) or not date_regex.search(end_date) or start_date > end_date:
+        if not date_regex.search(start_date) or not date_regex.search(end_date) or start_date >= end_date:
             logger["runtime"] = runtime(start_time, time.perf_counter())
             logger["reponse"] = 400
 

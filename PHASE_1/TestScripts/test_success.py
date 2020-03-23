@@ -56,7 +56,7 @@ def test_end_earlier_fail():
 
 
 def test_success_with_x():
-    # Test correct use of input parameters
+    # dates filled with some x's
     start_date = "2020-01-xxTxx:xx:xx"
     end_date = "2020-02-xxTxx:xx:xx"
     location = "Australia"
@@ -73,7 +73,7 @@ def test_success_with_x():
 
 
 def test_incorrect_location_fail():
-    # Test correct use of input parameters
+    # incorrect location zoo used
     start_date = "2020-01-xxTxx:xx:xx"
     end_date = "2020-02-xxTxx:xx:xx"
     location = "zoo"
@@ -89,7 +89,7 @@ def test_incorrect_location_fail():
     assert(r.status_code == 404)
 
 def test_incorrect_key_term_fail():
-    # Test correct use of input parameters
+    # incorrect key_term
     start_date = "2020-01-xxTxx:xx:xx"
     end_date = "2020-02-xxTxx:xx:xx"
     location = "Australia"
@@ -105,7 +105,7 @@ def test_incorrect_key_term_fail():
     assert(r.status_code == 404)
 
 def test_multiple_terms_success():
-    # Test correct use of input parameters
+    # Use of multiple terms for key_terms
     start_date = "2020-01-xxTxx:xx:xx"
     end_date = "2020-02-xxTxx:xx:xx"
     location = "Australia"
@@ -122,7 +122,7 @@ def test_multiple_terms_success():
 
 
 def test_ambiguous_success():
-    # Test correct use of input parameters
+    # testing ambiguous case
     start_date = "2020-01-03Txx:xx:xx"
     end_date = "2020-01-xxTxx:xx:xx"
     location = "Australia"
@@ -130,6 +130,118 @@ def test_ambiguous_success():
     r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
 
     with open('output/test_ambiguous_success_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+    assert(r.ok)
+    assert(r.status_code == 200)
+
+def test_all_x():
+    # using all x's
+    start_date = "xxxx-xx-xxTxx:xx:xx"
+    end_date = "xxxx-xx-xxTxx:xx:xx"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_all_x_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+#    assert(r.ok)
+    assert(r.status_code == 400)
+
+def test_start_year_higher():
+    # start year higher than end year
+    start_date = "2021-01-03Txx:xx:xx"
+    end_date = "2020-01-xxTxx:xx:xx"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_start_year_higher_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+#    assert(r.ok)
+    assert(r.status_code == 400)
+
+def test_start_time_higher():
+    # start time higher than end time
+    start_date = "2021-01-03T04:00:00"
+    end_date = "2021-01-03T03:00:00"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_start_time_higher_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+#    assert(r.ok)
+    assert(r.status_code == 400)
+
+def test_success_by_few_hours():
+    # success by few hours
+    start_date = "2020-01-21T03:00:00"
+    end_date = "2020-01-21T23:00:00"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_success_by_few_hours_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+    assert(r.ok)
+    assert(r.status_code == 200)
+
+def test_success_year_only():
+    # yeasrs used only
+    start_date = "2020-xx-xxTxx:xx:xx"
+    end_date = "2021-xx-xxTxx:xx:xx"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_success_year_only_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+    assert(r.ok)
+    assert(r.status_code == 200)
+
+def test_same_date_fail():
+    # Use same date
+    start_date = "2020-01-01T12:00:00"
+    end_date = "2020-01-01T12:00:00"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_same_date_fail_output.json') as f:
+        expected = json.load(f)
+
+#    print (r.request == "GET")
+    assert(r.json() == expected)
+#    assert(r.ok)
+    assert(r.status_code == 400)
+
+def test_same_year_success():
+    # use same year
+    start_date = "2020-xx-xxTxx:xx:xx"
+    end_date = "2020-xx-xxTxx:xx:xx"
+    location = "Australia"
+    key_term = "Coronavirus"
+    r = requests.get('{}/{}/articles?start_date={}&end_date={}&location={}&key_term={}'.format(LOCAL_HOST, VERSION, start_date, end_date, location, key_term))
+
+    with open('output/test_same_year_success_output.json') as f:
         expected = json.load(f)
 
 #    print (r.request == "GET")
