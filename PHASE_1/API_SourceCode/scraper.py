@@ -97,6 +97,9 @@ def found_event_date(main_text, date):
         for i in s:
             if i.isdigit():
                 year, month, day = date[0:4], time.strptime(MONTHS_MAP.get(y.group(), y.group()), "%B").tm_mon, i
+                if int(i) <= 0 or int(i) > 31:
+                    day = "1"
+                # print("{}-{}-{}".format(year, month, day))
                 event_dates.append(datetime.date(int(year),int(month),int(day)))
 
     if len(event_dates) == 1:
@@ -106,6 +109,7 @@ def found_event_date(main_text, date):
 
     return ""
 
+articles = []               # DELETE LATER
 ##### Scraping process #####
 def scrape_url(link):
     html_doc = requests.get(link)
@@ -116,8 +120,23 @@ def scrape_url(link):
     main_texts = soup.findAll("div", {"class": "entry-body"})
     publications = soup.findAll("span", {"class": "post-footers"})
 
+    next_page = soup.findAll("span", {"class": "pager-right"})
+    next_page_exist = False
+    if next_page != []:
+        next_page_exist = True
+
     dates = []
+    key_terms = []
     for publication in publications:
+        # Key Terms
+        terms = []
+        for link in publication.find_all('a'):
+            # print(link.get_text())
+            terms.append(link.get_text())
+
+        key_terms.append(terms)
+
+        # Date
         x = re.search("^.* PM|^.* AM", publication.get_text())
         date = publication.get_text()[x.start():x.end()].split()
 
@@ -130,42 +149,55 @@ def scrape_url(link):
         datetime = "{}-{:02d}-{} {}:{}".format(date[2], time.strptime(date[0], "%B").tm_mon, date[1][:-1], date[4], "00")
         dates.append(datetime)
 
-    articles = []
-    for header, main_text, date in zip(headers, main_texts, dates):
+    for header, main_text, date, key_term in zip(headers, main_texts, dates, key_terms):
         print("######################################################")
 
         tmp = {}
-        tmp['url'] = main_text.a.get('href')
+        tmp['url'] = ""
+        if not main_text.a is None:
+            tmp['url'] = main_text.a.get('href')
         tmp['date_of_publication'] = date
         tmp['headline'] = header.get_text()
         tmp['main_text'] = main_text.get_text()
+        tmp['key_terms'] = key_term
 
+        # print(key_term)
         # We can add other stuff to help with postgres like KEYWORDS, TERMS, ETC
-
         raw_text = ' '.join([header.get_text(), main_text.get_text()])
         tmp['reports'] = Reports(found_event_date(main_text.get_text(), date), country_text_is_refering(raw_text), disease_text_is_refering(raw_text.lower()), syndrome_text_is_refering(raw_text.lower()));
 
-        article = Article(tmp['url'], tmp['date_of_publication'], tmp['headline'], tmp['main_text'], tmp['reports'])
-        articles.append(article)
+        # One article created here
+        article = Article(tmp['url'], tmp['date_of_publication'], tmp['headline'], tmp['main_text'], tmp['reports'], tmp['key_terms'])
+        # print(article.get_terms())
+        articles.append(article)    # DELETE LATER
 
-
-    with open('output.pickle', 'wb') as p:
-        pickle.dump(articles, p)
+    return next_page_exist
 
 ##### Use to scrape all articles from start to end date #####
-# def main_function():
-#     start_date = datetime.datetime(2020, 2, 25)
-#     end_date = datetime.datetime.now()
-#     while start_date < end_date:
-#         # print(type(start_date.month))
-#         print("https://crofsblogs.typepad.com/h5n1/{}/{:02d}/{:02d}/".format(start_date.year, start_date.month, start_date.day))
-#
-#         # Scraping Function will go here
-#         scrape_url("https://crofsblogs.typepad.com/h5n1/{}/{:02d}/{:02d}/".format(start_date.year, start_date.month, start_date.day))
-#         start_date = start_date + timedelta(days=1)
+def main_function():
+    start_date = datetime.datetime(2020, 1, 1)
+    end_date = datetime.datetime.now()
+    while start_date < end_date:
+        # print(type(start_date.month))
+        page_number = 1;
+        next_page_exist = True;
+        # Scraping Function will go here
+        while next_page_exist:
+            url = "https://crofsblogs.typepad.com/h5n1/{}/{:02d}/{:02d}/page/{}".format(start_date.year, start_date.month, start_date.day, page_number)
+            print(url)
+            next_page_exist = scrape_url(url)
+            page_number = page_number + 1
+
+        start_date = start_date + timedelta(days=1)
+
+    # DELETE LATER
+    print("HERE")
+    with open('output.pickle', 'wb') as p:
+        pickle.dump(articles, p)
 
 
 # INSTRUCTIONS
 # Scraper can fulfil all requirements if they exist. Very Basic string matching
 # To run scraper for database use main_function() above and change the dates
-scrape_url('https://crofsblogs.typepad.com/h5n1/')
+# scrape_url('https://crofsblogs.typepad.com/h5n1/2020/02/05/page/1')
+main_function()
