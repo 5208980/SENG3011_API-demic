@@ -1,3 +1,4 @@
+-- TODO: Add key_terms as attr (Array)
 create table articles
 (
 	url varchar

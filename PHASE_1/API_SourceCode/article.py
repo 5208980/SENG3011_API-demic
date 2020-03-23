@@ -1,10 +1,11 @@
 class Article:
-    def __init__(self, url, date_of_publication, headline, main_text, reports):
+    def __init__(self, url, date_of_publication, headline, main_text, reports, key_terms):
         self._url = url
         self._date_of_publication = date_of_publication
         self._headline = headline
         self._main_text = main_text
         self._reports = reports
+        self._key_terms = key_terms
 
     def get_url(self):
         return self._url
@@ -35,3 +36,9 @@ class Article:
 
     def set_reports(self, reports):
         self._reports = reports
+
+    def get_key_terms(self):
+        return self._key_terms
+
+    def set_terms(self, key_terms):
+        self._key_terms.append(key_terms)
