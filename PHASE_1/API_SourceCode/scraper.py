@@ -109,9 +109,9 @@ def found_event_date(main_text, date):
 
     return ""
 
-articles = []               # DELETE LATER
 ##### Scraping process #####
 def scrape_url(link):
+    articles = []
     html_doc = requests.get(link)
     soup = BeautifulSoup(html_doc.content, 'html.parser')
 
@@ -171,33 +171,31 @@ def scrape_url(link):
         # print(article.get_terms())
         articles.append(article)    # DELETE LATER
 
-    return next_page_exist
+    return (next_page_exist, articles)
 
 ##### Use to scrape all articles from start to end date #####
-def main_function():
-    start_date = datetime.datetime(2020, 1, 1)
-    end_date = datetime.datetime.now()
+def scrape(start_date, end_date):
+
+    result = []
+
     while start_date < end_date:
         # print(type(start_date.month))
-        page_number = 1;
-        next_page_exist = True;
+        page_number = 1
+        next_page_exist = True
         # Scraping Function will go here
         while next_page_exist:
             url = "https://crofsblogs.typepad.com/h5n1/{}/{:02d}/{:02d}/page/{}".format(start_date.year, start_date.month, start_date.day, page_number)
             print(url)
-            next_page_exist = scrape_url(url)
+            next_page_exist, articles = scrape_url(url)
             page_number = page_number + 1
+            result.extend(articles)
 
         start_date = start_date + timedelta(days=1)
 
-    # DELETE LATER
-    print("HERE")
-    with open('output.pickle', 'wb') as p:
-        pickle.dump(articles, p)
+    return result
 
 
 # INSTRUCTIONS
 # Scraper can fulfil all requirements if they exist. Very Basic string matching
 # To run scraper for database use main_function() above and change the dates
 # scrape_url('https://crofsblogs.typepad.com/h5n1/2020/02/05/page/1')
-main_function()
