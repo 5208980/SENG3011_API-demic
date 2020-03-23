@@ -3,7 +3,8 @@ db = SQLAlchemy()
 
 
 class Article(db.Model):
-    url = db.Column(db.String(), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String())
     date_of_publication = db.Column(db.String())
     headline = db.Column(db.String())
     main_text = db.Column(db.String())
@@ -12,7 +13,7 @@ class Article(db.Model):
 
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    article_url = db.Column(db.String(), db.ForeignKey('article.url'))
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'))
     syndrome = db.Column(db.String())
     event_date = db.Column(db.String())
     disease = db.Column(db.String())
@@ -20,6 +21,8 @@ class Report(db.Model):
 
 
 class Location(db.Model):
-    report_id = db.Column(db.Integer, db.ForeignKey('report.id'), primary_key=True)
+    report_id = db.Column(db.Integer, db.ForeignKey(
+        'report.id'), primary_key=True)
     country = db.Column(db.String(), primary_key=True)
     location = db.Column(db.String(), primary_key=True)
+
