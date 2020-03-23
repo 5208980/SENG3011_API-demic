@@ -13,9 +13,13 @@ import pickle                   # FOR TESTING STATIC DATA (WILL REMOVE WHEN DB I
 
 import time
 
+from database import Article, Report, Location
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
+os.environ['DATABASE_URL'] = 'https://data.heroku.com/datastores/21dc3eb7-162b-4505-bbbe-850727c5b24a#administration'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 api = Api(app)
 db.init_app(app)
@@ -88,7 +92,6 @@ class ArticleV11(Resource):
         # Validate Date
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
 
-        
         start_date = request.args['start_date']
 
         # start month = xx then change to 01
@@ -109,9 +112,9 @@ class ArticleV11(Resource):
 
         # start second = xx change to 00
         if start_date[17:19] == 'xx':
-            start_date = start_date[0:17] + '00' 
-        
-        
+            start_date = start_date[0:17] + '00'
+
+
         end_date = request.args['end_date']
 
         # end month = xx then change to 12
@@ -157,11 +160,11 @@ class ArticleV11(Resource):
 
         # end second = xx change to 00
         if end_date[17:19] == 'xx':
-            end_date = end_date[0:17] + '59' 
+            end_date = end_date[0:17] + '59'
 
         print(start_date)
         print(end_date)
- 
+
 
         if not date_regex.search(start_date) or not date_regex.search(end_date) or start_date >= end_date:
             logger["runtime"] = runtime(start_time, time.perf_counter())
@@ -170,17 +173,8 @@ class ArticleV11(Resource):
             backend_log(logger)
             return {"status": 400, "message": "Invalid Query Parameters (Date)" }, 400, {'Access-Control-Allow-Origin': '*'}
 
-        # Make these parameters optional ???
-        if not 'key_term' in request.args or not 'location' in request.args:
-            logger["runtime"] = runtime(start_time, time.perf_counter())
-            logger["reponse"] = 400
-
-            backend_log(logger)
-            return {"status": 400, "message": "Missing Parameter" }, 400, {'Access-Control-Allow-Origin': '*'}
-
         # n is for the value of article they want to return
         if 'n' in request.args and not request.args['n'].isdigit():
-            print("HERE1")
             logger["runtime"] = runtime(start_time, time.perf_counter())
             logger["reponse"] = 400
 
@@ -218,60 +212,81 @@ def query_and_convert(start, end):
 
     start_date = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
     end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
-    requested_location = request.args['location'].lower()
+
+    exist_location_parameter = True if 'location' in request.args else False
+    exist_key_terms_parameter = True if 'key_term' in request.args else False
+    n = int(request.args['n']) if 'n' in request.args else 10
 
     with open('output.pickle', 'rb') as p:
         articles = pickle.load(p)           # 1273 articles
 
-    n = 10
-    if 'n' in request.args:
-        n = int(request.args['n'])
-
     json = {}
     json['articles'] = []
-    urls = []
     for article in articles:
         date_of_publication = datetime.datetime.strptime(article.get_date_of_publication(), '%Y-%m-%d %H:%M:%S')
 
-        # print("start: {}".format(start_date))
-        # print("dop: {}".format(date_of_publication))
         if date_of_publication >= start_date and date_of_publication <= end_date:   # Date Query
-            location_query = False
-            for location in article.get_reports().get_locations():
-                if location.get_country().lower() == requested_location or location.get_country().lower() == requested_location:
-                    location_query = True
+            if exist_location_parameter and not exist_key_terms_parameter:           # check location only
+                if query_location(article):
+                    json['articles'].append(jsonify(article))
+            elif not exist_location_parameter and exist_key_terms_parameter:         # check key_terms only
+                if query_key_terms(article):
+                    json['articles'].append(jsonify(article))
+            elif exist_location_parameter and exist_key_terms_parameter:             # check both
+                print(query_location(article))
+                if query_location(article) and query_key_terms(article):
+                    json['articles'].append(jsonify(article))
+            else:
+                json['articles'].append(jsonify(article))
 
-            key_terms_query = False
-            if request.args['key_term'].lower() in article.get_main_text().lower():
-                key_terms_query = True
+    # SO FKEN DONE WITH PSYCOPG2
+    # articles = Article.query.filter(Article.date_of_publication >= start)
+    # print(articles)
 
-            if location_query and key_terms_query:
-                dict_article = {}
-                # dict_article['id']
-                dict_article['url'] = article.get_url()
-                dict_article['date_of_publication'] = article.get_date_of_publication()
-                dict_article['headline'] = article.get_headline()
-                dict_article['main_text'] = article.get_main_text()
-                dict_article['key_terms'] = article.get_key_terms()
-
-                dict_reports = {}
-                dict_reports["event_date"] = article.get_reports().get_event_date()
-                dict_reports["locations"] = []
-                for location in article.get_reports().get_locations():
-                    dict_location = {}
-                    dict_location["country"] = location.get_country()
-                    dict_location["location"] = location.get_location()
-                    dict_location["code"] = location.get_code()
-                    # print(location.get_country())
-                    dict_reports["locations"].append(dict_location)
-                dict_reports["disease"] = article.get_reports().get_disease()
-                dict_reports["syndrome"] = article.get_reports().get_syndrome()
-                dict_article['reports'] = dict_reports
-
-                urls.append(article.get_url())
-                json['articles'].append(dict_article)
+    # if exist_location_parameter and not exist_key_terms_parameter:           # check location only
+    #     # articles = Article.query.filter(and_(Article.date_of_publication >= start, Article.date_of_publication >= end))
+    # elif not exist_location_parameter and exist_key_terms_parameter:         # check key_terms only
+    #     # articles = Article.query.filter(and_(Article.date_of_publication >= start, Article.date_of_publication >= end))
+    # elif exist_location_parameter and exist_key_terms_parameter:             # check both
+    #     # articles = Article.query.filter(and_(Article.date_of_publication >= start, Article.date_of_publication >= end))
+    # else:
+    #     # articles = Article.query.filter(and_(Article.date_of_publication >= start, Article.date_of_publication >= end))
 
     return json
+
+def jsonify(article):
+    dict_article = {}
+    dict_article['url'] = article.get_url()
+    dict_article['date_of_publication'] = article.get_date_of_publication()
+    dict_article['headline'] = article.get_headline()
+    dict_article['main_text'] = article.get_main_text()
+    dict_article['key_terms'] = article.get_key_terms()
+
+    dict_reports = {}
+    dict_reports["event_date"] = article.get_reports().get_event_date()
+    dict_reports["locations"] = []
+    for location in article.get_reports().get_locations():
+        dict_location = {}
+        dict_location["country"] = location.get_country()
+        dict_location["location"] = location.get_location()
+        dict_location["code"] = location.get_code()
+        dict_reports["locations"].append(dict_location)
+    dict_reports["disease"] = article.get_reports().get_disease()
+    dict_reports["syndrome"] = article.get_reports().get_syndrome()
+    dict_article['reports'] = dict_reports
+
+    return dict_article
+
+def query_location(article):
+    location_query = request.args['location'].lower()
+    location_exist = False
+    for location in article.get_reports().get_locations():
+        if location.get_country().lower() == location_query or location.get_country().lower() == location_query:
+            location_exist = True;
+    return location_exist
+
+def query_key_terms(article):
+    return request.args['key_term'].lower() in article.get_main_text().lower()
 
 # Test Function
 class HelloWorld(Resource):

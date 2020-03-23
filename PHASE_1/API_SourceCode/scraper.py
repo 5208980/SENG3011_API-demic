@@ -109,6 +109,16 @@ def found_event_date(main_text, date):
 
     return ""
 
+def convert24(date, p):
+    if p == "AM" and date[:2] == "12":
+        return "00" + date[2:]
+    elif p == "AM":
+        return date
+    elif p == "PM" and date[:2] == "12":
+        return date
+    else:
+        return str(int(date[:2]) + 12) + date[2:]
+
 ##### Scraping process #####
 def scrape_url(link):
     articles = []
@@ -139,12 +149,7 @@ def scrape_url(link):
         # Date
         x = re.search("^.* PM|^.* AM", publication.get_text())
         date = publication.get_text()[x.start():x.end()].split()
-
-        # TODO: CONVERT TIME INTO 24 HR
-        # m2 = '1:35 PM'
-        # in_time = datetime.strptime(m2, "%I:%M %p")
-        # out_time = datetime.strftime(in_time, "%H:%M")
-        # print(out_time)
+        date[4] = convert24(date[4], date[5])
 
         datetime = "{}-{:02d}-{} {}:{}".format(date[2], time.strptime(date[0], "%B").tm_mon, date[1][:-1], date[4], "00")
         dates.append(datetime)
@@ -192,6 +197,9 @@ def scrape(start_date, end_date):
 
         start_date = start_date + timedelta(days=1)
 
+    with open('output.pickle', 'wb') as f:
+        pickle.dump(result, f)
+
     return result
 
 
@@ -199,3 +207,7 @@ def scrape(start_date, end_date):
 # Scraper can fulfil all requirements if they exist. Very Basic string matching
 # To run scraper for database use main_function() above and change the dates
 # scrape_url('https://crofsblogs.typepad.com/h5n1/2020/02/05/page/1')
+
+start_date = datetime.datetime(2020, 1, 1)
+end_date = datetime.datetime.now()
+scrape(start_date, end_date)
