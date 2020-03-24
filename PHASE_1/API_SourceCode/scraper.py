@@ -196,10 +196,7 @@ def scrape(start_date, end_date):
             result.extend(articles)
 
         start_date = start_date + timedelta(days=1)
-
-    with open('output.pickle', 'wb') as f:
-        pickle.dump(result, f)
-
+    
     return result
 
 
@@ -207,7 +204,3 @@ def scrape(start_date, end_date):
 # Scraper can fulfil all requirements if they exist. Very Basic string matching
 # To run scraper for database use main_function() above and change the dates
 # scrape_url('https://crofsblogs.typepad.com/h5n1/2020/02/05/page/1')
-
-start_date = datetime.datetime(2020, 1, 1)
-end_date = datetime.datetime.now()
-scrape(start_date, end_date)
