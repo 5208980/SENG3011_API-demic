@@ -9,7 +9,7 @@
         "version": "1.0.0",
         "title": "API-demic",
         "contact": {
-            "email": ""
+            "email": "z5208980@unsw.edu.au"
         },
     },
     "host": "127.0.0.1:5000",
@@ -47,7 +47,7 @@
                     {
                         "name": "start_date",
                         "in": "query",
-                        "description": "Datetime for articles after the entered date, replace parameters with xx, Eg. 2020-01-01T12:00:00",
+                        "description": "Return articles from start date onwards. (2020-01-01T12:00:00) with xx as placeholders",
                         "required": true,
                         "type": "string",
                         "format": "YY-MM-DDTHH:MM:SS",
@@ -55,7 +55,7 @@
                     {
                         "name": "end_date",
                         "in": "query",
-                        "description": "Datetime for articles before the entered date, replace parameters with xx, Eg. 2020-02-01T12:00:00",
+                        "description": "Return articles from before end date. (2020-02-01T12:00:00) with xx as placeholders",
                         "required": true,
                         "type": "string",
                         "format": "YY-MM-DDTHH:MM:SS",
@@ -63,20 +63,15 @@
                     {
                         "name": "location",
                         "in": "query",
-                        "description": "Valid location is needed to consider filter, Eg. australia",
-                        "required": true,
+                        "description": "Location which articles focuses on, (Australia)",
                         "type": "string",
-                        "format": "",
                     },
                     {
                         "name": "key_term",
                         "in": "query",
-                        "description": "Valid key terms is needed to consider filter, Eg. coronavirus",
-                        "required": true,
+                        "description": "Key Terms to search on, (Coronavirus)",
                         "type": "string",
-                        "format": "",
                     }
-
                 ],
                 "responses": {
                     "200": {
@@ -110,7 +105,7 @@
                         }
                     },
                     "400": {
-                        "description": "Invalid Query Parameters (Date)",
+                        "description": "Invalid Date Input",
                         "examples": {
                             "application/json":
                             {
@@ -120,7 +115,7 @@
                         }
                     },
                     "404": {
-                        "description": "Invalid Query Parameters (Date)",
+                        "description": "No Results from API call",
                         "examples": {
                             "application/json":
                             {
