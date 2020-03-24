@@ -13,7 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://spntctcimnuflf:0da06c4d68a3c068683f37a4e065e1dad18ade62771a7cb34ff0a1852b84f081@ec2-52-203-160-194.compute-1.amazonaws.com:5432/d6u5ocbd1v99v6'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 api = Api(app)
 db.init_app(app)
