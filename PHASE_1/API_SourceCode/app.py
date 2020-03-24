@@ -14,7 +14,6 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-
 api = Api(app)
 db.init_app(app)
 
@@ -198,18 +197,19 @@ def query_and_convert(start, end):
     end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
     limit = int(request.args['limit']) if 'limit' in request.args else 1000     # threshold: 1000
 
+    filters = [Article.date_of_publication >= start_date, Article.date_of_publication <= end_date]
+
+    if 'location' in request.args:
+        location = request.args['location']
+        filters.append(Article.reports.any(Report.locations.any(Location.location.ilike(location))))
+
+    if 'key_term' in request.args:
+        key_terms = request.args['key_term'].lower().split(',')
+        filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
+
     articles = db.session.query(Article).\
-        filter(Article.date_of_publication >= start_date).\
-        filter(Article.date_of_publication <= end_date).\
+        filter(*filters).\
         order_by(Article.date_of_publication)[0:limit]
-
-    # if 'location' in request.args:
-    #     location = request.args['location']
-    #     articles.filter(Article.reports.any(Report.locations.any(Location.location.ilike(location)))
-
-    # if 'key_term' in request.args:
-    #     key_terms = request.args['key_term'].lower().split(',')
-    #     articles.filter(Article.main_text.op("~*")(join(key_terms, '|')))
 
     json = {}
     json['articles'] = []
