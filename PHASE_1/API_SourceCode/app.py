@@ -10,6 +10,7 @@ import pickle
 import time
 from database import Article, Report, Location
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 
 app = Flask(__name__)
 
@@ -201,7 +202,7 @@ def query_and_convert(start, end):
 
     if 'location' in request.args:
         location = request.args['location']
-        filters.append(Article.reports.any(Report.locations.any(Location.location.ilike(location))))
+        filters.append(Article.reports.any(Report.locations.any(or_(Location.location.ilike(location),Location.country.ilike(location)))))
 
     if 'key_term' in request.args:
         key_terms = request.args['key_term'].lower().split(',')
