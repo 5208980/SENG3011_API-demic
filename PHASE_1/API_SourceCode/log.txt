@@ -822,3 +822,9 @@
 {"Time": "24/03/2020 13:09:05", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-02-01T12:00:00&end_date=2020-02-05T12:00:00", "Status": "200", "Time": "88.06ms" }
 {"Time": "24/03/2020 13:09:25", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-02-01T12:00:00&end_date=2020-02-05T12:00:00&key_term=pandemic", "Status": "200", "Time": "99.11ms" }
 {"Time": "24/03/2020 13:09:30", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-02-01T12:00:00&end_date=2020-02-05T12:00:00&key_term=pandemic,schools", "Status": "200", "Time": "75.09ms" }
+{"Time": "24/03/2020 13:26:36", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-02-01T12:00:00&end_date=2020-02-05T12:00:00&&location=China&key_term=pandemic,schools&limit=1", "Status": "200", "Time": "90.72ms" }
+{"Time": "24/03/2020 13:26:36", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-02-01T12:00:00&end_date=2020-02-05T12:00:00&&location=China&key_term=pandemic,schools&limit=1", "Status": "200", "Time": "192.02ms" }
+{"Time": "24/03/2020 13:49:37", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00", "Status": "200", "Time": "60.36ms" }
+{"Time": "24/03/2020 13:49:50", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&limit=10", "Status": "200", "Time": "32.47ms" }
+{"Time": "24/03/2020 13:49:57", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12%3A00%3A00&end_date=2020-02-01T12%3A00%3A00&limit=10", "Status": "200", "Time": "36.23ms" }
+{"Time": "24/03/2020 13:55:05", "Url": "GET http://127.0.0.1:5000/v1.1/articles?start_date=2009-01-01T12:00:00&end_date=2009-02-01T12:00:00&location=australia&key_term=flu", "Status": "404", "Time": "213.49ms" }

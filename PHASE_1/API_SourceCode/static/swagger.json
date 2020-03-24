@@ -12,7 +12,7 @@
             "email": "z5208980@unsw.edu.au"
         },
     },
-    "host": "127.0.0.1:5000",
+    "host": "api-demic.herokuapp.com",
     "basePath": "/v1.1",
     "tags": [
         {
@@ -34,8 +34,8 @@
                 "tags": [
                     "articles"
                 ],
-                "summary": "Find articles according to valid parameters",
-                "description": "",
+                "summary": "Find articles according to query parameters",
+                "description": "Returns a json response with an array of articles according to query parameters",
                 "operationId": "",
                 "consumes": [
                     "application/json",
@@ -47,7 +47,7 @@
                     {
                         "name": "start_date",
                         "in": "query",
-                        "description": "Return articles from start date onwards. (2020-01-01T12:00:00) with xx as placeholders",
+                        "description": "Start date for query [Support xx as placeholders]. (2020-01-01T12:00:00)",
                         "required": true,
                         "type": "string",
                         "format": "YY-MM-DDTHH:MM:SS",
@@ -55,7 +55,7 @@
                     {
                         "name": "end_date",
                         "in": "query",
-                        "description": "Return articles from before end date. (2020-02-01T12:00:00) with xx as placeholders",
+                        "description": "End date for query [Support xx as placeholders]. (2020-02-01T12:00:00)",
                         "required": true,
                         "type": "string",
                         "format": "YY-MM-DDTHH:MM:SS",
@@ -63,14 +63,23 @@
                     {
                         "name": "location",
                         "in": "query",
-                        "description": "Location which articles focuses on, (Australia)",
+                        "description": "Location that artiles will focus on. (Australia)",
+                        "required": false,
                         "type": "string",
                     },
                     {
                         "name": "key_term",
                         "in": "query",
-                        "description": "Key Terms to search on, (Coronavirus)",
+                        "description": "Key Terms to search on. [Supports multi-terms]. (coronavirus, pandemic)",
+                        "required": false,
                         "type": "string",
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of articles to return [Max 1000]. (10)",
+                        "required": false,
+                        "type": "int",
                     }
                 ],
                 "responses": {
