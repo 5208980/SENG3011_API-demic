@@ -4,6 +4,7 @@ from flask_swagger_ui import get_swaggerui_blueprint    # Swagger UI
 from database import db
 import re                                               # For regex
 import datetime
+from datetime import timedelta                          # Used to increment day
 import json
 import os
 import pickle
@@ -14,7 +15,7 @@ from sqlalchemy import or_
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 api = Api(app)
 db.init_app(app)
 
@@ -26,8 +27,6 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     config={ 'app_name': "API-demic" }
 )
 app.register_blueprint(SWAGGERUI_BLUEPRINT)
-
-
 
 # https://api-demic.herokuapp.com/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus
 # Test url: http://127.0.0.1:5000/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T12:00:00&location=australia&key_term=coronavirus
@@ -106,6 +105,8 @@ class ArticleV11(Resource):
         json = query_and_convert(start_date, end_date)          # Main function
         logger["runtime"] = runtime(start_time, time.perf_counter())
 
+        json['meta'] = create_meta_data(runtime(start_time, time.perf_counter()), len(json['articles']))
+
         if json['articles'] != []:
             logger["reponse"] = 200
             backend_log(logger)
@@ -116,6 +117,56 @@ class ArticleV11(Resource):
             return {"status": 404, "message": "No result for query"}, 404, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(ArticleV11, '/v1.1/articles')
+
+class LatestV11(Resource):
+    def get(self):
+        start_time = time.perf_counter()
+
+        # For backend and end user
+        logger = {}
+        logger["method"] = request.method
+        logger["url"] = request.url
+        logger["time"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        # limit is for the value of article they want to return
+        with open('dataset/search_list.json') as data_file:
+            data_search = json.load(data_file)
+
+        # validate search term on
+        if 'on' in request.args:
+            args = request.args['on'].split(',')
+
+            for arg in args:
+                available = False
+                for search_term in data_search:
+                    if search_term['term'].lower() == arg:
+                        available = True
+
+                print(available)
+                if not available:
+                    logger["runtime"] = runtime(start_time, time.perf_counter())
+                    logger["reponse"] = 400
+
+                    backend_log(logger)
+                    return {"status": 400, "message": "Invalid Query Search Term: {}".format(arg), "search_list": data_search }, 400, {'Access-Control-Allow-Origin': '*'}
+
+        ## Create json (ret)
+        prev_week = datetime.datetime.now() - timedelta(days=7)
+        ret = query_and_convert(prev_week.strftime("%Y-%m-%dT%H:%M:%S"), datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"))
+        logger["runtime"] = runtime(start_time, time.perf_counter())
+
+        ret['meta'] = create_meta_data(runtime(start_time, time.perf_counter()), len(ret['articles']))
+
+        if ret['articles'] != []:
+            logger["reponse"] = 200
+            backend_log(logger)
+            return ret, 200, {'Access-Control-Allow-Origin': '*'}
+        else:
+            logger["reponse"] = 404
+            backend_log(logger)
+            return {"status": 404, "message": "No result for query", "search_list": data_search}, 404, {'Access-Control-Allow-Origin': '*'}
+
+api.add_resource(LatestV11, '/v1.1/articles/latest')
 
 ## Helper Functions ##
 
@@ -194,29 +245,35 @@ def query_and_convert(start, end):
     # print(request.args['start_date']) # print(request.args['end_date'])
     # print(request.args['location']) # print(request.args['key_term'])
 
+    # print(request.args['on'])
+
     start_date = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
     end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
     limit = int(request.args['limit']) if 'limit' in request.args else 1000     # threshold: 1000
 
-    filters = [Article.date_of_publication >= start_date, Article.date_of_publication <= end_date]
-
-    if 'location' in request.args:
-        location = request.args['location']
-        filters.append(Article.reports.any(Report.locations.any(or_(Location.location.ilike(location),Location.country.ilike(location)))))
-
-    if 'key_term' in request.args:
-        key_terms = request.args['key_term'].lower().split(',')
-        filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
-
-    articles = db.session.query(Article).\
-        filter(*filters).\
-        order_by(Article.date_of_publication)[0:limit]
+    # filters = [Article.date_of_publication >= start_date, Article.date_of_publication <= end_date]
+    #
+    # if 'location' in request.args:
+    #     location = request.args['location']
+    #     filters.append(Article.reports.any(Report.locations.any(or_(Location.location.ilike(location),Location.country.ilike(location)))))
+    #
+    # if 'key_term' in request.args:
+    #     key_terms = request.args['key_term'].lower().split(',')
+    #     filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
+    #
+    # if 'on' in request.args:
+    #     key_terms = request.args['on'].lower().split(',')
+    #     filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
+    #
+    # articles = db.session.query(Article).\
+    #     filter(*filters).\
+    #     order_by(Article.date_of_publication)[0:limit]
 
     json = {}
     json['articles'] = []
-    counter = 0
-    for article in articles:
-        json['articles'].append(jsonify(article))
+    # counter = 0
+    # for article in articles:
+    #     json['articles'].append(jsonify(article))
 
     return json
 
@@ -227,7 +284,7 @@ def jsonify(article):
     dict_article['headline'] = article.headline
     dict_article['main_text'] = article.main_text
 
-    dict_article['reports'] = [] 
+    dict_article['reports'] = []
 
     for report in article.reports:
         dict_report = {}
@@ -254,6 +311,14 @@ def backend_log(logger):
     f = open("log.txt", "a")
     f.write("{{\"Time\": \"{}\", \"Url\": \"{} {}\", \"Status\": \"{}\", \"Time\": \"{}ms\" }}\n".format(logger['time'], logger['method'], logger["url"], logger["reponse"], logger["runtime"]))
     f.close()
+
+def create_meta_data(response_time, amount):
+    meta = {}
+    meta['provider_name'] = "API-demic"
+    meta["access_time"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    meta["response_time"] = "{}ms".format(response_time)
+    meta['amount_of_articles'] = amount
+    return meta
 
 if __name__ == '__main__':
     app.run(debug=True)
