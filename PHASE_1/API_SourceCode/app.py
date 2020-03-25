@@ -132,7 +132,7 @@ class LatestV11(Resource):
         with open('dataset/search_list.json') as data_file:
             data_search = json.load(data_file)
 
-        # validate search term on
+        # validate search terms on
         if 'on' in request.args:
             args = request.args['on'].split(',')
 
@@ -169,7 +169,6 @@ class LatestV11(Resource):
 api.add_resource(LatestV11, '/v1.1/articles/latest')
 
 ## Helper Functions ##
-
 def validate_date(start_date, end_date):
     # start month = xx then change to 01
     if start_date[5:7] == 'xx':
@@ -251,29 +250,29 @@ def query_and_convert(start, end):
     end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
     limit = int(request.args['limit']) if 'limit' in request.args else 1000     # threshold: 1000
 
-    # filters = [Article.date_of_publication >= start_date, Article.date_of_publication <= end_date]
-    #
-    # if 'location' in request.args:
-    #     location = request.args['location']
-    #     filters.append(Article.reports.any(Report.locations.any(or_(Location.location.ilike(location),Location.country.ilike(location)))))
-    #
-    # if 'key_term' in request.args:
-    #     key_terms = request.args['key_term'].lower().split(',')
-    #     filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
-    #
-    # if 'on' in request.args:
-    #     key_terms = request.args['on'].lower().split(',')
-    #     filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
-    #
-    # articles = db.session.query(Article).\
-    #     filter(*filters).\
-    #     order_by(Article.date_of_publication)[0:limit]
+    filters = [Article.date_of_publication >= start_date, Article.date_of_publication <= end_date]
+
+    if 'location' in request.args:
+        location = request.args['location']
+        filters.append(Article.reports.any(Report.locations.any(or_(Location.location.ilike(location),Location.country.ilike(location)))))
+
+    if 'key_term' in request.args:
+        key_terms = request.args['key_term'].lower().split(',')
+        filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
+
+    if 'on' in request.args:
+        key_terms = request.args['on'].lower().split(',')
+        filters.append(Article.main_text.op("~*")('|'.join(key_terms)))
+
+    articles = db.session.query(Article).\
+        filter(*filters).\
+        order_by(Article.date_of_publication)[0:limit]
 
     json = {}
     json['articles'] = []
-    # counter = 0
-    # for article in articles:
-    #     json['articles'].append(jsonify(article))
+    counter = 0
+    for article in articles:
+        json['articles'].append(jsonify(article))
 
     return json
 
