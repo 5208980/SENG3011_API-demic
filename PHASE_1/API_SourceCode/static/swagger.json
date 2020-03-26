@@ -22,6 +22,14 @@
                 "description": "",
                 "url": ""
             }
+        },
+        {
+            "name": "trending",
+            "description": "most common search terms",
+            "externalDocs": {
+                "description": "",
+                "url": ""
+            }
         }
     ],
     "schemes": [
@@ -338,6 +346,46 @@
                 }
             },
         },
+
+        "/trending": {
+            "get": {
+                "tags": [
+                    "trending"
+                ],
+                "summary": "Find search phrases most used by others",
+                "description": "Returns a json response a list of key terms that has been searched the most using our api",
+                "operationId": "",
+                "consumes": [
+                    "application/json",
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "examples": {
+                            "application/json":
+                            {
+                                "trending_terms": [ "string" ],
+                                "log": {
+                                    "provider_name": "API-demic",
+                                    "accessed_time": "string",
+                                    "amount_of_articles": "string",
+                                    "response_time": "string"
+                                }
+                            }
+
+                        }
+                    }
+                }
+            },
+        },
+
+
     },
 
     "definitions": {

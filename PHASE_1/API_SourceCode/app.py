@@ -9,6 +9,8 @@ import json
 import os
 import pickle
 import time
+from urllib import parse
+from collections import Counter
 from database import Article, Report, Location
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
@@ -167,6 +169,56 @@ class LatestV11(Resource):
             return {"status": 404, "message": "No result for query", "search_list": data_search}, 404, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(LatestV11, '/v1.1/articles/latest')
+
+class TrendingV11(Resource):
+    def get(self):
+        start_time = time.perf_counter()
+
+        # For backend and end user
+        logger = {}
+        logger["method"] = request.method
+        logger["url"] = request.url
+        logger["time"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        # limit is for the value of article they want to return
+        key_term_regex = re.compile('(&key_term=|&on=)')
+
+        ret = {}
+        list_terms = []
+        with open("log.txt", "r") as f:
+            for line in f:
+                stripped_line = line.strip()
+                if key_term_regex.search(stripped_line):
+                    j = json.loads(stripped_line)
+                    # print(j['Url'].split(' '))
+                    url = j['Url'].split(' ')[1]
+                    if parse.parse_qs(parse.urlparse(url).query)['key_term'][0]:
+                        # parsed = urlparse.urlparse(j['Url'].split(' ')[1])
+                        terms = parse.parse_qs(parse.urlparse(url).query)['key_term'][0].lower().split(',')
+                        list_terms.extend(terms)
+                    elif parse.parse_qs(parse.urlparse(url).query)['on'][0]:
+                        # parsed = urlparse.urlparse(j['Url'].split(' ')[1])
+                        terms = parse.parse_qs(parse.urlparse(url).query)['on'][0].lower().split(',')
+                        list_terms.extend(terms)
+
+        counts = Counter(list_terms)
+
+        ## Create json (ret)
+        logger["runtime"] = runtime(start_time, time.perf_counter())
+
+        ret['trending_terms'] = list(counts.keys())
+        ret['meta'] = create_meta_data(runtime(start_time, time.perf_counter()), len(ret['trending_terms']))
+
+        if ret['trending_terms'] != []:
+            logger["reponse"] = 200
+            backend_log(logger)
+            return ret, 200, {'Access-Control-Allow-Origin': '*'}
+        else:
+            logger["reponse"] = 404
+            backend_log(logger)
+            return {"status": 404, "message": "No result for query"}, 404, {'Access-Control-Allow-Origin': '*'}
+
+api.add_resource(TrendingV11, '/v1.1/trending')
 
 ## Helper Functions ##
 def validate_date(start_date, end_date):
