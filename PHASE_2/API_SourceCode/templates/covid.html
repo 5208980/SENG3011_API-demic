@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h3>HERE</h3>
+
+    <div id="map"></div>
+    <div id="demo"></div>
+
+    <script src="{{url_for('static', filename='country.js')}}"></script>
+    <script type="text/javascript">
+        let str = '{{ data }}';
+        let res = str.replace(/&#34;/g, "\"");
+        let json = JSON.parse(res);
+
+        let total = {}
+        total['Confirmed'] = 0;
+        total['Deaths'] = 0;
+        total['Recovered'] = 0;
+        let list_cases = []
+        let countryLightness = {};      // For map.fill
+        let countryData = {};           // For map.data
+        for (i in json) {
+            // console.log(json[i]['Code']);
+            let code = json[i]['Code']
+
+            countryLightness[`${code}`] = json[i]['Confirmed'];
+            countryData[`${code}`] = {fillKey: `${code}`};
+
+            total['Confirmed'] += json[i]['Confirmed'];
+            total['Deaths'] += json[i]['Deaths'];
+            total['Recovered'] += json[i]['Recovered'];
+            list_cases.push(json[i]['Confirmed'])
+        }
+
+        console.log(list_cases);
+        // countryFill = {};
+        // countryFill['defaultFill'] = 'hsl(0, 100%, 90%)';
+        // for(i in countryLightness) {
+        //     countryFill[i] = `hsl(0, 100%, ${countryLightness[i] - 10}%)`;
+        // }
+        document.getElementById("demo").innerHTML = res;
+
+        let map = new Datamap({
+            element: document.getElementById('map')
+        });
+
+        // function normalize(min, max) {
+        //     var delta = max - min;
+        //     return function (val) {
+        //         return (val - min) / delta;
+        //     };
+        // }
+        //
+        // console.log([5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(normalize(5, 15)));
+
+    </script>
+{% endblock %}

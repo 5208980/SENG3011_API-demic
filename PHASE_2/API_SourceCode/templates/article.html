@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div id="article" class="row">
+        <div class="col-sm-12"><h3>Latest on CoVid-19</h3></div>
+    </div>
+
+    <div class="p-5"></div>
+
+    <div id="map"></div>
+    <div id="heatmapScale"></div>
+    <div id="mapStat"></div>
+
+    <script src="{{url_for('static', filename='country.js')}}"></script>
+    <script>
+        // const LOCAL = "http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus";
+        const LOCAL = "https://api-demic.herokuapp.com/v1.1/articles/latest?on=coronavirus";
+
+        console.log("HERE");
+        fetch(LOCAL)
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json()
+            })
+            .then(json => {
+                // console.log(json);
+                let articleRow = document.getElementById('article');
+                let mapStat = document.getElementById('article');
+
+                // console.log(json['articles']);
+                let countryLightness = {};      // For map.fill
+                let countryData = {};           // For map.data
+                let countriesMentioned = {};
+                for(i in json['articles']) {
+                    article = json['articles'][i];
+
+                    let col = createCol(article);
+                    articleRow.appendChild(col);
+
+                    articleLocations = article['reports'][0]['locations'];
+
+                    fullText = article['headline'] + article['main_text'];
+                    // console.log(fullText);
+                    regex = '/(total|confirmed cases|cases)/i';
+                    var n = fullText.search(/total|cases/i);
+                    if (n != -1) {
+                        // console.log(n);
+                        console.log(fullText.substring(n-20, n+20));
+                        console.log(fullText);
+                    }
+                    // console.log(article);
+
+                    for(j in articleLocations) {
+                        code = country[`${articleLocations[j]['country']}`];
+
+                        if(countryLightness.hasOwnProperty(`${code}`)) {
+                            countryLightness[`${code}`] = countryLightness[`${code}`] - 10;
+                            countryData[`${code}`] = {fillKey: `${code}`};
+                            countriesMentioned[`${code}`]++;
+                        } else {
+                            countryLightness[`${code}`] = 90;
+                            countryData[`${code}`] = {fillKey: `${code}`};
+                            countriesMentioned[`${code}`] = 1
+                        }
+                    }
+                }
+
+                countryFill = {};
+                countryFill['defaultFill'] = 'hsl(0, 100%, 90%)';
+                for(i in countryLightness) {
+                    countryFill[i] = `hsl(0, 100%, ${countryLightness[i] - 10}%)`;
+                }
+
+                console.log(countriesMentioned);
+
+                let map = new Datamap({
+                    element: document.getElementById('map'),
+                    fills: countryFill,
+                    data: countryData
+                });
+            }).catch(function(error) {
+                let map = new Datamap({
+                    element: document.getElementById('map')
+                });
+            });
+
+        function createCol(article) {
+            let col = document.createElement("div");
+            col.classList.add('col-md-6', 'col-lg-3');
+
+            let card = document.createElement("div");
+            card.classList.add('card', 'article-card');
+            let cardBody = document.createElement("div");
+            cardBody.classList.add('card-body');
+
+            let cardHeadline = document.createElement("div");
+            cardHeadline.classList.add('card-headline');
+            cardHeadline.innerText = article['headline'].trim();
+            cardBody.appendChild(cardHeadline);
+
+            let cardMainText = document.createElement("div");
+            cardMainText.classList.add('card-main-text');
+            cardMainText.innerText = article['main_text'].substr(1, 150);
+            cardBody.appendChild(cardMainText);
+
+            card.appendChild(cardBody);
+            col.append(card);
+
+            return col;
+        }
+    </script>
+{% endblock %}
