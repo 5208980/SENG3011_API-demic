@@ -1,0 +1,324 @@
+{
+    "articles": [
+        {
+            "url": "https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(19)30674-7/fulltext?dgcid=raven_jbs_etoc_email",
+            "date_of_publication": "2020-01-02 07:58:00",
+            "headline": "\nPreparedness for emerging epidemic threats: a Lancet Infectious Diseases Commission",
+            "main_text": "\nVia The Lancet Infectious Diseases:\u00a0Preparedness for emerging epidemic threats: a Lancet Infectious Diseases Commission. Excerpt:\nAt any time, an emerging, lethal, and highly transmissible pathogen might pose a risk of being spread globally because of the interconnectedness of the global population. Emerging epidemic threats are occurring with increasing scale, duration, and effect, often disrupting travel and trade, and damaging both national and regional economies. Even geographically limited outbreaks such as the Ebola virus disease in Africa might have a global effect.\u00a0\nPreparing for epidemic threats is not a static or binary (prepared or unprepared) exercise, but a dynamic state reflecting the constantly changing world. Countries prepare in different ways based on their interpretation of disease risks and international agreements such as the International Health Regulations (IHR). The IHR were introduced in 1969 to prevent spread of specific serious diseases between countries and set out preparedness measures at international borders to stop disease spread. The 2005 revisions to the IHR reflect changes across multiple dimensions, requiring countries to develop preparedness capacities to detect and respond to outbreaks where and when they occur, supported by international partners to respond when outbreaks cannot be contained locally.\u00a0\nHowever, disruptive factors have emerged at a greater pace over the past decade, creating a new ecology that requires novel strategies for preparedness. These factors include dealing with the increasing human population density and connectivity, harnessing novel data streams and new technological advances to manage epidemics, mitigating false information on social networks, to creating informal technical networks that can work together when political forces fail to do so.\u00a0\nDo the recent outbreaks of Ebola virus disease, Middle East respiratory syndrome coronavirus, and yellow fever reflect this changing context of disruptions requiring dynamic responses? These outbreaks show that countries are at various stages of preparedness, and many have underdeveloped preparedness plans and response capabilities with weak or non-existent strategies to mitigate disruptive factors. Many countries face severe difficulties in providing universal health coverage, for example, and might overlook timely investments for threats that demand greater health-care facility or workforce requirements.\u00a0\nOther challenges include shifts in within-country and between-country cooperation, the evolving need for transdisciplinary, cross-sectoral approaches and social participation, and effective leadership, coordination, and financing of local national and international partners.\u00a0\nAgainst this backdrop, the Lancet Infectious Diseases Commission on Preparedness for Emerging Epidemic Threats was formed in mid-2019 to examine the importance of this new ecology and its disruptive factors that have resulted in an underprepared world, whether current planning assumptions still hold, and what mitigation measures need to be introduced.\n",
+            "key_terms": [
+                "Economics and health",
+                "International engagement",
+                "Politics and health",
+                "Preparedness",
+                "Public health",
+                "Response",
+                "Travel & health"
+            ],
+            "reports": {
+                "event_date": "",
+                "locations": [],
+                "disease": "yellow fever",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "https://www.scmp.com/news/china/society/article/3044909/public-warned-not-drop-their-guard-over-mystery-china-virus",
+            "date_of_publication": "2020-01-06 08:45:00",
+            "headline": "\nHong Kong: Public warned not to drop their guard over mystery China virus after tests rule out SARS or bird flu",
+            "main_text": "\nVia the South China Morning Post:\u00a0Public warned not to drop their guard over mystery China virus after tests rule out Sars or bird flu. Excerpt and then a comment:\nHealth experts warned the public on Monday not to drop their guard over the unidentified outbreak of viral pneumonia in central China, even though the health authorities have ruled out highly contagious viruses such as Severe Acute Respiratory Syndrome (Sars) or bird flu.\u00a0\nOn Monday the local health authorities in Wuhan said that work to identify the virus, which has so far infected 59 people in the city, was continuing, but that Sars, Middle East Respiratory Syndrome (Mers) and certain types of flu had been ruled out.\u00a0\nHong Kong health authorities said that the number of suspected cases in the city had reached 21, with six more being reported between Sunday and noon on Monday.\u00a0\nAll those affected had visited the Hubei capital and developed pneumonia-related symptoms, including a two-year-old boy and a female Chinese University student.\u00a0\nThe Centre for Health Protection said that the student was found to have common viruses unrelated to the Wuhan cases, including a type of coronavirus, while the other five new cases were found to have flu or other kinds of known viruses. Seven people have already been discharged from hospital.\nSo far, test results show that none of the cases reported outside mainland China \u2013 including one recent case in Singapore \u2013 were related to the Wuhan virus.\u00a0\nWhile the laboratory results have dispelled fears of a return of the deadly Sars epidemic in 2003 that killed hundreds in mainland China and Hong Kong, the unconfirmed source and unidentified strain of a possible new form of pneumonia has caused alarm among health experts.\nIt's surprising that the Wuhan authorities have had samples of the new virus since December 12, when the first case turned up, and still haven't been able to identify it.\n",
+            "key_terms": [
+                "Case finding",
+                "Contact tracing",
+                "Health scares",
+                "Health screening",
+                "Medical testing",
+                "Pneumonia"
+            ],
+            "reports": {
+                "event_date": "2020-12-12 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    },
+                    {
+                        "country": "Singapore",
+                        "location": "",
+                        "code": "SGP"
+                    }
+                ],
+                "disease": "sars",
+                "syndrome": "Acute respiratory syndrome"
+            }
+        },
+        {
+            "url": "https://www.scmp.com/news/china/society/article/3045288/china-confirms-new-coronavirus-it-investigates-mystery-wuhan",
+            "date_of_publication": "2020-01-08 20:47:00",
+            "headline": "\nChina confirms new coronavirus as it investigates mystery Wuhan illness",
+            "main_text": "\nVia the South China Morning Post:\u00a0China confirms new coronavirus as it investigates mystery Wuhan illness.\nChinese scientists investigating a mystery illness that has infected dozens in the central city of Wuhan have said it is a new strain of coronavirus from the same family that caused the 2002-03 Sars epidemic.\u00a0\nLaboratory tests have found a new type of coronavirus and the whole genome sequence of the new virus has been obtained, state broadcaster China Central Television (CCTV) reported on Thursday, citing a task force of experts.\u00a0\nFifteen patients had tested positive for the new coronavirus, the report stated. It said the virus had been isolated from one of the 15 patients and showed \u201ctypical coronavirus morphology\u201d under electron microscope observation.\u00a0\n\u201cThe pathogen of these unexplained cases of viral pneumonia was initially identified as a new type of coronavirus,\u201d the report quoted the expert group as saying.\nThere have been 59 reported cases of the mysterious virus in Wuhan since late December, some of them connected to a seafood market in which wild animals had been sold. The market has since been closed.\u00a0\nRetrospective study identified that the first case had been identified on December 12 and the latest on December 29. No deaths have been reported and eight patients, no longer showing pneumonia symptoms, had been discharged from hospital by Wednesday.\u00a0\nThe Wuhan health authority has said that no human-to-human transmission has so far been detected.\u00a0\u00a0\nCoronaviruses can infect mammals such as pigs, cattle, cats, dogs, camels, bats and mice, as well as humans. Of the six previously known human coronaviruses, four were common and caused only minor respiratory symptoms similar to those of a cold.\nThe other two were serious respiratory diseases: the Severe Acute Respiratory Syndrome (Sars) coronavirus that killed more than 700 people worldwide after originating in China, and the Middle East Respiratory Syndrome coronavirus that had caused 449 deaths by 2015.\u00a0\nThe CCTV report said that the laboratory had used genomic sequencing, nucleic acid detection, virus isolation and other methods to analyse samples from patients.\u00a0\nAlthough it is possible to find evidence of a pathogen in a short period of time, it could take years to produce a vaccine.\u00a0\nThe expert group said the initial identification needed to be followed up with further research, according to the television report. Professor David Hui Shu-cheong, a respiratory medicine expert from the Chinese University in Hong Kong, said some important details were still to be established.\u00a0\n\u201cSome key information, including which animal is the source of the virus, the incubation period and the transmission route, are still missing,\u201d Hui said.\n",
+            "key_terms": [
+                "Coronavirus",
+                "Medical testing",
+                "MERS",
+                "Pneumonia",
+                "SARS"
+            ],
+            "reports": {
+                "event_date": "2020-12-12 xx:xx:xx to 2020-12-29 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    }
+                ],
+                "disease": "sars",
+                "syndrome": "Acute respiratory syndrome"
+            }
+        },
+        {
+            "url": "https://www.who.int/csr/don/08-january-2020-mers-uae/en/",
+            "date_of_publication": "2020-01-08 09:02:00",
+            "headline": "\nWHO: Middle East respiratory syndrome coronavirus (MERS-CoV) \u2013 The United Arab Emirates",
+            "main_text": "\nWHO has published\u00a0Middle East respiratory syndrome coronavirus (MERS-CoV) \u2013 The United Arab Emirates. Excerpt:\nOn 29 December 2019, the National IHR Focal Point of the United Arab Emirates (UAE) reported one laboratory-confirmed case of Middle East Respiratory Syndrome Coronavirus (MERS-CoV) to WHO. \u00a0\nThe case is a 74-year-old male national who owns a camel farm located in Al Ain City, Abu Dhabi region in UAE where he is living. He developed fever, cough and sore throat on 8 December 2019 and was admitted to hospital on 10 December, then transferred to ICU on 16 December. A nasopharyngeal aspirate was collected and tested positive for MERS-CoV by reverse transcription polymerase chain reaction (RT-PCR) (UpE and Orf1a genes) on 16 December by the Shiekh Khalifa Medical Center laboratory. He has underlying comorbidities including hyperkalemia, diabetes mellitus with diabetic nephropathy, heart disease, asthma and hypertension. He has a history of close contact with dromedary camels and sheep at his farm in the 14 days prior to the onset of symptoms. He has no history of recent travel and has not been involved in slaughtering animals. Currently, the patient is in stable condition in intensive care unit isolation. \u00a0\nSince 2012, UAE has reported 89 cases of MERS-CoV (including this case) and 12 associated deaths. From 2012 through 29 December 2019, the total number of laboratory-confirmed MERS-CoV infection cases reported globally to WHO is 2494 with 858 associated deaths. The global number reflects the total number of laboratory-confirmed cases reported to WHO under IHR to date. The total number of deaths includes the deaths that WHO is aware of to date through follow-up with affected member states. \u00a0\nPublic health response\u00a0\nUpon identification of the patient, an incident report, case investigation and contact tracing were initiated. The investigation is ongoing and includes screening of all close contacts, including occupational contacts in his farm, household contacts and healthcare workers at the hospital where he sought care. All identified contacts of the confirmed case will be monitored daily for the appearance of respiratory or gastrointestinal symptoms for 14 days after the last exposure to the confirmed case. \u00a0\nA total of 88 contacts have been identified, including 70 health care contacts and 18 household contacts. All close contacts of the patient were tested negative for MERS-CoV. \u00a0\nThe veterinary authorities have been notified and investigations for MERS-CoV in animals are ongoing.\n",
+            "key_terms": [
+                "Animal to human diseases",
+                "Contact tracing",
+                "MERS"
+            ],
+            "reports": {
+                "event_date": "2020-12-08 xx:xx:xx to 2020-12-29 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "United Arab Emirates",
+                        "location": "",
+                        "code": "ARE"
+                    }
+                ],
+                "disease": "mers-cov",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "https://www.wsj.com/articles/new-virus-discovered-by-chinese-scientists-investigating-pneumonia-outbreak-11578485668",
+            "date_of_publication": "2020-01-08 08:02:00",
+            "headline": "\nWuhan disease spread by bats, animals: Expert",
+            "main_text": "\nA paywalled article in the Wall Street Journal reports that a new coronavirus has been identified as the source of pneumonia in numerous patients. While I try to find more details, here's a report from Asia Times:\u00a0Wuhan disease spread by bats, animals: expert.\nThe unknown pneumonia-like disease outbreak in Wuhan in Hubei province probably originated from bats and spread through wild animals to humans, said a Hong Kong-based microbiologist and specialist of the severe acute respiratory syndrome (SARS).\u00a0\nIt was likely the Wuhan disease was a new kind of coronavirus similar to SARS, Yuen Kwok-Jung, the Chair\u00a0of Infectious Disease at the\u00a0Department of Microbiology\u00a0of the University of Hong Kong, said Wednesday.\u00a0\n\u00a0It would not be difficult for mainland authorities to identify the coronavirus as China had accumulated a lot of experience about virus testing since the SARS outbreak in 2003, Yuen said, adding that he would not speculate why the mainland had not released more information about the disease in the past two days.\u00a0\nThere were six kinds of coronaviruses that could infect humans, as well as 24 other kinds that could infect animals including bats, birds, rats and cows, Yuen said. \u00a0\nAs most Wuhan patients had connections with the Huanan Seafood Market, there was a high chance the unknown coronavirus was transmitted to wild animals from bats and became mutated before it spread to humans, he said.\nUsually a new disease would not be highly infectious between humans so only people who had very close contact with the patients could be infected, he said. If the Wuhan disease was similar to SARS, patients could be cured by doses of ribavirin, protease inhibitor and interferon, he said. \u00a0\nPeople could help stop the spread of the disease simply by not eating wild animals, while markets should stop selling them, Yuen said. If 10-20 more cases are identified in Wuhan within the coming week, a community outbreak could have happened, he added.\n",
+            "key_terms": [
+                "Animal to human diseases",
+                "Coronavirus",
+                "Health scares",
+                "Pneumonia"
+            ],
+            "reports": {
+                "event_date": "",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    }
+                ],
+                "disease": "sars",
+                "syndrome": "Acute respiratory syndrome"
+            }
+        },
+        {
+            "url": "https://www.ecdc.europa.eu/en/publications-data/pneumonia-cases-possibly-associated-novel-coronavirus-wuhan-china",
+            "date_of_publication": "2020-01-09 14:20:00",
+            "headline": "\nECDC: Pneumonia cases possibly associated with a novel coronavirus in Wuhan, China",
+            "main_text": "\nECDC has published a risk assessment:\u00a0Pneumonia cases possibly associated with a novel coronavirus in Wuhan, China. The executive summary:\nBetween 31 December 2019 and 5 January 2020, 59 pneumonia cases possibly associated with a novel coronavirus have been reported in Wuhan, China with a common exposure link to Wuhan\u2019s South China Seafood City market.\u00a0\nThe cases showed symptoms such as fever, dyspnoea, and radiological tests compatible with bilateral lung infiltrative lesions. Seven severe cases have been reported, but no deaths. No cases have been reported outside of Wuhan. According to Chinese authorities, no human to human transmission could be documented.\u00a0\nEpidemiological investigations including contact tracing activities are ongoing and hygiene- and environmental sanitation activities in the affected market have been carried out in Wuhan.\u00a0\nThree EU airports have direct flight connections to Wuhan and there are indirect flight connections to other EU hubs. Considering there is no indication of human-to-human transmission and no cases detected outside of China, the likelihood of introduction to the EU is considered to be low, but cannot be excluded. However, more epidemiological and laboratory information is needed in order to elaborate a comprehensive assessment of this event and the possible risk for the international spread.\u00a0\nECDC is monitoring this event through epidemic intelligence activities. For options for response and safety precautions, see ECDC\u2019s threat assessment.\n",
+            "key_terms": [
+                "Medical testing",
+                "Pneumonia",
+                "Surveillance",
+                "Travel & health"
+            ],
+            "reports": {
+                "event_date": "2020-01-05 xx:xx:xx to 2020-12-31 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    }
+                ],
+                "disease": "other",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "https://www.scmp.com/week-asia/health-environment/article/3045317/wuhan-pneumonia-asia-battens-down-chinese-new-year",
+            "date_of_publication": "2020-01-09 14:07:00",
+            "headline": "\nWuhan pneumonia: Asia battens down for Lunar New Year rush",
+            "main_text": "\nVia the South China Morning Post:\u00a0Wuhan pneumonia: Asia battens down for Lunar New Year rush. Excerpt:\nJust two weeks before tens of millions of Chinese travellers hit the road for Lunar New Year, health officials across Asia are scrambling to prevent the spread of a viral pneumonia outbreak in central China.\u00a0\nOfficials from Tokyo to Kuala Lumpur are stockpiling protective gear, preparing isolation beds and even boarding trains to individually screen passengers to contain the virus, which Chinese scientists have identified as a new strain of coronavirus from the same family that caused the 2003 Sars epidemic.\u00a0\nThe disease, which originated in the provincial capital city of Wuhan, has sickened at least 59 people in China and prompted authorities to revise quarantine rules in Hong Kong, where at least 38 people have received hospital treatment in connection with the virus.\u00a0\nThe outbreak of a virus in the same family has raised the spectre of the Sars epidemic of 2003 that killed nearly 800 people and sickened thousands. At the time, Chinese officials cut the traditionally week-long May Day national holiday to just one day to discourage people from travelling, but were also criticised for playing down the severity of the outbreak.\nThis time around there are similar suspicions, with public health experts telling the South China Morning Post the true number of victims of the coronavirus outbreak could be higher than officially stated.\u00a0\nThe outbreak of the virus ahead of the Lunar New Year \u2013 often labelled the \u2018world\u2019s largest migration\u2019 \u2013 has prompted transport authorities in Asia, home to four of the world\u2019s top 10 busiest air transit hubs, to step up temperature screenings and checks on passengers as they prepare for a surge in Chinese tourists at the end of the month.\u00a0\nBut even with these checks, infectious disease experts warn they have little information to go on.\n\u201cAt this stage, the details that the international medical community have to work with are very limited,\u201d said Masayuki Saijo, head of the virology division of Japan\u2019s National Institute of Infectious Diseases. \u201cWe do not have any clinical information on patients.\u201d\u00a0\nHe added that pressure to monitor arrivals from China and elsewhere in Asia would increase should the illness continue to spread.\u00a0\nPREVENTIVE MEASURES\u00a0\nIn Hong Kong, officials have set up a protocol to board all trains entering from Wuhan and temperature screen inbound passengers.\u00a0\nHealth authorities across East and Southeast Asia have called for anyone who has recently visited China to report to a doctor immediately if they show symptoms, which include fever and difficulty breathing.\n",
+            "key_terms": [
+                "Coronavirus",
+                "Health scares",
+                "Health screening",
+                "Pneumonia",
+                "Surveillance",
+                "Travel & health"
+            ],
+            "reports": {
+                "event_date": "",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    },
+                    {
+                        "country": "Japan",
+                        "location": "",
+                        "code": "JPN"
+                    }
+                ],
+                "disease": "sars",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "https://www.who.int/china/news/detail/09-01-2020-who-statement-regarding-cluster-of-pneumonia-cases-in-wuhan-china",
+            "date_of_publication": "2020-01-09 09:14:00",
+            "headline": "\nWHO statement regarding cluster of pneumonia cases in Wuhan, China",
+            "main_text": "\nThanks to Pasi Penttinen for tweeting the link to this\u00a0WHO Statement Regarding Cluster of Pneumonia Cases in Wuhan, China.\nChinese authorities have made a preliminary determination of a novel (or new) coronavirus, identified in a hospitalized person with pneumonia in Wuhan. Chinese investigators conducted gene sequencing of the virus, using an isolate from one positive patient sample. Preliminary identification of a novel virus in a short period of time is a notable achievement and demonstrates China\u2019s increased capacity to manage new outbreaks.\u00a0\nInitial information about the cases of pneumonia in Wuhan provided by Chinese authorities last week \u2013 including the occupation, location and symptom profile of the people affected \u2013 pointed to a coronavirus (CoV) as a possible pathogen causing this cluster. Chinese authorities subsequently reported that laboratory tests ruled out SARS-CoV, MERS-CoV, influenza, avian influenza, adenovirus and other common respiratory pathogens. \u00a0\nCoronaviruses are a large family of viruses with some causing less-severe disease, such as the common cold, and others more severe disease such as MERS and SARS. Some transmit easily from person to person, while others do not. According to Chinese authorities, the virus in question can cause severe illness in some patients and does not transmit readily between people. \u00a0\nGlobally, novel coronaviruses emerge periodically in different areas, including SARS in 2002 and MERS in 2012. Several known coronaviruses are circulating in animals that have not yet infected humans. As surveillance improves more coronaviruses are likely to be identified.\u00a0\nChina has strong public health capacities and resources to respond and manage respiratory disease outbreaks. In addition to treating the patients in care and isolating new cases as they may be identified, public health officials remain focused on continued contact tracing, conducting environmental assessments at the seafood market, and investigations to identify the pathogen causing the outbreak.\u00a0\nIn the coming weeks, more comprehensive information is required to understand the current status and epidemiology of the outbreak, and the clinical picture. Further investigations are also required to determine the source, modes of transmission, extent of infection and countermeasures implemented. WHO continues to monitor the situation closely and, together with its partners, is ready to provide technical support to China to investigate and respond to this outbreak. \u00a0\nThe preliminary determination of a novel virus will assist authorities in other countries to conduct disease detection and response. Over the past week, people with symptoms of pneumonia and reported travel history to Wuhan have been identified at international airports.\u00a0\nWHO does not recommend any specific measures for travellers. WHO advises against the application of any travel or trade restrictions on China based on the information currently available.\n",
+            "key_terms": [
+                "Coronavirus",
+                "Medical testing",
+                "Pneumonia"
+            ],
+            "reports": {
+                "event_date": "",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    }
+                ],
+                "disease": "sars",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "http://www.xinhuanet.com/english/2020-01/09/c_138690297.htm",
+            "date_of_publication": "2020-01-09 09:02:00",
+            "headline": "\nNew-type coronavirus causes pneumonia in Wuhan: Expert",
+            "main_text": "\nVia Xinhua:\u00a0New-type coronavirus causes pneumonia in Wuhan: expert. It's not a detailed account:\nBEIJING, Jan. 9 (Xinhua) -- Preliminary lab results showed a new-type coronavirus had caused the viral pneumonia in central China's Wuhan, according to Xu Jianguo, a Chinese expert who led a team to evaluate the pathogen test results. \u00a0\nThe newly detected coronavirus is different from known human coronavirus species, including the viruses that had caused SARS (Severe Acute Respiratory Syndrome) and MERS (Middle East Respiratory Syndrome), said Xu, an academician of the Chinese Academy of Engineering. \u00a0\nXu said the new virus needs further research and understanding. \u00a0\nA total of 59 viral pneumonia cases were reported by late Sunday, with seven patients in serious condition. Eight patients have been cured of the disease and were discharged from hospital Wednesday, local health authorities said.\n",
+            "key_terms": [
+                "Coronavirus",
+                "Medical testing",
+                "Pneumonia"
+            ],
+            "reports": {
+                "event_date": "2020-01-09 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    }
+                ],
+                "disease": "sars",
+                "syndrome": "Acute respiratory syndrome"
+            }
+        },
+        {
+            "url": "https://www.chp.gov.hk/en/features/102465.html",
+            "date_of_publication": "2020-01-09 08:12:00",
+            "headline": "\nHong Kong: CHP's page on severe respiratory disease associated with a novel infectious agent",
+            "main_text": "\nThe Centre for Health Protection has created a useful page on\u00a0Severe Respiratory Disease associated with a Novel Infectious Agent. Click through and you'll find a link to the latest situation, a PDF dated January 9. It lists 48 Wuhan-linked respiratory cases, 10 of them reported today.\u00a0\nBut bear in mind that most of them have tested positive for known viruses like rhinovirus and adenovirus. Until Hong Kong gets the information on the new coronavirus, it's hard to tell how many (if any) of the travellers actually have the new virus.\n",
+            "key_terms": [
+                "Case finding",
+                "Medical testing",
+                "Pneumonia",
+                "Surveillance"
+            ],
+            "reports": {
+                "event_date": "2020-01-09 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    }
+                ],
+                "disease": "",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "https://www.info.gov.hk/gia/general/202001/09/P2020010900740.htm",
+            "date_of_publication": "2020-01-09 08:00:00",
+            "headline": "\nCHP provides update on latest progress on cluster of pneumonia cases in Wuhan",
+            "main_text": "\nVia the Centre for Health Protection:\u00a0CHP provides update on latest progress on cluster of pneumonia cases in Wuhan.\nThe Centre for Health Protection (CHP) of the Department of Health today (January 9) received notification from the National Health Commission (NHC) on the latest progress of the identification of the pathogen for the reported cluster of pneumonia cases in Wuhan, Hubei Province. \u00a0 \u00a0\u00a0\u00a0\u00a0\u00a0\nAccording to information from the NHC, the Mainland's expert group has preliminarily determined that the pathogen of the cluster of viral pneumonia cases occurring in Wuhan is a kind of novel coronavirus. The relevant Mainland laboratory has detected a novel coronavirus and obtained the whole genome sequence of the virus. \u00a0 \u00a0 \u00a0 \u00a0\nThe expert group revealed that molecular testing of 15 cases returned positive results\u00a0for the novel coronavirus, and the virus was also isolated from a sample of a case. Under electron microscopy, the virus showed the typical appearance of coronavirus. The expert group added that the testing for nucleic acid, genome and antibodies from the samples of patients could be completed within a short period, thereby assisting in confirmation of the pathogen. Nonetheless, the virus isolation and pathogenicity studies would take several weeks. Moving forward, further deliberation by experts taking into consideration pathogen research, epidemiological investigation and clinical assessment is needed. \u00a0 \u00a0 \u00a0 \u00a0\nA spokesman for the CHP said that the CHP's Public Health Laboratory Services Branch is conducting molecular testing for a number of coronaviruses. The CHP has already contacted the NHC regarding the novel coronavirus in today's notification, and expressed the wish to obtain relevant information of the virus, including its genetic sequence, so as to provide accurate testing for the novel coronavirus. \u00a0 \u00a0 \u00a0 \u00a0\nOn the other hand, the World Health Organization (WHO) earlier pointed out that there is limited information to determine the overall risk of this reported cluster of pneumonia. The WHO emphasised that more comprehensive information is required to understand the current status and epidemiology of the outbreak, and the clinical picture. Further investigations are also required to determine the source, modes of transmission, extent of infection and countermeasures implemented.\u00a0 \u00a0 \u00a0 \u00a0 \u00a0\nThe Scientific Committee on Emerging and Zoonotic Diseases and the Scientific Committee on Infection Control under the CHP today convened a joint meeting, during which members were updated on the latest progress relating to the Wuhan cases. At the meeting, members discussed and provided advice on the corresponding local response to this novel communicable disease in various aspects of disease prevention and control, including surveillance, emergency preparedness, port health measures, risk communication and health promotion. \u00a0 \u00a0 \u00a0 \u00a0\nThe Scientific Committees noted that definite evidence of human-to-human transmission had not been identified in the Mainland so far and no healthcare professionals had been found infected. However, members considered that the available epidemiological information is not sufficient at this stage to reach a conclusion. \u00a0 \u00a0 \u00a0 \u00a0\nThe Scientific Committees concurred with the assessment of the WHO that the reported link to a wholesale fish and live animal market in Wuhan could indicate an exposure link to animals. Members also arrived at consensus that public education should be strengthened in urging the public not to consume game meat and not to patronise food premises where game meat is served. \u00a0 \u00a0 \u00a0 \u00a0\nNotwithstanding the risk of importation to Hong Kong of serious pneumonia cases related to those in Wuhan due to extensive travel, especially with the approach of the Lunar New Year holidays, the Scientific Committees acknowledged the well-developed public health system and hospital infrastructure on infection control as well as heightened awareness of the public and healthcare professionals. In the event that cases were imported to Hong Kong, the risk of spread in the local community could be reduced.\u00a0\nAs the Mainland and Hong Kong have now entered the winter flu season, members also advised the public to receive seasonal influenza vaccination before travelling and to always maintain good personal and environmental hygiene when travelling abroad.\n",
+            "key_terms": [
+                "Coronavirus",
+                "Pneumonia"
+            ],
+            "reports": {
+                "event_date": "2020-01-09 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    }
+                ],
+                "disease": "other",
+                "syndrome": ""
+            }
+        },
+        {
+            "url": "https://www.scmp.com/news/hong-kong/health-environment/article/3045622/wuhan-pneumonia-six-more-cases-hong-kong-take",
+            "date_of_publication": "2020-01-10 08:37:00",
+            "headline": "\nWuhan pneumonia: 6 more cases in Hong Kong take total to more than 50",
+            "main_text": "\nVia the South China Morning Post:\u00a0Wuhan pneumonia: six more cases in Hong Kong take total to more than 50 but professor says risk of spread during Lunar New Year mass migration unlikely. Excerpt:\nSix more people have been admitted to hospitals in Hong Kong after developing respiratory symptoms on their return from the mainland Chinese city of Wuhan, health authorities said on Friday.\u00a0\nIt brought the number of suspected cases in the city to 54.\u00a0\nA new coronavirus strain was revealed by mainland health authorities on Thursday to be the cause of the mystery pneumonia outbreak in the central Chinese city, where 59 people have been infected since December.\u00a0\nIn Hong Kong, six more people who recently returned from Wuhan showed either symptoms of fever and respiratory infection or pneumonia. The new cases \u2013 reported between Thursday noon and midday on Friday \u2013 included two three-year-old girls and a four-year-old boy.\u00a0\nFour were already found to be infected with flu or other known viruses.\u00a0\nSo far, 31 of the 54 suspected cases in the city have already been discharged.\u00a0\nHu Ke, a respiratory medicine professor from Hubei General Hospital who had treated patients in Wuhan, told mainland Chinese media on Friday that most patients\u2019 conditions were \u201cmild to moderate\u201d.\n\u201cConditions of patients in general come under control after treatment,\u201d Hu said, adding that most patients who were still in hospital remained stable.\u00a0\nHe said that more than 90 per cent of the patients had a fever at the early stage of the disease, and around 15 per cent had difficulty breathing.\u00a0\nInfectious diseases expert Professor Yuen Kwok-yung, from the University of Hong Kong, predicted that the risk of the disease spreading from Wuhan \u2013 one of mainland China\u2019s largest transport hubs \u2013 during the Lunar New Year\u2019s mass movement of people would be small. This year\u2019s migration began on Friday, two weeks ahead of the festival at the end of January.\u00a0\nYuen\u2019s prediction was based on information released by the mainland that no evidence had been found of a human to human transmission.\u00a0\n\u201cAvian flu, 99 per cent of the time, is transmitted to humans from live birds at markets,\u201d Yuen told a radio programme on Friday morning.\u00a0\nHe said if the transmission route of the Wuhan virus was the same as avian flu, the risk of transmission should be \u201clow\u201d.\n",
+            "key_terms": [
+                "Case finding",
+                "Children's health",
+                "Pneumonia",
+                "Travel & health"
+            ],
+            "reports": {
+                "event_date": "",
+                "locations": [
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "Hong Kong",
+                        "location": "",
+                        "code": "HKG"
+                    }
+                ],
+                "disease": "other",
+                "syndrome": ""
+            }
+        }
+    ]
+}

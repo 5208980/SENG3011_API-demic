@@ -1,0 +1,57 @@
+{
+    "articles": [
+        {
+            "url": "https://www.washingtonpost.com/world/asia_pacific/chinese-officials-urge-people-not-to-travel-in-and-out-of-city-at-center-of-virus-outbreak/2020/01/21/60680d3e-3c2d-11ea-afe2-090eb37b60b1_story.html",
+            "date_of_publication": "2020-01-21 09:47:00",
+            "headline": "\nCoronavirus latest: China tries to close off Wuhan, city at the center of outbreak",
+            "main_text": "\nVia The Washington Post:\u00a0Coronavirus latest: China tries to close off Wuhan, city at the center of outbreak. Excerpt:\nBEIJING \u2014 Chinese health authorities sought to impose a quasi-quarantine Tuesday around Wuhan, advising people in the city of 11 million people not to leave, as they stepped up efforts to stop the spread of a mystery virus that has claimed six lives. \u00a0\nWith confirmation that the pneumonialike coronavirus can be transmitted from person to person, and with hundreds of millions of Chinese packing onto public transport to make their annual pilgrimages home for the Lunar New Year, a new sense of panic has erupted here. \u00a0\nLong lines formed at pharmacies and convenience stores around the country as people rushed to buy surgical masks, with unlucky customers posting photos on social media of bare shelves. People around the country canceled their trips home for the Spring Festival, as new year celebrations are known, the most important holiday on the Chinese calendar.\n\u201cI don\u2019t really dare to go to the airport right now, or even to the movie theater,\u201d said Xie Jing, 33, who works in advertising in Shanghai, where there have been two confirmed cases of coronavirus. She canceled her planned trip home to Sichuan, where two cases are suspected.\u00a0\n\u201cEveryone is being very careful at the moment in Shanghai. Everyone is wearing masks on the streets,\u201d Xie said. \u00a0\nThe Geneva-based World Health Organization said it would call an emergency meeting Wednesday to decide whether to designate the outbreak as an international public health emergency. Australia and the Philippines are the latest countries with suspected cases of the infection, and Taiwan also confirmed one person there had caught it.\nThe virus was first detected on Dec. 31 and was linked to a dirty food market in Wuhan, not far from one of the city\u2019s main train stations, where wild animals including wolf pups and civet cats had been on sale for consumption.\nThe number of people in China confirmed to have the virus topped 300 on Tuesday, according to the National Health Commission, an increase of more than 70 from Monday. The vast majority of cases are in Wuhan, where Mayor Zhou Xianwang said six people have now died from the virus. \u00a0\nWuhan\u2019s three major hospitals have 800 beds, but authorities said they would add 1,200 beds to deal with the rising number of pneumonia cases. They also said they would foot the hospital bills for those infected.\nInitially, doctors thought that the virus was not communicable between humans, but cases of infection across the country, including among people who have not been to Wuhan, proved that it can be passed on.\u00a0\nSome 60 people across 15 provinces are being monitored for possible infection, with cases found as far afield as Dalian in the northeast and Chongqing in the southwest, as well as in the metropolises of Beijing, Shanghai and Shenzhen.\u00a0\u00a0\nSpecialists are urging travelers not to move in and out of the central Chinese city.\u00a0\n\u201cWe hope people can avoid going to Wuhan if possible and that people in Wuhan can stay there,\u201d said Zeng Guang, chief epidemiologist of the Chinese Center for Disease Control and Prevention and the leader of a government team of experts responding to the outbreak. \u201cThis is not a call from the officials but a suggestion from us in the expert team,\u201d he said.\u00a0\nStill, he said it was \u201cinevitable\u201d that the virus would continue to spread as people moved around the country for the turning of the Lunar New Year on Saturday. \u00a0\nThe Ministry of Transport estimates that 400 million people will be on the move, making a total of 3 billion trips during this period.\n",
+            "key_terms": [
+                "Coronavirus",
+                "Surveillance",
+                "Travel & health"
+            ],
+            "reports": {
+                "event_date": "2020-12-31 xx:xx:xx",
+                "locations": [
+                    {
+                        "country": "Australia",
+                        "location": "",
+                        "code": "AUS"
+                    },
+                    {
+                        "country": "China",
+                        "location": "Wuhan",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "China",
+                        "location": "Shanghai",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "China",
+                        "location": "Dalian",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "China",
+                        "location": "Chongqing",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "China",
+                        "location": "Beijing",
+                        "code": "CHN"
+                    },
+                    {
+                        "country": "Philippines",
+                        "location": "",
+                        "code": "PHL"
+                    }
+                ],
+                "disease": "",
+                "syndrome": ""
+            }
+        }
+    ]
+}
