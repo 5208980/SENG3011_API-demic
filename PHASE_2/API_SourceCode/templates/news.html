@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% include 'nav.html' %}
+
+    <section class="container pt-5">
+        <div class="row">
+            <div class="col-sm-8">
+                <h3 class="text-bold text-blue">Latest World Covid-19 News</h3>
+                <div id="article" class="row">
+                    <!-- <div class="col-md-6">
+                        <div class="card news-article clear-border">
+                            <div class="card-body">
+                                <div class="news-headline text-bold">
+                                    New York: Safety net hospitals a 'disaster'
+                                    as coronavirus patients begin to flood in
+                                </div>
+                                <div class="news-text">
+                                    REMEMBER WHEN THE SUNDAY SHOWS were filled
+                                    with Democratic presidential candidates,
+                                    or Republican lawmakers spreading debunked
+                                    claims about Trump and Ukraine?
+                                </div>
+                            </div>
+                            <div class="card-footer news-footer clear-border">
+                                2020-01-02 10:21:23
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card news-article clear-border">
+                            <div class="card-body">
+                                <div class="news-headline text-bold">
+                                    New York: Safety net hospitals a 'disaster'
+                                    as coronavirus patients begin to flood in
+                                </div>
+                                <div class="news-text">
+                                    REMEMBER WHEN THE SUNDAY SHOWS were filled
+                                    with Democratic presidential candidates,
+                                    or Republican lawmakers spreading debunked
+                                    claims about Trump and Ukraine?
+                                </div>
+                                <div class="card-footer news-footer clear-border">
+                                    2020-01-02 10:21:23
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card news-article clear-border">
+                            <div class="card-body">
+                                <div class="news-headline text-bold">
+                                    New York: Safety net hospitals a 'disaster'
+                                    as coronavirus patients begin to flood in
+                                </div>
+                                <div class="news-text">
+                                    REMEMBER WHEN THE SUNDAY SHOWS were filled
+                                    with Democratic presidential candidates,
+                                    or Republican lawmakers spreading debunked
+                                    claims about Trump and Ukraine?
+                                </div>
+                                <div class="news-footer">
+                                    2020-01-02 10:21:23
+                                </div>
+                            </div>
+                        </div>
+                    </div>  -->
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <section class="container pt-5">
+                    <div class="row text-center">
+                        <div class="col-sm">
+                            <div>Confirmed</div>
+                            <h4 id="total-confirmed">0</h4>
+                        </div>
+                        <div class="col-sm">
+                            <div>Deaths</div>
+                            <h4 id="total-deaths">0</h4>
+                        </div>
+                        <div class="col-sm">
+                            <div>Recovered</div>
+                            <h4 id="total-recovered">0</h4>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TODO: OTHER TEAM API NEW ARTICLE SECTION-->
+                <div class="hr">
+                    OTHER TEAM API SECTION
+                    NEWS ARTICLE GOES HERE
+                </div>
+
+                <!-- TODO: OTHER TEAM API NEW ARTICLE SECTION-->
+                <div class="hr">
+                    OTHER API SECTION
+                    NEWS ARTICLE GOES HERE OR SOMETHING ELSE
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{{url_for('static', filename='country.js')}}"></script>
+    <script>
+        const URL = "https://api-demic.herokuapp.com/v1.1/articles/latest?on=coronavirus";
+
+        console.log("HERE");
+        fetch(URL)
+            .then(response => {
+                if (!response.ok) { throw Error(response.statusText); }
+                return response.json();
+            })
+            .then(json => {
+                // console.log(json);
+                let articleRow = document.getElementById('article');
+
+                let data_str = '{{ data }}';
+                data_str = data_str.replace(/&#34;/g, "\"");
+                let data_json = JSON.parse(data_str);
+
+                let total_str = '{{ total }}';
+                total_str = total_str.replace(/&#34;/g, "\"");
+                let total_json = JSON.parse(total_str);
+                document.getElementById('total-confirmed').innerHTML = `${formatNumber(total_json['Confirmed'])}`;
+                document.getElementById('total-deaths').innerHTML = `${formatNumber(total_json['Deaths'])}`;
+                document.getElementById('total-recovered').innerHTML = `${formatNumber(total_json['Recovered'])}`;
+
+                for(i in json['articles']) {
+                    article = json['articles'][i];
+                    console.log(article);
+
+                    let col = createCol(article);
+                    articleRow.appendChild(col);
+                }
+
+            }).catch(function(error) {
+
+            });
+
+        function createCol(article) {
+            let col = document.createElement("div");
+            col.classList.add('col-md-6');
+
+            let card = document.createElement("div");
+            card.classList.add('card', 'news-article', 'clear-border');
+
+            let cardBody = document.createElement("div");
+            cardBody.classList.add('card-body');
+
+            let cardHeadline = document.createElement("a");
+            cardHeadline.classList.add('news-headline', 'text-bold');
+            cardHeadline.setAttribute('href', `${article['url']}`);
+            cardHeadline.setAttribute('target', '_blank');
+            cardHeadline.innerText = `${article['headline'].trim()}`;
+            cardBody.appendChild(cardHeadline);
+
+            let cardMainText = document.createElement("div");
+            cardMainText.classList.add('news-text');
+            text = article['main_text']
+            start_from = "Excerpt:";
+            textToDisplay = ""
+            if(text.search(start_from) < 0) { textToDisplay = text.substring(text.search(":")+1, text.length-1).trim(); }
+            else { textToDisplay = text.substring(text.search(start_from)+start_from.length, text.length-1).trim(); }
+            cardMainText.innerText = `${firstSentence(textToDisplay).trim()}`;
+            cardBody.appendChild(cardMainText);
+
+            let cardFooter = document.createElement("div");
+            cardFooter.classList.add('card-footer', 'news-footer', 'clear-border');
+            cardFooter.innerText = `${article['date_of_publication']}`;
+
+            card.appendChild(cardBody);
+            card.appendChild(cardFooter);
+            col.append(card);
+
+            return col;
+        }
+
+    </script>
+{% endblock %}

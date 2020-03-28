@@ -5,87 +5,100 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
-        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-        <script src="https://datamaps.github.io/scripts/datamaps.world.min.js"></script>
-        
+        <script src="https://code.jquery.com/jquery-3.4.1.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap" rel="stylesheet">
         <style>
-        #map {
-            position: relative; margin: 0 auto;
-            width: 75vw; height: 700px;
-        }
-        #heatmapScale {
-            height: 10px;
-            width: 75vw;
-            background: linear-gradient(90deg,
-            	hsl(0, 100%, 90%) 0%,
-                hsl(0, 100%, 80%) 10%,
-                hsl(0, 100%, 70%) 20%,
-               	hsl(0, 100%, 60%) 30%,
-                hsl(0, 100%, 50%) 40%,
-                hsl(0, 100%, 40%) 50%,
-                hsl(0, 100%, 30%) 60%,
-                hsl(0, 100%, 20%) 70%,
-                hsl(0, 100%, 10%) 80%,
-                hsl(0, 100%, 0%) 100%);
-        }
+            body { font-family: 'Roboto', sans-serif; }
+            #map { height: 100vh; width: inherit;}
 
-        .card {
-            background: #fff;
-            border: none;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            /* display: inline-block; */
-            /* height: 300px; */
-            border-top: 4px solid #0556f3;
-            /* margin: 1rem; */
-            /* position: relative; */
-            /* width: 300px; */
-        }
+            .navbar {
+                background-color: white;
+                box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+            }
 
-        .article-card {
-            box-shadow: 0px 12px 24px rgba(2,30,84,0.1);
-        }
+            /* news-article */
+            .clear-border { border: none; border-radius: 0px; background: #fff; }
+            .hr { border-bottom: 1px solid black; }
+            .news-article { background: #fff; border-bottom: 1px solid black; height: 321px; }
 
-        .card-headline {
-            font-size: 16px;
-            font-weight: bold;
-        }
+            .news-headline { font-size: 20px; font-weight: bold; padding-bottom: 1em; color: black; }
+            .news-headline:hover { text-decoration: none; color: #285e9f; }
+            .news-text { font-size: 14px; padding-bottom: 1em; }
+            .news-footer { font-size: 14px; color: rgb(161, 161, 161); }
 
-        .card-main-text {
-            font-size: 12px;
-        }
+            /* collapse */
+            .collapsible {
+                background: white;
+                width: 100%;
+                border-radius: 0px;
+                border: none;
+                border-bottom: 1px solid black;
+            }
+            .collapse-header { padding: 15px 4em; }
+            .collapsible-body { width: 100%; }
+            .collapse-header:hover { background-color: #f7f7f7; }
 
-        .navbar {
-            background-color: white;
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
-        }
+            /* Finalised CSS */
+            .card:hover { cursor: pointer; }
+            .text-bold { font-weight: 900; }
+            .text-blue { color: #285e9f; }
+            .material-icons { vertical-align: middle; padding-bottom: 3px; }
+
+            .noselect {
+              -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                 -khtml-user-select: none;
+                   -moz-user-select: none;
+                    -ms-user-select: none;
+                        user-select: none;
+            }
+
+            .legend {
+                padding: 8px;
+                font-size: 12px;
+                background: rgba(255, 255, 255, 0.75);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+            }
+
+            .legend span {
+                margin-left: 8px; margin-right: 8px;
+                position: relative;
+            }
+
+            .legend i {
+                width: 18px;
+                height: 18px;
+                float: left;
+                margin-left: 8px;
+                margin-right: 8px;
+            }
+
+            .info {
+                padding: 10px;
+                background: white;
+                background: rgba(255, 255, 255, 0.75);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+            }
+
+            .info h4 { margin: 0 0 5px; color: #777; }
         </style>
         <title>API-demic</title>
     </head>
 
     <body>
-        <nav class="navbar navbar-light sticky-top">
-            <h1 class="navbar-brand mb-0 ml-5">API-demic</h1>
-        </nav>
-
-        <main class="container">
-            <pre class="">
-                IDEAS: HEATMAP OF ARTICLES. TO SHOW THE HOTSPOT THAT GOING ON IN THE NEWS RELATING HEALTH
-                    MIGHT INCLUDE GOOGLE NEWS
-                    MUST INCLUDE ANOTHER TEAM API
-            </pre>
-
             {% block body %}
 
             {% endblock %}
-        </main>
-
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <body>
 </html>

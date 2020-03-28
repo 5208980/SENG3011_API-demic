@@ -1,58 +1,303 @@
 {% extends "layout.html" %}
 
 {% block body %}
+    <div class="row m-0 p-0">
+        <div class="col-lg-4 p-0" style="height: 100vh; overflow: scroll">
 
-    <h3>HERE</h3>
+            <nav class="navbar navbar-light sticky-top">
+                <h1 class="navbar-brand mb-0 ml-5">API-demic</h1>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active" href="#">Home</a>
+                        <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">Latest Article</a>
+                        <a class="nav-item nav-link" href="{{ url_for('covid19') }}">COVID Live Map</a>
+                        <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+                    </div>
+                </div>
+            </nav>
 
-    <div id="map"></div>
-    <div id="demo"></div>
 
-    <script src="{{url_for('static', filename='country.js')}}"></script>
+            <h1 class="text-center text-bold">Covid 19 Live</h1>
+            <section class="container pb-5">
+                <h4>Tips</h4>
+                1. Wash your hands frequently <br>
+                2. Maintain social distancing <br>
+                3. Avoid touching eyes, nose and mouth <br>
+                4. Practice respiratory hygiene <br>
+                5. If you have fever, cough and difficulty breathing, seek medical care early <br>
+            </section>
+
+            <section class="container">
+                <div class="row text-center">
+                    <div class="col-sm">
+                        <div>Confirmed</div>
+                        <h4 id="total-confirmed">0</h4>
+                    </div>
+                    <div class="col-sm">
+                        <div>Deaths</div>
+                        <h4 id="total-deaths">0</h4>
+                    </div>
+                    <div class="col-sm">
+                        <div>Recovered</div>
+                        <h4 id="total-recovered">0</h4>
+                    </div>
+                </div>
+            </section>
+
+            <div id="accordion">
+                <!-- <div class="card collapsible">
+                    <div class="collapse-header" data-target="#collapseOne" data-toggle="collapse">
+                        China
+                        <span class="float-right">
+                            89,120 <span class="material-icons">expand_more</span>
+                        </span>
+                    </div>
+
+                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-center">
+                            <span>22,354 Confirmed | 235 Deaths | 56,457 Recovered</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card collapsible">
+                    <div class="collapse-header" data-target="#collapseOne" data-toggle="collapse">
+                        China
+                        <span class="float-right">
+                            89,120 <span class="material-icons">expand_more</span>
+                        </span>
+                    </div>
+
+                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-center">
+                            <span>22,354 Confirmed | 235 Deaths | 56,457 Recovered</span>
+                        </div>
+                    </div>
+                </div> -->
+            </div>  <!-- accordion -->
+
+        </div>
+        <div class="col-lg-8 p-0">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="{{url_for('static', filename='countries.js')}}"></script>
+
     <script type="text/javascript">
         let str = '{{ data }}';
         let res = str.replace(/&#34;/g, "\"");
+
         let json = JSON.parse(res);
 
-        let total = {}
-        total['Confirmed'] = 0;
-        total['Deaths'] = 0;
-        total['Recovered'] = 0;
-        let list_cases = []
-        let countryLightness = {};      // For map.fill
-        let countryData = {};           // For map.data
-        for (i in json) {
-            // console.log(json[i]['Code']);
-            let code = json[i]['Code']
-
-            countryLightness[`${code}`] = json[i]['Confirmed'];
-            countryData[`${code}`] = {fillKey: `${code}`};
-
+        let accordion = document.getElementById('accordion');
+        let total = { 'Confirmed': 0, 'Deaths': 0, 'Recovered': 0, }
+        for(i in json) {
             total['Confirmed'] += json[i]['Confirmed'];
             total['Deaths'] += json[i]['Deaths'];
             total['Recovered'] += json[i]['Recovered'];
-            list_cases.push(json[i]['Confirmed'])
+
+            let card = document.createElement('div');
+            card.classList.add('card', 'collapsible');
+
+            let cardHeader = document.createElement('div');
+            cardHeader.classList.add('collapse-header', 'noselect');
+            cardHeader.setAttribute('data-target', `#${json[i]['Code']}`);
+            cardHeader.setAttribute('data-toggle', 'collapse');
+
+            cardHeader.innerText = `${i}`;
+
+            let cardCases = document.createElement('span');
+            cardCases.classList.add('float-right');
+            cardCases.innerText = `${formatNumber(json[i]['Confirmed'])}`;
+
+            let cardExpand = document.createElement('span');
+            cardExpand.classList.add('material-icons');
+            cardExpand.innerText = 'expand_more';
+            cardCases.appendChild(cardExpand);
+
+            cardHeader.appendChild(cardCases);
+            card.appendChild(cardHeader);
+
+            let cardCollapse = document.createElement('div');
+            cardCollapse.setAttribute('id', `${json[i]['Code']}`);
+            cardCollapse.classList.add('collapse');
+            cardCollapse.setAttribute('data-parent', '#accordion');
+
+            let cardBody = document.createElement('div');
+            cardBody.classList.add('card-body', 'text-center');
+            cardBody.innerText = `${formatNumber(json[i]['Confirmed'])} Confirmed | ${formatNumber(json[i]['Deaths'])} Deaths | ${formatNumber(json[i]['Recovered'])} Recovered`;
+
+            cardCollapse.appendChild(cardBody);
+            card.appendChild(cardCollapse);
+
+            accordion.appendChild(card);
+
+            if(convertCountry(i)) {
+                // convert ket to fix mapName
+                console.log(`${i} ${convertCountry(i)}`);
+                json[convertCountry(i)] = json[i];
+                delete json[i];
+            }
         }
 
-        console.log(list_cases);
-        // countryFill = {};
-        // countryFill['defaultFill'] = 'hsl(0, 100%, 90%)';
-        // for(i in countryLightness) {
-        //     countryFill[i] = `hsl(0, 100%, ${countryLightness[i] - 10}%)`;
-        // }
-        document.getElementById("demo").innerHTML = res;
+        document.getElementById('total-confirmed').innerHTML = `${formatNumber(total['Confirmed'])}`;
+        document.getElementById('total-deaths').innerHTML = `${formatNumber(total['Deaths'])}`;
+        document.getElementById('total-recovered').innerHTML = `${formatNumber(total['Recovered'])}`;
 
-        let map = new Datamap({
-            element: document.getElementById('map')
+        function convertCountry(d) {
+            let dict = {
+                "Bolivia, Plurinational State of" : "Bolivia",
+                "Brunei Darussalam" : "Brunei",
+                "Côte d'Ivoire" : "Ivory Coast",
+                "Congo, The Democratic Republic of the" : "Democratic Republic of the Congo",
+                "Congo" : "Republic of the Congo",
+                "Czechia" : "Czech Republic",
+                "Falkland Islands (Malvinas)" : "Falkland Islands",
+                "Guinea-Bissau" : "Guinea Bissau",
+                "Iran, Islamic Republic of" : "Iran",
+                "Korea, Republic of" : "South Korea",
+                "Lao People's Democratic Republic" : "Laos",
+                "Moldova, Republic of" : "Moldova",
+                "North Macedonia" : "Macedonia",
+                "Russian Federation" : "Russia",
+                "Serbia" : "Republic of Serbia",
+                "Syrian Arab Republic" : "Syria",
+                "Timor-Leste" : "East Timor",
+                "Taiwan, Province of China" : "Taiwan",
+                "Tanzania, United Republic of" : "United Republic of Tanzania",
+                "United States" : "United States of America",
+                "Venezuela, Bolivarian Republic of" : "Venezuela",
+                "Viet Nam" : "Vietnam"
+            }
+
+            return dict[d];
+        }
+
+        // Init Map
+        for(i in countriesData['features']) {
+            name = countriesData['features'][i]['properties']['name']
+            if(json[name]) {
+                countriesData['features'][i]['properties']['confirmed'] = json[name]['Confirmed']
+            }
+        }
+
+        var map = L.map('map', {
+            'center': [-9.5410977,106.0965923],
+            'zoom': 3,
+            'layers': [
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    'attribution': 'Map data &copy; OpenStreetMap contributors'
+                })
+            ]
         });
 
-        // function normalize(min, max) {
-        //     var delta = max - min;
-        //     return function (val) {
-        //         return (val - min) / delta;
-        //     };
-        // }
-        //
-        // console.log([5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(normalize(5, 15)));
+        // Legend
+        var legend = L.control({ position: "bottomright" });
 
+        legend.onAdd = function(map) {
+            var div = L.DomUtil.create("div", "legend");
+
+            div.innerHTML += '<i style="background: #b10026"></i><span>50,000+</span><br>';
+            div.innerHTML += '<i style="background: #e31a1c"></i><span>10,000-50,000</span><br>';
+            div.innerHTML += '<i style="background: #fc4e2a"></i><span>5,000-10,000</span><br>';
+            div.innerHTML += '<i style="background: #fd8d3c"></i><span>1,000-5,000</span><br>';
+            div.innerHTML += '<i style="background: #feb24c"></i><span>500-1,000</span><br>';
+            div.innerHTML += '<i style="background: #fed976"></i><span>100-500</span><br>';
+            div.innerHTML += '<i style="background: #ffeda0"></i><span>50-100</span><br>';
+            div.innerHTML += '<i style="background: #ffffcc"></i><span>10-50</span><br>';
+            div.innerHTML += '<i style="background: #ebedf0"></i><span>0-10</span><br>';
+
+            return div;
+        };
+
+        legend.addTo(map);
+
+        // InformationTab
+        var info = L.control({ position: "topright" });
+
+        info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        info.update = function (props) {
+            this._div.innerHTML =
+                '<h4> Country Info </h4>' +
+                    (props ?
+    			         '<b>' + props.name + '</b><br />' + (props.confirmed ? props.confirmed : "0 (Data may be invalid)") + ' confirmed cases' + '<div></div>'
+    			         : 'Hover over a country');
+        };
+
+        info.addTo(map);
+
+        function highlightPolygon(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+            	weight: 2,
+            	color: '#666',
+            	dashArray: '',
+            	fillOpacity: 0.7
+            });
+
+        	layer.bringToFront();
+
+            info.update(layer.feature.properties);
+        }
+
+        var geojson;
+
+        function removeHighlight(e) {
+        	geojson.resetStyle(e.target);
+        	info.update();
+        }
+
+        function zoomToFeature(e) {
+            // console.log(e.target);
+            console.log(e.target.getBounds());
+            // console.log(e.target.getBounds().getCenter());
+        	// map.fitBounds(e.target.getBounds().getCenter());
+            map.flyTo(e.target.getBounds().getCenter(), 4);
+            info.update(e.target.feature.properties);
+        }
+
+        function onEachFeature(feature, layer) {
+        	layer.on({
+        		mouseover: highlightPolygon,
+        		mouseout: removeHighlight,
+        		click: zoomToFeature
+        	});
+        }
+
+        // Polygon GeoJSON
+        function style(feature) {
+            return {
+                fillColor: getColor(feature.properties.confirmed),
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                fillOpacity: 0.7
+            };
+        }
+
+        function getColor(d) {
+            return d > 50000    ? '#b10026' :
+                   d > 10000    ? '#e31a1c' :
+                   d > 5000     ? '#fc4e2a' :
+                   d > 1000     ? '#fd8d3c' :
+                   d > 500      ? '#feb24c' :
+                   d > 100      ? '#fed976' :
+                   d > 50       ? '#ffeda0' :
+                   d > 10       ? '#ffffcc' :
+                   d < 0        ? 'blue' :
+                                  '#ebedf0';
+        }
+
+        geojson = L.geoJson(countriesData, {style: style, onEachFeature: onEachFeature}).addTo(map);
     </script>
 {% endblock %}

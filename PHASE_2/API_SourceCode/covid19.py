@@ -3,7 +3,9 @@ import json
 import datetime
 import requests
 import re
-from datetime import timedelta
+from datetime import timedelta, datetime
+from collections import OrderedDict
+from operator import *
 from countries import countries
 
 def identify_country(country):
@@ -35,7 +37,7 @@ def identify_country(country):
 def generate_data():
     GIT = 'https://raw.githubusercontent.com/'
     PATH = 'CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
-    TODAY = datetime.datetime.now()
+    TODAY = datetime.now()
     FILENAME = '{:02d}-{:02d}-{}.csv'.format(TODAY.month, TODAY.day, TODAY.year)
     URL = '{}{}{}'.format(GIT, PATH, FILENAME)
 
@@ -49,11 +51,12 @@ def generate_data():
     df = pd.read_csv(URL, error_bad_lines=False)
 
     dataset = {}
-
+    total = {}
+    total['Confirmed'] = 0
+    total['Deaths'] = 0
+    total['Recovered'] = 0
     for index, row in df.iterrows():
         convert_country = identify_country(row['Country_Region'])
-        convert_country = identify_country(row['Country_Region'])
-        # print(countries.get(convert_country, ""))
         data = dataset.get(convert_country, False)
         if not data:
 
@@ -71,4 +74,55 @@ def generate_data():
             dataset[convert_country]['Recovered'] += row['Recovered']
             dataset[convert_country]['Active'] += row['Active']
 
+    return OrderedDict(sorted(dataset.items(), reverse=True, key=lambda x: getitem(x[1], 'Confirmed')))
+
+def head_generate_data():
+    dataset = generate_data()
+    while len(dataset) > 5:
+        dataset.popitem()
+    print(dataset)
+
     return dataset
+
+def generate_total():
+    GIT = 'https://raw.githubusercontent.com/'
+    PATH = 'CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
+    TODAY = datetime.now()
+    FILENAME = '{:02d}-{:02d}-{}.csv'.format(TODAY.month, TODAY.day, TODAY.year)
+    URL = '{}{}{}'.format(GIT, PATH, FILENAME)
+
+    r = requests.get(URL)
+    while not r.ok:
+        TODAY = TODAY - timedelta(days=1)
+        FILENAME = '{:02d}-{:02d}-{}.csv'.format(TODAY.month, TODAY.day, TODAY.year)
+        URL = '{}{}{}'.format(GIT, PATH, FILENAME)
+        r = requests.get(URL)
+
+    df = pd.read_csv(URL, error_bad_lines=False)
+
+    total = {}
+    total['Confirmed'], total['Deaths'], total['Recovered'], total['Active'] = 0, 0, 0, 0
+    for index, row in df.iterrows():
+        total['Confirmed'] += row['Confirmed']
+        total['Deaths'] += row['Deaths']
+        total['Recovered'] += row['Recovered']
+        total['Active'] += row['Active']
+
+    return total
+
+def validate_date(d):
+    try:
+        date = datetime.strptime(d, "%Y-%m-%d")
+        if date > datetime.now():
+            return False;
+        return True
+    except ValueError:
+        return False
+
+def json_to_string(s):
+    ret = str(s)
+    ret = re.sub('\'', '\"', ret)
+    ret = re.sub('[a-zA-Z]\,', '', ret)
+    ret = re.sub('[a-zA-Z]\"[a-zA-Z]', '', ret)
+
+    return ret
