@@ -3,7 +3,6 @@
 {% block body %}
     <div class="row m-0 p-0">
         <div class="col-lg-4 p-0" style="height: 100vh; overflow: scroll">
-
             <nav class="navbar navbar-light sticky-top">
                 <h1 class="navbar-brand mb-0 ml-5">API-demic</h1>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,20 +13,26 @@
                         <a class="nav-item nav-link active" href="#">Home</a>
                         <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">Latest Article</a>
                         <a class="nav-item nav-link" href="{{ url_for('covid19') }}">COVID Live Map</a>
+                        <a class="nav-item nav-link" href="{{ url_for('info') }}">Infography</a>
                         <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
                     </div>
                 </div>
             </nav>
+            <div class="pt-3"></div>
 
-
-            <span class="text-center">Covid 19 Live</span>
+            <h2 class="text-center">Covid-19 Live Map</h2>
             <section class="container pb-5">
-                <h4>Tips</h4>
-                1. Wash your hands frequently <br>
-                2. Maintain social distancing <br>
-                3. Avoid touching eyes, nose and mouth <br>
-                4. Practice respiratory hygiene <br>
-                5. If you have fever, cough and difficulty breathing, seek medical care early <br>
+                <h4>Advice to prevent getting sick</h4>
+                1. Wash your hands often <br>
+                2. Practise social distancing <br>
+                3. Avoid touching your faces and others <br>
+                4. Wear mask to limit exposure when going outside <br>
+                5. If you have sick, stay home and call your doctor <br>
+                6. Be sure to follow your country's social gathering limit
+
+                For more information to protect yourself
+                <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public" target="_blank">WHO, Advice for Public</a> <br>
+                https://www.cdc.gov/coronavirus/2019-ncov/faq.html <br>
             </section>
 
             <section class="container">

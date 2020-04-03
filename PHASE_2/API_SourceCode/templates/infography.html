@@ -2,7 +2,9 @@
 
 {% block body %}
     {% include 'nav.html' %}
-    <div class="text-center" style="width: 75%; margin: 0 auto; ">
+
+    <div style="width: 75%; margin: 0 auto; ">
+        <h2>Global and Country Statistic</h2>
         <input type="text" id="country" placeholder="Enter country" list="contry-list" value="Australia">
         <datalist id="contry-list"></datalist>
     </div>
@@ -35,6 +37,21 @@
                     </tr>
                 </tbody>
             </table>
+
+            <section class="text-center">
+                <div class="">
+                    <h3>Fatality Rate</h3>
+                    <div id="g-fr"></div>
+                </div>
+                <div class="">
+                    <h3>Recovery Rate</h3>
+                    <div id="g-rr"></div>
+                </div>
+                <div class="">
+                    <h3>Active Cases</h3>
+                    <div id="g-ac"></div>
+                </div>
+            </section>
         </div>
         <div class="col-md-6">
 
@@ -65,55 +82,159 @@
                 </tbody>
             </table>
 
-            <button id="showWorstAffected" type="button" class="btn btn-primary">Primary</button>
-
+            <section class="text-center">
+                <div class="">
+                    <h3>Fatality Rate</h3>
+                    <div id="c-fr"></div>
+                </div>
+                <div class="">
+                    <h3>Recovery Rate</h3>
+                    <div id="c-rr"></div>
+                </div>
+                <div class="">
+                    <h3>Active Cases</h3>
+                    <div id="c-ac"></div>
+                </div>
+            </section>
         </div>
     </div>
 
-    <section class="text-center">
-        <img alt="flatten the curve (COVID-19)" class="img-size" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif">
-        <p>Source: Wikimedia</p>
+    <section id="news" class="container hr pt-5 pb-5">
+        <h2 id="news-header"></h2>
+        <br><br><br><br><br><br><br><br>
     </section>
 
-    <h2>Countries current curves (5 Most Affected + Chosen Country)</h2>
+    <section id="information" class="container pt-5 pb-5">
+        <h2>Advice and Resources</h2>
 
-    <div class="container">
-        <div class="">Cases from 100</div>
-        <div id="flat_curve_1" class="chart-lg"></div>
-    </div>
+        <section class="container hr pt-5 pb-5">
+            <h3>Flatten The Curve</h3>
+            <img alt="flatten the curve (COVID-19)" class="img-size" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif">
+            <p class="text-center">
+                Source:
+                <a href="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif" target="_blank">Wikimedia</a>
+            </p>
+
+            <div class="container">
+                <div id="flat_curve_1" class="chart-lg"></div>
+            </div>
+
+            <h4 class="pt-2">What is an epidemic curve?</h4>
+            During any pandemic, healthcare resources like hospitals, ICU beds, and healthcare staff can be overwhelmed by the more number of patients, beyond the baseline number of patients who are already being cared for by the healthcare system. An epidemic curve is drawn to visualize the progress of a disease outbreak over time. This curve gives us a brief regarding the number of new outbreak cases by date of onset of the disease and hence the overall shape of the curve can reveal the type of outbreak we're dealing with.
+
+            <h4 class="pt-2">Healthcare capacity line:</h4>
+            The horizontal line represents the capacity of the country’s healthcare system. This capacity can be defined as the number of beds, staffing, and other measures available for patient care. Today, due to COVID-19 most of the countries are already operating close to the capacity line and the curve posses a threat of crossing this line as the virus spreads very rapidly.
+
+            <h4 class="pt-2">What happens when the line is crossed?</h4>
+            When the epidemic curve crosses the healthcare capacity line, the healthcare system can no longer meet the needs of COVID-19 patients and the other types of patients. At this point, people may not get the best care and the mortality rate starts to rise rapidly.
+
+            <h4 class="pt-2">What is flattening the curve?</h4>
+            A large number of lives can be saved by just ensuring that people get sick at a slower rate. This is termed as flattening the epidemic curve. A flattened curve indicates that the same number of people ultimately get infected with coronavirus but spread over a longer period which leads to a less stressed health care system.
+
+            <h4 class="pt-2">When does flattening the COVID-19 epidemic curve take place?</h4>
+            The most important key factor to flatten the curve is social distancing. The objective of social distancing or self-isolation is to reduce the probability of close contact between persons carrying an infection, and others who are not infected, thus minimizing the virus transmission. This is the underlying reason why governments are closing schools, non-critical businesses, social/sports events and other places where a ton people gather.
+
+            <h4 class="pt-2">Can social distancing alone flatten the curve?</h4>
+            By limiting interactions between individuals, we can limit the spread of the disease but that doesn’t mean it is the only effective way to flatten the curve. There are several other factors that you can do to aid flatten the curve such as practicing good hygiene by washing your hands, using sanitizers, cleaning frequently touched surfaces and self-isolating in confirmed and suspected cases.
+
+            <h4 class="pt-2">How can we help in flattening the curve?</h4>
+            As the severity of COVID-19 rises, it's clear that our best option is to flatten the epidemic curve. So here is the list of things every individual is recommended to follow :</li>
+            <ul>
+                <li>Wash your hands as frequently as you can.</li>
+                <li>Practice efficient social distancing.</li>
+                <li>Stay home.</li>
+                <li>Proper usage of sanitizers.</li>
+                <li>Don’t go for hospitals unless necessary.</li>
+                <li>Don’t overbuy essential medical supplies like N95 masks which are required by healthcare providers while treating patients.</li>
+                <li>Most importantly, don't panic!</li>
+            </ul>
+        </section>
+
+        <section class="container hr pt-5 pb-5">
+            <h3>Mythbusters</h3>
+            <h4 class="pt-2"> Exposing yourself to the sun or to temperatures higher than 25C degrees DOES NOT prevent the coronavirus disease (COVID-19) </h4>
+            You can catch COVID-19, no matter how sunny or hot the weather is. Countries with hot weather have reported cases of COVID-19. To protect yourself, make sure you clean your hands frequently and thoroughly and avoid touching your eyes, mouth, and nose.
+
+            <h4 class="pt-2"> You can recover from the coronavirus disease (COVID-19). Catching the new coronavirus DOES NOT mean you will have it for life. </h4>
+            Most of the people who catch COVID-19 can recover and eliminate the virus from their bodies. If you catch the disease, make sure you treat your symptoms. If you have cough, fever, and difficulty breathing, seek medical care early – but call your health facility by telephone first. Most patients recover thanks to supportive care.
+
+            <h4 class="pt-2"> Being able to hold your breath for 10 seconds or more without coughing or feeling discomfort DOES NOT mean you are free from the coronavirus disease (COVID-19) or any other lung disease. </h4>
+            The most common symptoms of COVID-19 are dry cough, tiredness and fever. Some people may develop more severe forms of the disease, such as pneumonia. The best way to confirm if you have  the virus producing COVID-19 disease is with a laboratory test.  You cannot confirm it with this breathing exercise, which can even be dangerous.
+
+            <h4 class="pt-2"> Drinking alcohol does not protect you against COVID-19 and can be dangerous </h4>
+            Frequent or excessive alcohol consumption can increase your risk of health problems.
+
+            <h4 class="pt-2"> COVID-19 virus can be transmitted in areas with hot and humid climates </h4>
+            From the evidence so far, the COVID-19 virus can be transmitted in ALL AREAS, including areas with hot and humid weather. Regardless of climate, adopt protective measures if you live in, or travel to an area reporting COVID-19. The best way to protect yourself against COVID-19 is by frequently cleaning your hands. By doing this you eliminate viruses that may be on your hands and avoid infection that could occur by then touching your eyes, mouth, and nose.
+
+            <h4 class="pt-2"> Cold weather and snow CANNOT kill the new coronavirus. </h4>
+            There is no reason to believe that cold weather can kill the new coronavirus or other diseases. The normal human body temperature remains around 36.5°C to 37°C, regardless of the external temperature or weather. The most effective way to protect yourself against the new coronavirus is by frequently cleaning your hands with alcohol-based hand rub or washing them with soap and water.
+
+            <h4 class="pt-2"> Taking a hot bath does not prevent the new coronavirus disease </h4>
+            Taking a hot bath will not prevent you from catching COVID-19. Your normal body temperature remains around 36.5°C to 37°C, regardless of the temperature of your bath or shower. Actually, taking a hot bath with extremely hot water can be harmful, as it can burn you. The best way to protect yourself against COVID-19 is by frequently cleaning your hands. By doing this you eliminate viruses that may be on your hands and avoid infection that could occur by then touching your eyes, mouth, and nose.
+
+            <h4 class="pt-2"> The new coronavirus CANNOT be transmitted through mosquito bites. </h4>
+            To date there has been no information nor evidence to suggest that the new coronavirus could be transmitted by mosquitoes. The new coronavirus is a respiratory virus which spreads primarily through droplets generated when an infected person coughs or sneezes, or through droplets of saliva or discharge from the nose. To protect yourself, clean your hands frequently with an alcohol-based hand rub or wash them with soap and water. Also, avoid close contact with anyone who is coughing and sneezing.
+
+            <h4 class="pt-2"> Are hand dryers effective in killing the new coronavirus? </h4>
+            No. Hand dryers are not effective in killing the 2019-nCoV. To protect yourself against the new coronavirus, you should frequently clean your hands with an alcohol-based hand rub or wash them with soap and water. Once your hands are cleaned, you should dry them thoroughly by using paper towels or a warm air dryer.
+
+            <h4 class="pt-2"> Can an ultraviolet disinfection lamp kill the new coronavirus? </h4>
+            UV lamps should not be used to sterilize hands or other areas of skin as UV radiation can cause skin irritation.
+
+            <h4 class="pt-2"> How effective are thermal scanners in detecting people infected with the new coronavirus? </h4>
+            Thermal scanners are effective in detecting people who have developed a fever (i.e. have a higher than normal body temperature) because of infection with the new coronavirus.
+            However, they cannot detect people who are infected but are not yet sick with fever. This is because it takes between 2 and 10 days before people who are infected become sick and develop a fever.
+
+            <h4 class="pt-2"> Can spraying alcohol or chlorine all over your body kill the new coronavirus? </h4>
+            No. Spraying alcohol or chlorine all over your body will not kill viruses that have already entered your body. Spraying such substances can be harmful to clothes or mucous membranes (i.e. eyes, mouth). Be aware that both alcohol and chlorine can be useful to disinfect surfaces, but they need to be used under appropriate recommendations.
+
+            <h4 class="pt-2"> Do vaccines against pneumonia protect you against the new coronavirus? </h4>
+            No. Vaccines against pneumonia, such as pneumococcal vaccine and Haemophilus influenza type B (Hib) vaccine, do not provide protection against the new coronavirus.
+            The virus is so new and different that it needs its own vaccine. Researchers are trying to develop a vaccine against 2019-nCoV, and WHO is supporting their efforts.
+            Although these vaccines are not effective against 2019-nCoV, vaccination against respiratory illnesses is highly recommended to protect your health.
+
+            <h4 class="pt-2"> Can regularly rinsing your nose with saline help prevent infection with the new coronavirus? </h4>
+            No. There is no evidence that regularly rinsing the nose with saline has protected people from infection with the new coronavirus.
+            There is some limited evidence that regularly rinsing nose with saline can help people recover more quickly from the common cold. However, regularly rinsing the nose has not been shown to prevent respiratory infections.
+
+
+            <h4 class="pt-2"> Can eating garlic help prevent infection with the new coronavirus? </h4>
+            Garlic is a healthy food that may have some antimicrobial properties. However, there is no evidence from the current outbreak that eating garlic has protected people from the new coronavirus.
+
+            <h4 class="pt-2"> Does the new coronavirus affect older people, or are younger people also susceptible? </h4>
+            People of all ages can be infected by the new coronavirus (2019-nCoV). Older people, and people with pre-existing medical conditions (such as asthma, diabetes, heart disease) appear to be more vulnerable to becoming severely ill with the virus.
+            WHO advises people of all ages to take steps to protect themselves from the virus, for example by following good hand hygiene and good respiratory hygiene.
+
+            <h4 class="pt-2"> Are antibiotics effective in preventing and treating the new coronavirus? </h4>
+            No, antibiotics do not work against viruses, only bacteria.
+            The new coronavirus (2019-nCoV) is a virus and, therefore, antibiotics should not be used as a means of prevention or treatment.
+            However, if you are hospitalized for the 2019-nCoV, you may receive antibiotics because bacterial co-infection is possible.
+
+            <h4 class="pt-2"> Are there any specific medicines to prevent or treat the new coronavirus? </h4>
+            To date, there is no specific medicine recommended to prevent or treat the new coronavirus (2019-nCoV).
+            However, those infected with the virus should receive appropriate care to relieve and treat symptoms, and those with severe illness should receive optimized supportive care. Some specific treatments are under investigation, and will be tested through clinical trials. WHO is helping to accelerate research and development efforts with a range or partners.
+
+            <p class="text-center">
+                Source:
+                <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters" target="_blank">(WHO) Coronavirus disease (COVID-19) advice for the public: Myth busters</a>
+            </p>
+        </section>
+
+        <section class="container hr pt-5 pb-5">
+            <h3>Useful Links</h3>
+            <ul style="border-left: 2px solid #2979FF; list-style-type: none;">
+                <li><a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/events-as-they-happen" target="_blank">WHO News</a></li>
+                <li><a href="https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-health-alert/coronavirus-covid-19-current-situation-and-case-numbers" target="_blank">Australia Covid</a></li>
+                <li><a href="#" target="_blank"></a></li>
+                <li><a href="#" target="_blank"></a></li>
+                <li><a href="#" target="_blank"></a></li>
+            </ul>
+        </section>
+    </section>
 
     <section class="container">
-        <h2>What is an epidemic curve?</h2>
-        During any pandemic, healthcare resources like hospitals, ICU beds, and healthcare staff can be overwhelmed by the more number of patients, beyond the baseline number of patients who are already being cared for by the healthcare system. An epidemic curve is drawn to visualize the progress of a disease outbreak over time. This curve gives us a brief regarding the number of new outbreak cases by date of onset of the disease and hence the overall shape of the curve can reveal the type of outbreak we're dealing with.
 
-        <h2>Healthcare capacity line:</h2>
-        The horizontal line represents the capacity of the country’s healthcare system. This capacity can be defined as the number of beds, staffing, and other measures available for patient care. Today, due to COVID-19 most of the countries are already operating close to the capacity line and the curve posses a threat of crossing this line as the virus spreads very rapidly.
-
-        <h2>What happens when the line is crossed?</h2>
-        When the epidemic curve crosses the healthcare capacity line, the healthcare system can no longer meet the needs of COVID-19 patients and the other types of patients. At this point, people may not get the best care and the mortality rate starts to rise rapidly.
-
-        <h2>What is flattening the curve?</h2>
-        A large number of lives can be saved by just ensuring that people get sick at a slower rate. This is termed as flattening the epidemic curve. A flattened curve indicates that the same number of people ultimately get infected with coronavirus but spread over a longer period which leads to a less stressed health care system.
-
-        <h2>When does flattening the COVID-19 epidemic curve take place?</h2>
-        The most important key factor to flatten the curve is social distancing. The objective of social distancing or self-isolation is to reduce the probability of close contact between persons carrying an infection, and others who are not infected, thus minimizing the virus transmission. This is the underlying reason why governments are closing schools, non-critical businesses, social/sports events and other places where a ton people gather.
-
-        <h2>Can social distancing alone flatten the curve?</h2>
-        By limiting interactions between individuals, we can limit the spread of the disease but that doesn’t mean it is the only effective way to flatten the curve. There are several other factors that you can do to aid flatten the curve such as practicing good hygiene by washing your hands, using sanitizers, cleaning frequently touched surfaces and self-isolating in confirmed and suspected cases.
-
-        <h2>How can we help in flattening the curve?</h2>
-        As the severity of COVID-19 rises, it's clear that our best option is to flatten the epidemic curve. So here is the list of things every individual is recommended to follow :</li>
-        <ul>
-            <li>Wash your hands as frequently as you can.</li>
-            <li>Practice efficient social distancing.</li>
-            <li>Stay home.</li>
-            <li>Proper usage of sanitizers.</li>
-            <li>Don’t go for hospitals unless necessary.</li>
-            <li>Don’t overbuy essential medical supplies like N95 masks which are required by healthcare providers while treating patients.</li>
-            <li>Most importantly, don't panic!</li>
-        </ul>
-
-        <p class="text-center">Source: Commutatus</p>
     </section>
 
     <!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
@@ -139,6 +260,11 @@
             document.getElementById(`t-${x}-c`).innerText = `${p1.confirmed}`;
             document.getElementById(`t-${x}-d`).innerText = `${p1.deaths}`;
             document.getElementById(`t-${x}-r`).innerText = `${p1.recovered}`;
+
+            document.getElementById(`${x}-fr`).innerText = `${(p1.deaths/p1.confirmed).toFixed(4)}%`;
+            document.getElementById(`${x}-rr`).innerText = `${(p1.recovered/p1.confirmed).toFixed(4)}%`;
+            document.getElementById(`${x}-ac`).innerText = `${p1.confirmed-p1.deaths-p1.recovered}`;
+
             let ccc = document.getElementById(`c-${x}-c`);
             if(p1.confirmed-p2.confirmed > 0) {
                 ccc.classList.add('text-danger');
@@ -199,6 +325,13 @@
             combinedData.jsonG = values[0];
             combinedData.jsonC = values[1];
 
+            let countryList = document.getElementById('contry-list');
+            for (var key in combinedData.jsonC) {
+                let option = document.createElement('option');
+                option.setAttribute('value', `${key}`);
+                countryList.appendChild(option);
+            }
+
             google.load("visualization", "1", { packages: ["corechart"] });
             google.setOnLoadCallback(drawChart1);
             function drawChart1() {
@@ -221,43 +354,40 @@
                 chart.draw(input, options);
             }
 
-
-            let showWorstAffected = 0;
             google.setOnLoadCallback(function(){ drawChart2("Australia") });
             function drawChart2(countryName) {
-                let countryList = document.getElementById('contry-list');
-                for (var key in combinedData.jsonC) {
-                    let option = document.createElement('option');
-                    option.setAttribute('value', `${key}`);
-                    countryList.appendChild(option);
-                }
-
                 var input = new google.visualization.DataTable();
-                input.addColumn('number', 'date');
-                input.addColumn('number', `${countryName}`);
-                if (showWorstAffected == 1) {
-                    for (var i in head) { input.addColumn('number', i); }
-                }
+                input.addColumn('date', 'date');
+                input.addColumn('number', 'confirmed');
+                input.addColumn('number', 'deaths');
 
                 let selectedCountry = combinedData.jsonC[countryName];
                 let daysSinceFirstCase = 0;
                 for (var stat in selectedCountry) {
-                    if(selectedCountry[stat].confirmed >= 0) {
-                        let row = [
-                            daysSinceFirstCase,
-                            selectedCountry[stat].confirmed
-                        ];
-                        daysSinceFirstCase += 1;
-                        input.addRow(row);
-                    }
-                    if (showWorstAffected == 1) {
-                        for (var i in head) { row.push(combinedData.jsonC[i][stat].confirmed); }
-                    }
+                    let row = [ new Date(selectedCountry[stat].date), selectedCountry[stat].confirmed, selectedCountry[stat].deaths ];
+                    input.addRow(row);
                 }
 
-                var prevDay = selectedCountry[selectedCountry.length - 1];
+                var prevDay = selectedCountry[selectedCountry.length - 1];  // Latest on country
                 var twoPrevDay  = selectedCountry[selectedCountry.length - 2];
                 populateCountryTable(prevDay, twoPrevDay, "c");
+
+                // News Sections
+                let newsHeader = document.getElementById('news-header');
+                newsHeader.innerText = `Lastest News in ${countryName}`;
+                // var myHeaders = new Headers();
+                // myHeaders.append("Subscription-Key", "3009d4ccc29e4808af1ccc25c69b4d5d");
+                //
+                // var requestOptions = {
+                //     method: 'GET',
+                //     headers: myHeaders,
+                //     redirect: 'follow'
+                // };
+                //
+                // fetch("https://api.smartable.ai/coronavirus/news/US", requestOptions)
+                //   .then(response => response.text())
+                //   .then(result => console.log(result))
+                //   .catch(error => console.log('error', error));
 
                 options['title'] = `${countryName}`;
                 var chart = new google.visualization.LineChart(document.getElementById('country_chart'));
@@ -292,8 +422,6 @@
                     // console.log(row);
                     input.addRow(row);
                 }
-
-                console.log(input)
 
                 var optionsLog = {
                     title: 'Most 5 countries known cases',
@@ -354,12 +482,7 @@
                 drawChart1();
                 drawChart2(document.getElementById('country').value);
 
-                drawFlattenCurve("Australia");
-            });
-
-            document.getElementById('showWorstAffected').addEventListener('click', () => {
-                showWorstAffected = 1 - showWorstAffected;
-                drawChart2(document.getElementById('country').value);
+                drawFlattenCurve(document.getElementById('country').value);
             });
 
             const query = document.querySelector('input');

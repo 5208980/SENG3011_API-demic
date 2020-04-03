@@ -73,7 +73,7 @@ def generate_data():
 
 def head_generate_data():
     dataset = generate_data()
-    while len(dataset) > 5:
+    while len(dataset) > 10:
         dataset.popitem()
 
     return dataset

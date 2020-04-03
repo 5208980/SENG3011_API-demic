@@ -3,11 +3,24 @@
 {% block body %}
     {% include 'nav.html' %}
 
-    <h1>About</h1>
-    <h1>Disclaimer</h1>
-    <div class="container">
-        This website was designed for educational purpose. The COVID19 live map uses dataset provided from
-        Center for Systems Science and Engineering (CSSE) at Johns Hopkins University. The interactive map
-    </div>
+    <section class="container">
+        <section class="container hr pt-5 pb-5">
+            <h3>About</h3>
+            <div class="text-center">
+                Made by Team API-demic from SENG3011
+            </div>
+        </section>
+
+        <section class="container hr pt-5 pb-5">
+            <h3>Data Source</h3>
+            <div class="">
+                This website was designed for educational purpose.
+                The COVID19 live map uses dataset provided from Center for Systems Science and Engineering (CSSE) at Johns Hopkins University.
+                The interactive map was source by Leaflet, a js library for repsonsive and interactive maps.
+                Information regard advice and tips are information given by WHO.
+                News articles are API made from us and (OTHER TEAM), as well as Twitter.
+            </div>
+        </section>
+    </section>
 
 {% endblock %}
