@@ -106,8 +106,8 @@ countries = {
     "India": "IND",
     "British Indian Ocean Territory": "IOT",
     "Ireland": "IRL",
-    "Iran, Islamic Republic of": "IRN",
     "Iraq": "IRQ",
+    "Iran": "IRN",
     "Iceland": "ISL",
     "Israel": "ISR",
     "Italy": "ITA",
@@ -121,7 +121,7 @@ countries = {
     "Cambodia": "KHM",
     "Kiribati": "KIR",
     "Saint Kitts and Nevis": "KNA",
-    "Korea, Republic of": "KOR",
+    "Korea": "KOR",
     "Kuwait": "KWT",
     "Lao People's Democratic Republic": "LAO",
     "Lebanon": "LBN",
@@ -233,7 +233,7 @@ countries = {
     "Ukraine": "UKR",
     "United States Minor Outlying Islands": "UMI",
     "Uruguay": "URY",
-    "United States": "USA",
+    "US": "USA",
     "Uzbekistan": "UZB",
     "Holy See (Vatican City State)": "VAT",
     "Saint Vincent and the Grenadines": "VCT",
@@ -248,4 +248,4 @@ countries = {
     "South Africa": "ZAF",
     "Zambia": "ZMB",
     "Zimbabwe": "ZWE"
-}
+};

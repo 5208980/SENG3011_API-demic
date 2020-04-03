@@ -20,7 +20,7 @@
             </nav>
 
 
-            <h1 class="text-center text-bold">Covid 19 Live</h1>
+            <span class="text-center">Covid 19 Live</span>
             <section class="container pb-5">
                 <h4>Tips</h4>
                 1. Wash your hands frequently <br>
@@ -138,8 +138,9 @@
 
             if(convertCountry(i)) {
                 // convert ket to fix mapName
-                console.log(`${i} ${convertCountry(i)}`);
+                // console.log(`${i} ${convertCountry(i)}`);
                 json[convertCountry(i)] = json[i];
+                console.log(json[convertCountry(i)]);
                 delete json[i];
             }
         }
@@ -150,27 +151,15 @@
 
         function convertCountry(d) {
             let dict = {
-                "Bolivia, Plurinational State of" : "Bolivia",
-                "Brunei Darussalam" : "Brunei",
-                "Côte d'Ivoire" : "Ivory Coast",
-                "Congo, The Democratic Republic of the" : "Democratic Republic of the Congo",
-                "Congo" : "Republic of the Congo",
+                "US": "United States of America",
+                "Côte dIvoire" : "Ivory Coast",
                 "Czechia" : "Czech Republic",
                 "Falkland Islands (Malvinas)" : "Falkland Islands",
-                "Guinea-Bissau" : "Guinea Bissau",
-                "Iran, Islamic Republic of" : "Iran",
-                "Korea, Republic of" : "South Korea",
-                "Lao People's Democratic Republic" : "Laos",
-                "Moldova, Republic of" : "Moldova",
                 "North Macedonia" : "Macedonia",
-                "Russian Federation" : "Russia",
                 "Serbia" : "Republic of Serbia",
                 "Syrian Arab Republic" : "Syria",
                 "Timor-Leste" : "East Timor",
-                "Taiwan, Province of China" : "Taiwan",
-                "Tanzania, United Republic of" : "United Republic of Tanzania",
                 "United States" : "United States of America",
-                "Venezuela, Bolivarian Republic of" : "Venezuela",
                 "Viet Nam" : "Vietnam"
             }
 

@@ -1,0 +1,376 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% include 'nav.html' %}
+    <div class="text-center" style="width: 75%; margin: 0 auto; ">
+        <input type="text" id="country" placeholder="Enter country" list="contry-list" value="Australia">
+        <datalist id="contry-list"></datalist>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="global_chart" class="chart"></div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Confirmed</th>
+                        <th scope="col">Recovered</th>
+                        <th scope="col">Deaths</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-bold">Total</td>
+                        <td id="t-g-c">0</td>
+                        <td id="t-g-d">0</td>
+                        <td id="t-g-r">0</td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold">Change (Past day)</td>
+                        <td id="c-g-c">0</td>
+                        <td id="c-g-d">0</td>
+                        <td id="c-g-r">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+
+            <div id="country_chart" class="chart"></div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Confirmed</th>
+                        <th scope="col">Recovered</th>
+                        <th scope="col">Deaths</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-bold">Total</td>
+                        <td id="t-c-c">0</td>
+                        <td id="t-c-d">0</td>
+                        <td id="t-c-r">0</td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold">Change (Past day)</td>
+                        <td id="c-c-c">0</td>
+                        <td id="c-c-d">0</td>
+                        <td id="c-c-r">0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button id="showWorstAffected" type="button" class="btn btn-primary">Primary</button>
+
+        </div>
+    </div>
+
+    <section class="text-center">
+        <img alt="flatten the curve (COVID-19)" class="img-size" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif">
+        <p>Source: Wikimedia</p>
+    </section>
+
+    <h2>Countries current curves (5 Most Affected + Chosen Country)</h2>
+
+    <div class="container">
+        <div class="">Cases from 100</div>
+        <div id="flat_curve_1" class="chart-lg"></div>
+    </div>
+
+    <section class="container">
+        <h2>What is an epidemic curve?</h2>
+        During any pandemic, healthcare resources like hospitals, ICU beds, and healthcare staff can be overwhelmed by the more number of patients, beyond the baseline number of patients who are already being cared for by the healthcare system. An epidemic curve is drawn to visualize the progress of a disease outbreak over time. This curve gives us a brief regarding the number of new outbreak cases by date of onset of the disease and hence the overall shape of the curve can reveal the type of outbreak we're dealing with.
+
+        <h2>Healthcare capacity line:</h2>
+        The horizontal line represents the capacity of the country’s healthcare system. This capacity can be defined as the number of beds, staffing, and other measures available for patient care. Today, due to COVID-19 most of the countries are already operating close to the capacity line and the curve posses a threat of crossing this line as the virus spreads very rapidly.
+
+        <h2>What happens when the line is crossed?</h2>
+        When the epidemic curve crosses the healthcare capacity line, the healthcare system can no longer meet the needs of COVID-19 patients and the other types of patients. At this point, people may not get the best care and the mortality rate starts to rise rapidly.
+
+        <h2>What is flattening the curve?</h2>
+        A large number of lives can be saved by just ensuring that people get sick at a slower rate. This is termed as flattening the epidemic curve. A flattened curve indicates that the same number of people ultimately get infected with coronavirus but spread over a longer period which leads to a less stressed health care system.
+
+        <h2>When does flattening the COVID-19 epidemic curve take place?</h2>
+        The most important key factor to flatten the curve is social distancing. The objective of social distancing or self-isolation is to reduce the probability of close contact between persons carrying an infection, and others who are not infected, thus minimizing the virus transmission. This is the underlying reason why governments are closing schools, non-critical businesses, social/sports events and other places where a ton people gather.
+
+        <h2>Can social distancing alone flatten the curve?</h2>
+        By limiting interactions between individuals, we can limit the spread of the disease but that doesn’t mean it is the only effective way to flatten the curve. There are several other factors that you can do to aid flatten the curve such as practicing good hygiene by washing your hands, using sanitizers, cleaning frequently touched surfaces and self-isolating in confirmed and suspected cases.
+
+        <h2>How can we help in flattening the curve?</h2>
+        As the severity of COVID-19 rises, it's clear that our best option is to flatten the epidemic curve. So here is the list of things every individual is recommended to follow :</li>
+        <ul>
+            <li>Wash your hands as frequently as you can.</li>
+            <li>Practice efficient social distancing.</li>
+            <li>Stay home.</li>
+            <li>Proper usage of sanitizers.</li>
+            <li>Don’t go for hospitals unless necessary.</li>
+            <li>Don’t overbuy essential medical supplies like N95 masks which are required by healthcare providers while treating patients.</li>
+            <li>Most importantly, don't panic!</li>
+        </ul>
+
+        <p class="text-center">Source: Commutatus</p>
+    </section>
+
+    <!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var apiG = fetch('https://covidapi.info/api/v1/global/count').then(r => r.json());
+        var apiC = fetch('https://pomber.github.io/covid19/timeseries.json').then(r => r.json());
+
+        let str = '{{ data }}';
+        let res = str.replace(/&#34;/g, "\"");
+        let head = JSON.parse(res);
+        // console.log(head);
+
+        // Color Palete
+        let light = '#82B1FF';
+        let b2 = '#448AFF';
+        let primary = '#2979FF';
+        let b3 = '#2962FF';
+
+        let secondary = '#707070';
+
+        function populateCountryTable(p1, p2, x) {
+            document.getElementById(`t-${x}-c`).innerText = `${p1.confirmed}`;
+            document.getElementById(`t-${x}-d`).innerText = `${p1.deaths}`;
+            document.getElementById(`t-${x}-r`).innerText = `${p1.recovered}`;
+            let ccc = document.getElementById(`c-${x}-c`);
+            if(p1.confirmed-p2.confirmed > 0) {
+                ccc.classList.add('text-danger');
+                ccc.innerText = `+${p1.confirmed-p2.confirmed}`
+            } else { ccc.innerText = '0'; }
+            let ccd = document.getElementById(`c-${x}-d`);
+            if(p1.deaths-p2.deaths > 0) {
+                ccd.classList.add('text-success');
+                ccd.innerText = `+${p1.deaths-p2.deaths}`
+            } else { ccd.innerText = '0'; }
+            let ccr = document.getElementById(`c-${x}-r`);
+            if(p1.recovered-p2.recovered > 0) {
+                ccr.classList.add('text-danger');
+                ccr.innerText = `+${p1.recovered-p2.recovered}`
+            } else { ccr.innerText = '0'; }
+        }
+
+        var options = {
+            title: 'Global',
+            titleTextStyle: {
+                color: '#41454A',
+                fontName: 'Roboto',
+                fontSize: 18,
+                bold: false,
+            },
+            legend: {
+                position: 'bottom',
+                textStyle: {
+                    fontSize: 12, color: `${secondary}`,
+                }
+            },
+            chartArea: {width: '75%', height: '80%'},
+            vAxis: {
+                viewWindow: { min: 0 },
+                textStyle: {
+                    fontSize: 12, color: `${secondary}`,
+                },
+            },
+            hAxis: {
+                gridlines: { color: 'none' },
+                textStyle: {
+                    fontSize: 12, color: `${secondary}`,
+                },
+            },
+            animation:{
+                duration: 1000,
+                easing: 'out',
+                startup: true
+            },
+            series: {
+                0: { color: `${primary}` },
+                1: { color: `${light}` }
+            }
+        };
+
+        var combinedData = { jsonG: {}, jsonC: {} };
+        Promise.all([apiG , apiC]).then(values => {
+            combinedData.jsonG = values[0];
+            combinedData.jsonC = values[1];
+
+            google.load("visualization", "1", { packages: ["corechart"] });
+            google.setOnLoadCallback(drawChart1);
+            function drawChart1() {
+                var input = new google.visualization.DataTable();
+                input.addColumn('date', 'date');
+                input.addColumn('number', 'confirmed');
+                input.addColumn('number', 'deaths');
+                for (var key in combinedData.jsonG.result){
+                    input.addRow([new Date(key), combinedData.jsonG.result[key].confirmed, combinedData.jsonG.result[key].deaths])
+                }
+
+                combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 1]] // "carrot"
+
+                var prevDay = combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 1]];
+                var twoPrevDay = combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 2]];
+                populateCountryTable(prevDay, twoPrevDay, "g");
+
+                options['title'] = 'Global';
+                var chart = new google.visualization.LineChart(document.getElementById('global_chart'));
+                chart.draw(input, options);
+            }
+
+
+            let showWorstAffected = 0;
+            google.setOnLoadCallback(function(){ drawChart2("Australia") });
+            function drawChart2(countryName) {
+                let countryList = document.getElementById('contry-list');
+                for (var key in combinedData.jsonC) {
+                    let option = document.createElement('option');
+                    option.setAttribute('value', `${key}`);
+                    countryList.appendChild(option);
+                }
+
+                var input = new google.visualization.DataTable();
+                input.addColumn('number', 'date');
+                input.addColumn('number', `${countryName}`);
+                if (showWorstAffected == 1) {
+                    for (var i in head) { input.addColumn('number', i); }
+                }
+
+                let selectedCountry = combinedData.jsonC[countryName];
+                let daysSinceFirstCase = 0;
+                for (var stat in selectedCountry) {
+                    if(selectedCountry[stat].confirmed >= 0) {
+                        let row = [
+                            daysSinceFirstCase,
+                            selectedCountry[stat].confirmed
+                        ];
+                        daysSinceFirstCase += 1;
+                        input.addRow(row);
+                    }
+                    if (showWorstAffected == 1) {
+                        for (var i in head) { row.push(combinedData.jsonC[i][stat].confirmed); }
+                    }
+                }
+
+                var prevDay = selectedCountry[selectedCountry.length - 1];
+                var twoPrevDay  = selectedCountry[selectedCountry.length - 2];
+                populateCountryTable(prevDay, twoPrevDay, "c");
+
+                options['title'] = `${countryName}`;
+                var chart = new google.visualization.LineChart(document.getElementById('country_chart'));
+                chart.draw(input, options);
+            }
+
+            google.setOnLoadCallback(function(){
+                drawFlattenCurve("Australia");
+            });
+            function drawFlattenCurve(countryName) {
+                var input = new google.visualization.DataTable();
+                input.addColumn('number', 'date');
+
+                let arr = [];
+                input.addColumn('number', `${countryName}`);
+                input.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
+
+                arr.push(analysis(countryName))
+                for (i in head) {
+                    input.addColumn('number', `${i}`);
+                    input.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
+                    arr.push(analysis(i))
+                }
+
+                let maxDay = Math.max(...arr.map((arr) => arr.days))
+                for(let day = 0; day < maxDay; day++) {
+                    let row = [day];
+                    for(i in arr) {
+                        let div = '<div style="border-radius: 0;"><span style="color: black; font-size: 22px;">' + `${arr[i]['cases'][day]}` +'</span> <br> <span>' + `${arr[i]['name']} Day: ${day}` + '</span></div>';
+                        row.push(arr[i]['cases'][day], div)
+                    }
+                    // console.log(row);
+                    input.addRow(row);
+                }
+
+                console.log(input)
+
+                var optionsLog = {
+                    title: 'Most 5 countries known cases',
+                    titleTextStyle: {
+                        color: '#41454A',
+                        fontName: 'Roboto',
+                        fontSize: 18,
+                        bold: false,
+                    },
+                    legend: {
+                        position: 'bottom',
+                        textStyle: {
+                            fontSize: 12, color: `${secondary}`,
+                        }
+                    },
+                    chartArea: {width: '75%', height: '80%'},
+                    vAxis: {
+                        viewWindow: { min: 100 }, scaleType: 'log',
+                        textStyle: {
+                            fontSize: 12, color: `${secondary}`,
+                        },
+                        ticks: [100,1000,10000,100000,500000]
+                    },
+                    hAxis: {
+                        gridlines: { color: 'none' },
+                        textStyle: {
+                            fontSize: 12, color: `${secondary}`,
+                        },
+                        // title: 'Days'
+                    },
+                    animation:{
+                        duration: 1000,
+                        easing: 'out',
+                        startup: true
+                    },
+                    tooltip: {isHtml: true}
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById(`flat_curve_1`));
+                chart.draw(input, optionsLog);
+
+                function analysis(countryName) {
+                    let c = { name: `${countryName}`, cases: [] };
+                    let daysSinceFirstCase = 0;
+                    let selectedCountry = combinedData.jsonC[countryName];
+                    for (var stat in selectedCountry) {
+                        if(selectedCountry[stat].confirmed >= 100) {
+                            c['cases'].push(selectedCountry[stat].confirmed)
+                            daysSinceFirstCase += 1;
+                        }
+                    }
+                    c['days'] = daysSinceFirstCase;
+                    return c;
+                }
+            }
+
+            $(window).resize(function(){
+                drawChart1();
+                drawChart2(document.getElementById('country').value);
+
+                drawFlattenCurve("Australia");
+            });
+
+            document.getElementById('showWorstAffected').addEventListener('click', () => {
+                showWorstAffected = 1 - showWorstAffected;
+                drawChart2(document.getElementById('country').value);
+            });
+
+            const query = document.querySelector('input');
+            query.addEventListener('change', (e) => {
+                drawChart2(e.target.value);
+                drawFlattenCurve(e.target.value);
+            });
+
+            return combinedData;
+        });
+
+        // console.log(combinedData);
+</script>
+{% endblock %}

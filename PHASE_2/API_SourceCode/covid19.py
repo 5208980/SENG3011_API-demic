@@ -3,6 +3,7 @@ import json
 import datetime
 import requests
 import re
+from bs4 import BeautifulSoup   # to scrape data from html requests
 from datetime import timedelta, datetime
 from collections import OrderedDict
 from operator import *
@@ -10,24 +11,16 @@ from countries import countries
 
 def identify_country(country):
     switcher = {
-        "US": "United States",
-        "Bolivia": "Bolivia, Plurinational State of",
-        "Brunei": "Brunei Darussalam",
-        "Congo (Brazzaville)": "Congo",
-        "Congo (Kinshasa)": "Congo, The Democratic Republic of the",
-        "Cote d'Ivoire": "Côte d'Ivoire",
+        # "US": "United States",
+        "Congo (Brazzaville)": "Republic of the Congo",
+        "Congo (Kinshasa)": "Democratic Republic of the Congo",
         "Diamond Princess": "",
         "Holy See": "Holy See (Vatican City State)",
-        "Iran": "Iran, Islamic Republic of",
-        "Korea, South": "Korea, Republic of",
+        "Korea, South": "South Korea",
         "Kosovo": "",
-        "Laos": "Lao People's Democratic Republic",
-        "Moldova": "Moldova, Republic of",
-        "Russia": "Russian Federation",
         "Syria": "Syrian Arab Republic",
-        "Taiwan*": "Taiwan, Province of China",
-        "Tanzania": "Tanzania, United Republic of",
-        "Venezuela": "Venezuela, Bolivarian Republic of",
+        "Taiwan*": "Taiwan",
+        "Tanzania": "United Republic of Tanzania",
         "Vietnam": "Viet Nam",
         "West Bank and Gaza": "",
     }
@@ -57,6 +50,8 @@ def generate_data():
     total['Recovered'] = 0
     for index, row in df.iterrows():
         convert_country = identify_country(row['Country_Region'])
+        convert_country = re.sub('\,', '', convert_country)
+        convert_country = re.sub('\"', '', convert_country)
         data = dataset.get(convert_country, False)
         if not data:
 
@@ -80,7 +75,6 @@ def head_generate_data():
     dataset = generate_data()
     while len(dataset) > 5:
         dataset.popitem()
-    print(dataset)
 
     return dataset
 
@@ -122,7 +116,17 @@ def validate_date(d):
 def json_to_string(s):
     ret = str(s)
     ret = re.sub('\'', '\"', ret)
-    ret = re.sub('[a-zA-Z]\,', '', ret)
-    ret = re.sub('[a-zA-Z]\"[a-zA-Z]', '', ret)
 
     return ret
+
+# def covidWhoAdvice():
+#     html_doc = requests.get('https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public')
+#     soup = BeautifulSoup(html_doc.content, 'html.parser')
+#
+#     main = soup.find(id="PageContent_C003_Col01")
+#     blocks = main.findAll("div", {"class": "content-block"})
+#
+#     for block in blocks:
+#         print(block.get_text())
+#
+# covidWhoAdvice()

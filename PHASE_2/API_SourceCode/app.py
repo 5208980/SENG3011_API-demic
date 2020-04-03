@@ -42,10 +42,16 @@ def date_news(date):
         return render_template("about.html")
 
     data = json.dumps(head_generate_data())
-
     data_str = json_to_string(data)
 
     return render_template("news.html", start_date=date+"T00:00:01", end_date=date+"T23:59:59", data=data_str)
+
+@app.route("/info")
+def info():
+
+    data = json.dumps(head_generate_data())
+    data_str = json_to_string(data)
+    return render_template("infography.html", data=data_str)
 
 @app.route("/about")
 def about():
