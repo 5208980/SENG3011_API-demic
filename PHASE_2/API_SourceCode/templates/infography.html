@@ -104,16 +104,39 @@
         <br><br><br><br><br><br><br><br>
     </section>
 
+    <section id="graphs" class="container hr pt-5 pb-5">
+        <h2>Daily new confirmed cases [10 Most Affected]</h2>
+        <div class="row">
+        {% for i in range(0, 10) %}
+            <div class="col-md-6">
+                <div id="text-{{i}}"></div>
+                <div id="chart-{{i}}" class="chart">
+                    {{i}}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
     <section id="information" class="container pt-5 pb-5">
         <h2>Advice and Resources</h2>
 
         <section class="container hr pt-5 pb-5">
             <h3>Flatten The Curve</h3>
-            <img alt="flatten the curve (COVID-19)" class="img-size" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif">
-            <p class="text-center">
-                Source:
-                <a href="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif" target="_blank">Wikimedia</a>
-            </p>
+
+            <div class="row justify-content-center">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseImg">
+                    Click to view Gif
+                </button>
+            </div>
+
+            <div class="collapse" id="collapseImg">
+                <img alt="flatten the curve (COVID-19)" class="img-size" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif">
+                <p class="text-center">
+                    Source:
+                    <a href="https://upload.wikimedia.org/wikipedia/commons/c/c5/Covid-19-curves-graphic-social-v3.gif" target="_blank">Wikimedia</a>
+                </p>
+            </div>
 
             <div class="container">
                 <div id="flat_curve_1" class="chart-lg"></div>
@@ -292,22 +315,16 @@
             },
             legend: {
                 position: 'bottom',
-                textStyle: {
-                    fontSize: 12, color: `${secondary}`,
-                }
+                textStyle: { fontSize: 12, color: `${secondary}` }
             },
             chartArea: {width: '75%', height: '80%'},
             vAxis: {
                 viewWindow: { min: 0 },
-                textStyle: {
-                    fontSize: 12, color: `${secondary}`,
-                },
+                textStyle: { fontSize: 12, color: `${secondary}` }
             },
             hAxis: {
                 gridlines: { color: 'none' },
-                textStyle: {
-                    fontSize: 12, color: `${secondary}`,
-                },
+                textStyle: { fontSize: 12, color: `${secondary}` }
             },
             animation:{
                 duration: 1000,
@@ -317,7 +334,8 @@
             series: {
                 0: { color: `${primary}` },
                 1: { color: `${light}` }
-            }
+            },
+            tooltip: {isHtml: true}
         };
 
         var combinedData = { jsonG: {}, jsonC: {} };
@@ -404,12 +422,14 @@
                 let arr = [];
                 input.addColumn('number', `${countryName}`);
                 input.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
+                arr.push(analysis(countryName));
 
-                arr.push(analysis(countryName))
+                let n = 0;
                 for (i in head) {
                     input.addColumn('number', `${i}`);
                     input.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
-                    arr.push(analysis(i))
+                    cases(i, n); n += 1;
+                    arr.push(analysis(i));
                 }
 
                 let maxDay = Math.max(...arr.map((arr) => arr.days))
@@ -424,7 +444,7 @@
                 }
 
                 var optionsLog = {
-                    title: 'Most 5 countries known cases',
+                    title: '10 countries most affected + selected country',
                     titleTextStyle: {
                         color: '#41454A',
                         fontName: 'Roboto',
@@ -465,19 +485,101 @@
 
                 function analysis(countryName) {
                     let c = { name: `${countryName}`, cases: [] };
-                    let daysSinceFirstCase = 0;
+                    let daysSinceHundredCases = 0;
                     let selectedCountry = combinedData.jsonC[countryName];
                     for (var stat in selectedCountry) {
                         if(selectedCountry[stat].confirmed >= 100) {
                             c['cases'].push(selectedCountry[stat].confirmed)
-                            daysSinceFirstCase += 1;
+                            daysSinceHundredCases += 1;
                         }
                     }
-                    c['days'] = daysSinceFirstCase;
+                    c['days'] = daysSinceHundredCases;
+
                     return c;
+                }
+
+                function cases(countryName, n) {
+                    let selectedCountry = combinedData.jsonC[countryName];
+                    let daysSinceFirstCase = 0;
+                    var inputChart = new google.visualization.DataTable();
+                    inputChart.addColumn('date', 'date');
+                    inputChart.addColumn('number', 'new cases confirmed');
+
+                    for (var stat = 0; stat < selectedCountry.length; stat++) {
+                        if(selectedCountry[stat+1] !== undefined) {
+                            let row = [ new Date(selectedCountry[stat].date), selectedCountry[stat+1].confirmed-selectedCountry[stat].confirmed ];
+                            if(selectedCountry[stat].confirmed > 0) { daysSinceFirstCase += 1; }
+                            inputChart.addRow(row);
+                        }
+                    }
+
+                    var prevDay = selectedCountry[selectedCountry.length - 1];  // Latest on country
+                    var twoPrevDay  = selectedCountry[selectedCountry.length - 7];
+                    var threePrevDay = selectedCountry[selectedCountry.length - 14];
+                    let growthToday = prevDay.confirmed - twoPrevDay.confirmed;
+                    let growthYesterday = twoPrevDay.confirmed - threePrevDay.confirmed;
+                    // if(growthToday > growthYesterday) { console.log('UP'); }
+                    // else { console.log('DOWN'); }
+
+                    let d = new Date();
+                    d.setDate(d.getDate()-daysSinceFirstCase);
+                    // console.log(`${countryName}'s first case was report ${daysSinceFirstCase} ago on ${d.toLocaleString()}. Currently ${countryName} has reported ${prevDay.confirmed} cases and ${prevDay.deaths} deaths`);
+
+                    let information = document.getElementById(`text-${n}`);
+                    information.innerHTML = '';
+                    let header = document.createElement('div');
+                    header.classList.add('chart-title');
+                    header.innerText = `${countryName}`;
+                    let icon = document.createElement('span');
+                    icon.classList.add('material-icons', 'ml-5');
+                    if(growthToday > growthYesterday) {
+                        icon.classList.add('text-danger');
+                        icon.innerText = 'trending_up';
+                    } else {
+                        icon.classList.add('text-success');
+                        icon.innerText = 'trending_down';
+                    }
+                    header.appendChild(icon);
+                    information.appendChild(header);
+                    let text = document.createElement('div');
+                    text.innerText = `${countryName}'s first case was report ${daysSinceFirstCase} ago on ${d.toLocaleString().split(',')[0]}. Currently ${countryName} has reported ${prevDay.confirmed} cases and ${prevDay.deaths} deaths`;
+                    information.appendChild(text);
+
+                    var optionChart = {
+                        // title: `${countryName}`,
+                        // titleTextStyle: {
+                        //     color: '#41454A',
+                        //     fontName: 'Roboto',
+                        //     fontSize: 18,
+                        //     bold: false,
+                        // },
+                        legend: {
+                            position: 'bottom',
+                            textStyle: { fontSize: 12, color: `${secondary}` },
+                        },
+                        chartArea: {width: '75%', height: '80%'},
+                        vAxis: {
+                            textStyle: { fontSize: 12, color: `${secondary}` },
+                        },
+                        hAxis: {
+                            gridlines: { color: 'none' },
+                            textStyle: { fontSize: 12, color: `${secondary}` },
+                            // title: 'Days'
+                        },
+                        animation:{
+                            duration: 1000,
+                            easing: 'out',
+                            startup: true
+                        },
+                        tooltip: {isHtml: true}
+                    };
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById(`chart-${n}`));
+                    chart.draw(inputChart, optionChart);
                 }
             }
 
+            let graphs = document.getElementById('graphs');
             $(window).resize(function(){
                 drawChart1();
                 drawChart2(document.getElementById('country').value);
@@ -485,9 +587,15 @@
                 drawFlattenCurve(document.getElementById('country').value);
             });
 
-            const query = document.querySelector('input');
-            query.addEventListener('change', (e) => {
+            // const query = document.querySelector('input');
+            // query.addEventListener('change', (e) => {
+            //     drawChart2(e.target.value);
+            //     drawFlattenCurve(e.target.value);
+            // });
+
+            $('input').change((e) => {
                 drawChart2(e.target.value);
+
                 drawFlattenCurve(e.target.value);
             });
 
