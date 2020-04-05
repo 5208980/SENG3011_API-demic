@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <h1 class="navbar-brand mb-0 ml-5">API-demic</h1>
+    <h1 class="navbar-brand mb-0 ml-5">Covid Scout</h1>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="{{ url_for('latest_news') }}">Home</a>
+            <a class="nav-item nav-link active" href="{{ url_for('home') }}"><span class="material-icons text-secondary">home</span></a>
             <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">Latest Article</a>
             <a class="nav-item nav-link" href="{{ url_for('covid19') }}">COVID Live Map</a>
             <a class="nav-item nav-link" href="{{ url_for('info') }}">Infography</a>
@@ -13,4 +13,4 @@
         </div>
     </div>
 </nav>
-<div class="pt-5"></div>
+<!-- <div class="pt-5"></div> -->

@@ -2,5 +2,109 @@
 
 {% block body %}
     {% include 'nav.html' %}
+    <section class="bg">
+        <section class="text-center">
+            <div class="pb-5 pt-5" style="width: 75%; margin: 0 auto;">
+                <b>Covid Scout</b> is a website aimed to provide everyone with a better
+                understanding of covid-19, analysis its trend and statistics and help
+                the public protect themselves the those aroud them.
+            </div>
+            <h1 id="display-duration" class="text-bold"></h1>
+            <h4>Day since first reported</h4>
+            <p style="font-size: 10px;"><i>First report in China on 31 Dec 2019.</i>
+                Source: <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/events-as-they-happen">WHO</a>
+            </p>
 
+            <div class="row pb-5">
+                <div class="col-lg-4">
+                    <div>Confirmed</div>
+                    <h4 id="total-confirmed" class="text-bold">0</h4>
+                </div>
+                <div class="col-lg-4">
+                    <div>Deaths</div>
+                    <h4 id="total-deaths" class="text-bold text-danger">0</h4>
+                </div>
+                <div class="col-lg-4">
+                    <div>Recovered</div>
+                    <h4 id="total-recovered" class="text-bold text-success">0</h4>
+                </div>
+            </div>
+        </section>
+
+        <div class="row text-center">
+            <div class="col-md">
+                <a href="{{ url_for('covid19') }}">
+                    <div class="item">
+                        Live Map Tracker
+                        <!-- <div>
+                            Get the latest updated numbers on your country, and
+                            a visualization of the world's impact, through the heatmap
+                        </div> -->
+
+                        <span class="material-icons arrow">arrow_forward_ios</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md">
+                <a href="{{ url_for('info') }}">
+                    <div class="item">
+                        Data Center
+                        <!-- <div>
+                            Compare and get the latest data on covid-19 about the world,
+                            and countries.
+                        </div> -->
+
+                        <span class="material-icons arrow">arrow_forward_ios</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md">
+                <a href="{{ url_for('latest_news') }}">
+                    <div class="item">
+                        Latest News
+                        <!-- <div>
+                            Get the latest new from various source about covid-19
+                        </div> -->
+
+                        <span class="material-icons arrow">arrow_forward_ios</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- If More Info -->
+    <section></section>
+    <script type="text/javascript">
+
+        let str = '{{ total }}';
+        let res = str.replace(/&#34;/g, "\"");
+        let json = JSON.parse(res);
+        console.log(json);
+        document.getElementById('total-confirmed').innerHTML = `${formatNumber(json['Confirmed'])}`;
+        document.getElementById('total-deaths').innerHTML = `${formatNumber(json['Deaths'])}`;
+        document.getElementById('total-recovered').innerHTML = `${formatNumber(json['Recovered'])}`;
+
+
+        let today = new Date();
+        let start_date = new Date('2019-12-31');
+        let duration = (today.getTime() - start_date.getTime()) / (1000 * 3600 * 24);
+        console.log(duration);
+
+        let displayDuration = document.getElementById('display-duration');
+        console.log(displayDuration);
+        displayDuration.innerText = `${Math.round(duration)}`;
+
+        let items = document.getElementsByClassName('item');
+        let icons = document.getElementsByClassName('arrow');
+        console.log(icons);
+        for(i in items) {
+            let item = items[i];
+            let icon = icons[i];   // to account for home icon in nav
+            item.addEventListener('mouseover', () => { icon.classList.add('move-arrow'); })
+            item.addEventListener('mouseout', () => { icon.classList.remove('move-arrow'); })
+        }
+    </script>
+
+    {% include 'footer.html' %}
 {% endblock %}

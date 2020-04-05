@@ -8,11 +8,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    # response = requests.get("http://127.0.0.1:5000/v1.1/articles?start_date=2020-01-01T12:00:00&end_date=2020-02-01T10:00:00&location=australia&key_term=coronavirus")
-    # print(response.json())
-    # Fetch API will be called in JAVASCRIPT NOT PYTHON LIKE ABOVE
+    total_str = json_to_string(generate_total())
 
-    return render_template("index.html")
+    return render_template("index.html", total=total_str)
 
 @app.route("/covid19")
 def covid19():
