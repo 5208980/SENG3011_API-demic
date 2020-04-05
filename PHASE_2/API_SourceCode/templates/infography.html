@@ -393,19 +393,6 @@
                 // News Sections
                 let newsHeader = document.getElementById('news-header');
                 newsHeader.innerText = `Lastest News in ${countryName}`;
-                // var myHeaders = new Headers();
-                // myHeaders.append("Subscription-Key", "3009d4ccc29e4808af1ccc25c69b4d5d");
-                //
-                // var requestOptions = {
-                //     method: 'GET',
-                //     headers: myHeaders,
-                //     redirect: 'follow'
-                // };
-                //
-                // fetch("https://api.smartable.ai/coronavirus/news/US", requestOptions)
-                //   .then(response => response.text())
-                //   .then(result => console.log(result))
-                //   .catch(error => console.log('error', error));
 
                 options['title'] = `${countryName}`;
                 var chart = new google.visualization.LineChart(document.getElementById('country_chart'));
@@ -546,13 +533,6 @@
                     information.appendChild(text);
 
                     var optionChart = {
-                        // title: `${countryName}`,
-                        // titleTextStyle: {
-                        //     color: '#41454A',
-                        //     fontName: 'Roboto',
-                        //     fontSize: 18,
-                        //     bold: false,
-                        // },
                         legend: {
                             position: 'bottom',
                             textStyle: { fontSize: 12, color: `${secondary}` },
@@ -586,12 +566,6 @@
 
                 drawFlattenCurve(document.getElementById('country').value);
             });
-
-            // const query = document.querySelector('input');
-            // query.addEventListener('change', (e) => {
-            //     drawChart2(e.target.value);
-            //     drawFlattenCurve(e.target.value);
-            // });
 
             $('input').change((e) => {
                 drawChart2(e.target.value);
