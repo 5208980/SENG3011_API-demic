@@ -34,7 +34,19 @@ def latest_news():
     data_str = json_to_string(data)
     total_str = json_to_string(total)
 
-    return render_template("news.html", data=data_str, total=total_str) # Render News on covid this week
+    x = datetime.now()
+    
+    END = x.strftime("%Y") + "-" + x.strftime("%m") + "-" + x.strftime("%d") + "T" + x.strftime("%T")
+
+    START = ""
+    if int(x.strftime("%m")) == 1:
+        START = str(int(x.strftime("%Y")) - 1) + "-12-" + x.strftime("%d") + "T" + x.strftime("%T")
+    elif int(x.strftime("%m")) < 11:
+        START = x.strftime("%Y") + "-0" + str(int(x.strftime("%m")) - 1) + "-" + x.strftime("%d") + "T" + x.strftime("%T")
+    else:
+        START = x.strftime("%Y") + "-" + str(int(x.strftime("%m")) - 1) + "-" + x.strftime("%d") + "T" + x.strftime("%T")
+
+    return render_template("news.html", data=data_str, total=total_str, start = START, end = END) # Render News on covid this week
 
 @app.route("/news/<date>")
 def date_news(date):

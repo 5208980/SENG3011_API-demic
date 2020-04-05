@@ -95,9 +95,9 @@
     <script type="text/javascript">
         let str = '{{ data }}';
         let res = str.replace(/&#34;/g, "\"");
-
+       
         let json = JSON.parse(res);
-
+        console.log(json , "sadad")
         let accordion = document.getElementById('accordion');
         let total = { 'Confirmed': 0, 'Deaths': 0, 'Recovered': 0, }
         for(i in json) {

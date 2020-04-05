@@ -8,7 +8,7 @@
             <div class="col-sm-8">
                 <h3 class="text-bold text-blue">Latest World Covid-19 News</h3>
                 <div id="article" class="row">
-                    <!-- <div class="col-md-6">
+                    <!--div class="col-md-6">
                         <div class="card news-article clear-border">
                             <div class="card-body">
                                 <div class="news-headline text-bold">
@@ -45,7 +45,7 @@
                                     2020-01-02 10:21:23
                                 </div>
                             </div>
-                        </div>
+                        </div> <
                     </div>
 
                     <div class="col-md-6">
@@ -66,10 +66,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>  -->
+                    </div>  <!-->
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" id="other">
                 <section class="container pt-5">
                     <div class="row text-center">
                         <div class="col-sm">
@@ -89,22 +89,36 @@
 
                 <!-- TODO: OTHER TEAM API NEW ARTICLE SECTION-->
                 <div class="hr">
-                    OTHER TEAM API SECTION
-                    NEWS ARTICLE GOES HERE
+                  awdawdadawd
                 </div>
 
                 <!-- TODO: OTHER TEAM API NEW ARTICLE SECTION-->
-                <div class="hr">
+                <!--div class="hr">
                     OTHER API SECTION
                     NEWS ARTICLE GOES HERE OR SOMETHING ELSE
-                </div>
+                </div> <!-->
             </div>
         </div>
     </section>
 
-    <script src="{{url_for('static', filename='country.js')}}"></script>
+    <!--script src="{{url_for('static', filename='country.js')}}"></script>  <!-->
     <script>
-        const URL = "https://api-demic.herokuapp.com/v1.1/articles/latest?on=coronavirus";
+
+
+
+
+
+
+        let start = '{{ start }}';
+        let end = '{{ end }}';
+
+        let URL = 'http://api-demic.herokuapp.com/v1.1/articles?start_date=' + start + '&end_date=' + end + '&key_term=covid19&limit=10';
+        
+        let OTHERURL = 'http://api.todo.cf/v1/article?teamName=API-demic&startDate=' + start + '&endDate=' + end + '&key=COVID19&pageSize=10';
+        console.log(URL);
+
+        // const URL = "https://api-demic.herokuapp.com/v1.1/articles/latest?on=coronavirus";
+
 
         console.log("HERE");
         fetch(URL)
@@ -123,15 +137,18 @@
                 let total_str = '{{ total }}';
                 total_str = total_str.replace(/&#34;/g, "\"");
                 let total_json = JSON.parse(total_str);
+                console.log("hello");
                 document.getElementById('total-confirmed').innerHTML = `${formatNumber(total_json['Confirmed'])}`;
                 document.getElementById('total-deaths').innerHTML = `${formatNumber(total_json['Deaths'])}`;
                 document.getElementById('total-recovered').innerHTML = `${formatNumber(total_json['Recovered'])}`;
 
+
                 for(i in json['articles']) {
                     article = json['articles'][i];
-                    console.log(article);
-
+                //    console.log(article);
+                   
                     let col = createCol(article);
+                   
                     articleRow.appendChild(col);
                 }
 
@@ -139,7 +156,52 @@
 
             });
 
+            fetch(OTHERURL)
+            .then(response => {
+                if (!response.ok) { throw Error(response.statusText); }
+                return response.json();
+            })
+            .then(json => {
+                console.log(json);
+                
+                let other = document.getElementById('other');
+
+                console.log(other);
+                for(i in json['list']) {
+                    article = json['list'][i];
+                    console.log(article);
+                   
+               //     let hr = createHr(article);
+                 //   console.log(hr);
+                   // other.appendChild(hr);
+
+                    let hr = document.createElement("div");
+                    col.classList.add('hr');
+                    hr.innerText = "sadsddadsada";
+
+
+                    let Headline = document.createElement("a");
+                    Headline.classList.add('news-headline', 'text-bold');
+                    Headline.setAttribute('href', `${article['url']}`);
+                    Headline.setAttribute('target', '_blank');
+                    Headline.innerText = `${article['headline'].trim()}`;
+                    hr.appendChild(Headline);
+
+                    other.appendChild(hr);
+                }
+                
+
+            }).catch(function(error) {
+
+            });
+
+
+
+
+        
         function createCol(article) {
+            
+
             let col = document.createElement("div");
             col.classList.add('col-md-6');
 
@@ -177,5 +239,44 @@
             return col;
         }
 
-    </script>
+        function createHr(article) {
+            
+
+            let hr = document.createElement("div");
+            col.classList.add('hr');
+
+
+            let Headline = document.createElement("a");
+            Headline.classList.add('news-headline', 'text-bold');
+            Headline.setAttribute('href', `${article['url']}`);
+            Headline.setAttribute('target', '_blank');
+            Headline.innerText = `${article['headline'].trim()}`;
+            hr.appendChild(Headline);
+
+            /*
+            let cardMainText = document.createElement("div");
+            cardMainText.classList.add('news-text');
+            text = article['main_text']
+            start_from = "Excerpt:";
+            textToDisplay = ""
+            if(text.search(start_from) < 0) { textToDisplay = text.substring(text.search(":")+1, text.length-1).trim(); }
+            else { textToDisplay = text.substring(text.search(start_from)+start_from.length, text.length-1).trim(); }
+            cardMainText.innerText = `${firstSentence(textToDisplay).trim()}`;
+            cardBody.appendChild(cardMainText);
+
+            let cardFooter = document.createElement("div");
+            cardFooter.classList.add('card-footer', 'news-footer', 'clear-border');
+            cardFooter.innerText = `${article['date_of_publication']}`;
+
+            card.appendChild(cardBody);
+            card.appendChild(cardFooter);
+            col.append(card);
+            */
+
+            return hr;
+        }
+
+    </script > 
+
+
 {% endblock %}

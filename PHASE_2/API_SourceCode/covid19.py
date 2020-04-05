@@ -119,6 +119,9 @@ def json_to_string(s):
 
     return ret
 
+
+
+
 # def covidWhoAdvice():
 #     html_doc = requests.get('https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public')
 #     soup = BeautifulSoup(html_doc.content, 'html.parser')
