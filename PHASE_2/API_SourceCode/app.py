@@ -12,6 +12,11 @@ def home():
 
     return render_template("index.html", total=total_str)
 
+@app.route("/dashboard")
+def dashboard():
+
+    return render_template("dashboard.html")
+
 @app.route("/covid19")
 def covid19():
     # https://api.covid19api.com/
@@ -33,7 +38,7 @@ def latest_news():
     total_str = json_to_string(total)
 
     x = datetime.now()
-    
+
     END = x.strftime("%Y") + "-" + x.strftime("%m") + "-" + x.strftime("%d") + "T" + x.strftime("%T")
 
     START = ""
@@ -66,6 +71,14 @@ def info():
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+@app.route("/nsw")
+def nsw():
+    data, data_2 = nsw_positive_cases()
+    data_str = json_to_string(data)
+    data_str_2 = json_to_string(data_2)
+
+    return render_template("au.html", data=data_str, latest=data_str_2)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

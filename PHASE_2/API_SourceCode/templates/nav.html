@@ -1,16 +1,23 @@
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <h1 class="navbar-brand mb-0 ml-5">Covid Scout</h1>
+<nav class="navbar navbar-expand-lg" style="position: fixed; width: 100%;">
+    <h1 class="navbar-brand text-white text-bold mb-0 ml-5">Covid Scout</h1>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="{{ url_for('home') }}"><span class="material-icons text-secondary">home</span></a>
-            <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">Latest Article</a>
-            <a class="nav-item nav-link" href="{{ url_for('covid19') }}">COVID Live Map</a>
-            <a class="nav-item nav-link" href="{{ url_for('info') }}">Infography</a>
+            <a class="nav-item nav-link active" href="{{ url_for('home') }}"><span class="material-icons">home</span></a>
+            <a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Live Dashboard</a>
+            <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">News</a>
+            <a class="nav-item nav-link" href="{{ url_for('covid19') }}">Live Map</a>
+            <a class="nav-item nav-link" href="{{ url_for('info') }}">Data Centre</a>
             <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+            <a class="nav-item nav-link" href="{{ url_for('nsw') }}">For NSW</a>
         </div>
     </div>
 </nav>
-<!-- <div class="pt-5"></div> -->
+
+<script type="text/javascript">
+    $(window).scroll(function(){
+        $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
+    });
+</script>

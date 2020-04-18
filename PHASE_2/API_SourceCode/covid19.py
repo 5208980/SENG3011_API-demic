@@ -8,6 +8,7 @@ from datetime import timedelta, datetime
 from collections import OrderedDict
 from operator import *
 from countries import countries
+import pycountry
 
 def identify_country(country):
     switcher = {
@@ -43,6 +44,8 @@ def generate_data():
 
     df = pd.read_csv(URL, error_bad_lines=False)
 
+    print(list(pycountry.countries)[0])
+
     dataset = {}
     total = {}
     total['Confirmed'] = 0
@@ -56,7 +59,11 @@ def generate_data():
         if not data:
 
             data = {}
-            data['Code'] = countries.get(convert_country, "")
+            data['Code'] = ""
+            if countries.get(convert_country, "") != "":
+                if pycountry.countries.get(alpha_3=countries.get(convert_country, "")).alpha_2 == 'TW':
+                    print(pycountry.countries.get(alpha_3=countries.get(convert_country, "")).alpha_2)
+                data['Code'] = pycountry.countries.get(alpha_3=countries.get(convert_country, "")).alpha_2
             data['Confirmed'] = row['Confirmed']
             data['Deaths'] = row['Deaths']
             data['Recovered'] = row['Recovered']
@@ -119,7 +126,61 @@ def json_to_string(s):
 
     return ret
 
+import urllib
 
+def nsw_positive_cases():
+    get_limit = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit=20')
+    limit = get_limit.json()['result']['total']
+    r = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit={}'.format(limit))
+    # print(r.json())
+
+    dataset = {}
+    records = r.json()['result']['records']
+    for i in records:
+        nsw_lga__3 = re.sub('\(A\)|\(C\)|\(NSW\)', '', i['lga_name19']).strip().lower()
+        # dataset['nsw_lga__3'] = nsw_lga__3
+        # print(nsw_lga__3.strip().lower())
+        data = dataset.get(nsw_lga__3, False)
+        if not data:
+            tmp = {}
+            tmp['positive'] = 1
+            tmp['latest_confirmed'] = i['notification_date']
+            dataset[nsw_lga__3] = tmp
+        else:
+            dataset[nsw_lga__3]['positive'] += 1
+            dataset[nsw_lga__3]['latest_confirmed'] = i['notification_date']
+    # return r.json()
+
+    latest_cases = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit={}&offset={}'.format(limit, limit-50))
+    # print(latest_cases.json()['result']['records'])
+    dataset_2 = {}
+    data = []
+    records = latest_cases.json()['result']['records']
+    for i in records:
+        nsw_lga__3 = re.sub('\(A\)|\(C\)|\(NSW\)', '', i['lga_name19']).strip().lower()
+        tmp = {}
+        # tmp['nsw_lga__3'] = nsw_lga__3
+        tmp['nsw_lga__3'] = nsw_lga__3 if nsw_lga__3 != "" else "unknown"
+        # tmp['postcode'] = i['postcode']
+        tmp['postcode'] = i['postcode'] if not i['postcode'] is None else "unknown"
+        tmp['notification_date'] = i['notification_date']
+
+        data.append(tmp);
+
+    dataset_2['records'] = data
+
+    return dataset, dataset_2
+
+# nsw_positive_cases()
+
+# from pytrends.request import TrendReq
+#
+# pytrends = TrendReq(hl='en-US', tz=360)
+# pytrends.build_payload(kw_list=['Coronavirus'])
+# related_queries = pytrends.related_queries()
+#
+# for i in related_queries.values():
+#     print(i)
 
 
 # def covidWhoAdvice():
@@ -133,3 +194,5 @@ def json_to_string(s):
 #         print(block.get_text())
 #
 # covidWhoAdvice()
+
+generate_data()

@@ -3,30 +3,40 @@
 {% block body %}
     {% include 'nav.html' %}
     <section class="bg">
+        <div class="text-center pb-3">
+            <b>Covid Scout</b> is a website designed to engage communities,
+            researcher, healthcare worker and the general public about on going
+            pandemic known as "covid-19". Here you are provided with latest statistics,
+            activities, news and advice from multiple sources and healthcare organisations,
+            so that you and others around you can protect and flatten the curve.
+        </div>
+
         <section class="text-center">
-            <div class="pb-5 pt-5" style="width: 75%; margin: 0 auto;">
-                <b>Covid Scout</b> is a website aimed to provide everyone with a better
-                understanding of covid-19, analysis its trend and statistics and help
-                the public protect themselves the those aroud them.
-            </div>
             <h1 id="display-duration" class="text-bold"></h1>
             <h4>Day since first reported</h4>
             <p style="font-size: 10px;"><i>First report in China on 31 Dec 2019.</i>
                 Source: <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/events-as-they-happen">WHO</a>
             </p>
 
-            <div class="row pb-5">
-                <div class="col-lg-4">
-                    <div>Confirmed</div>
-                    <h4 id="total-confirmed" class="text-bold">0</h4>
+            <div class="row text-center text-bold pt-5 pb-5" style="">
+                <div class="col-lg-3" style="">
+                    <div id="total_cases" class="count"> </div>
+                    Confirmed
                 </div>
-                <div class="col-lg-4">
-                    <div>Deaths</div>
-                    <h4 id="total-deaths" class="text-bold text-danger">0</h4>
+
+                <div class="col-lg-3">
+                    <div id="death_cases" class="count text-danger"> </div>
+                    Deaths
                 </div>
-                <div class="col-lg-4">
-                    <div>Recovered</div>
-                    <h4 id="total-recovered" class="text-bold text-success">0</h4>
+
+                <div class="col-lg-3">
+                    <div id="recovery_cases" class="count text-success"> </div>
+                    Recovered
+                </div>
+
+                <div class="col-lg-3">
+                    <div id="currently_infected" class="count"> </div>
+                    Active
                 </div>
             </div>
         </section>
@@ -34,7 +44,7 @@
         <div class="row text-center">
             <div class="col-md">
                 <a href="{{ url_for('covid19') }}">
-                    <div class="item">
+                    <div class="item bg-primary">
                         Live Map Tracker
                         <span class="material-icons arrow">arrow_forward_ios</span>
                     </div>
@@ -56,21 +66,85 @@
                     </div>
                 </a>
             </div>
+            <div class="col-md">
+                <a href="{{ url_for('dashboard') }}">
+                    <div class="item">
+                        View Live Dashboard
+                        <span class="material-icons arrow">arrow_forward_ios</span>
+                    </div>
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- If More Info -->
-    <section></section>
+    <section>
+        <h2 class="content-title text-center pt-5">How To Stop The Spread</h2>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <i class="fas pt-5 fa-hands-wash fa-8x"></i>
+                <div class="pt-5 pb-5">Wash your hands often</div>
+            </div>
+            <div class="col-md-4">
+                <i class="fas pt-5 fa-people-arrows fa-8x"></i>
+                <div class="pt-5 pb-5">Practise social distancing</div>
+            </div>
+            <div class="col-md-4">
+                <i class="fas pt-5 fa-handshake-slash fa-8x"></i>
+                <div class="pt-5 pb-5">Avoid touching your faces and others</div>
+            </div>
+            <div class="col-md-4">
+                <i class="fas pt-5 fa-virus fa-8x"></i>
+                <div class="pt-5 pb-5">Wear mask to limit exposure when going outside</div>
+            </div>
+            <div class="col-md-4">
+                <i class="fas pt-5 fa-stethoscope fa-8x"></i>
+                <div class="pt-5 pb-5">If you have sick, stay home and call your doctor</div>
+            </div>
+            <div class="col-md-4">
+                <i class="fas pt-5 fa-user-slash fa-8x"></i>
+                <div class="pt-5 pb-5">Be sure to follow your country's social gathering limit</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="content-title text-center pt-5">FOR NSW</h2>
+    </section>
+
     <script type="text/javascript">
 
-        let str = '{{ total }}';
-        let res = str.replace(/&#34;/g, "\"");
-        let json = JSON.parse(res);
-        console.log(json);
-        document.getElementById('total-confirmed').innerHTML = `${formatNumber(json['Confirmed'])}`;
-        document.getElementById('total-deaths').innerHTML = `${formatNumber(json['Deaths'])}`;
-        document.getElementById('total-recovered').innerHTML = `${formatNumber(json['Recovered'])}`;
+        // let str = '{{ total }}';
+        // let res = str.replace(/&#34;/g, "\"");
+        // let json = JSON.parse(res);
+        // console.log(json);
+        // document.getElementById('total-confirmed').innerHTML = `${formatNumber(json['Confirmed'])}`;
+        // document.getElementById('total-deaths').innerHTML = `${formatNumber(json['Deaths'])}`;
+        // document.getElementById('total-recovered').innerHTML = `${formatNumber(json['Recovered'])}`;
+        function updateData() {
+            var apiG = fetch('https://corona-virus-stats.herokuapp.com/api/v1/cases/general-stats').then(r => r.json());  // Live main API
+            // https://corona.lmao.ninja/all        // BACKUP API
+            // own calculations in covid-19.py      // BACKBACKUP API
 
+            var combinedData = { jsonG: {}, jsonC: {} };
+            Promise.all([apiG]).then(values => {
+                console.log(values[0]);
+
+                let globalCases = values[0].data;
+                document.getElementById('total_cases').innerText = `${globalCases.total_cases}`;
+                document.getElementById('death_cases').innerText = `${globalCases.death_cases}`;
+                document.getElementById('recovery_cases').innerText = `${globalCases.recovery_cases}`;
+                document.getElementById('currently_infected').innerText = `${globalCases.currently_infected}`;
+
+                document.getElementById('last_update').innerText = `${globalCases.last_update}`;
+
+
+                animateCount();
+            });
+        }
+
+
+        updateData();
 
         let today = new Date();
         let start_date = new Date('2019-12-31');

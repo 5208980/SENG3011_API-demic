@@ -1,0 +1,229 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <!-- <section>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">State</th>
+                    <th scope="col">Confirmed</th>
+                    <th scope="col">Deaths</th>
+                    <th scope="col">Tested</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+        </table>
+    </section> -->
+
+    <!-- <a class="twitter-timeline"
+          href="https://twitter.com/nswhealth"
+          data-tweet-limit="1">
+    Tweets by @twittername</a>
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
+
+    <!-- <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2152_RC04/embed_loader.js"></script>
+    <script type="text/javascript">
+        trends.embed.renderExploreWidget(
+            "RELATED_TOPICS",
+            {
+                "comparisonItem": [
+                    {   "keyword": "/m/01cpyy",
+                        "geo":"",
+                        "time":"today 12-m"
+                    }
+                ],
+                "category": 0,
+                "property": ""
+            },
+            {
+                "exploreQuery": "q=%2Fm%2F01cpyy&date=today 12-m",
+                "guestPath" : "https://trends.google.com:443/trends/embed/"
+            }); </script>  -->
+
+    <div id="map"></div>
+
+<script type="text/javascript">
+    let str = '{{ data }}';
+    let res = str.replace(/&#34;/g, "\"");
+
+    let json = JSON.parse(res);
+    // console.log(json);
+
+    str = '{{ latest }}';
+    res = str.replace(/&#34;/g, "\"");
+
+    let jsonLatest = JSON.parse(res);
+    console.log(jsonLatest);
+
+    var map = L.map('map', {
+        'center': [-33.847927,150.6517881],
+        'zoom': 10,
+        'scrollWheelZoom': false,
+        // 'zoomControl': false,
+        'layers': [
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                'attribution': 'Map data &copy; OpenStreetMap contributors'
+            })
+        ]
+    });
+
+    // var info = L.control({ position: "topright" });
+    //
+    // info.onAdd = function (map) {
+    //     this._div = L.DomUtil.create('div', 'info');
+    //     this.update();
+    //     return this._div;
+    // };
+    //
+    // info.update = function (props) {
+    //     console.log(props);
+    //     this._div.innerHTML =
+    //         '<h4> Info Panel </h4>' +
+    //             (props ?
+    //                  '<b>' + props.nsw_lga__3 + '</b><br />' + (props.confirmed ? props.confirmed : "0") + ' confirmed cases' + '<div></div>'
+    //                  : 'Hover over a country');
+    // };
+    //
+    // info.addTo(map);
+    //
+    // function highlightPolygon(e) {
+    //     var layer = e.target;
+    //
+    //     layer.setStyle({
+    //         weight: 2,
+    //         color: '#666',
+    //         dashArray: '',
+    //         fillOpacity: 0.7
+    //     });
+    //
+    //     layer.bringToFront();
+    //
+    //     info.update(layer.feature.properties);
+    // }
+    //
+    // var geojson;
+    //
+    // function removeHighlight(e) {
+    //     geojson.resetStyle(e.target);
+    //     info.update();
+    // }
+    //
+    // function zoomToFeature(e) {
+    //     // console.log(e.target);
+    //     console.log(e.target.getBounds());
+    //     // console.log(e.target.getBounds().getCenter());
+    //     // map.fitBounds(e.target.getBounds().getCenter());
+    //     map.flyTo(e.target.getBounds().getCenter(), 10);
+    //     info.update(e.target.feature.properties);
+    // }
+    //
+    // function onEachFeature(feature, layer) {
+    //     layer.on({
+    //         mouseover: highlightPolygon,
+    //         mouseout: removeHighlight,
+    //         click: zoomToFeature
+    //     });
+    // }
+
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.confirmed),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.7
+        };
+    };
+
+    function getColor(d) {
+        return d > 500    ? '#b10026' :
+               d > 250    ? '#e31a1c' :
+               d > 150     ? '#fc4e2a' :
+               d > 100     ? '#fd8d3c' :
+               d > 50      ? '#feb24c' :
+               d > 10      ? '#fed976' :
+               d > 5       ? '#ffeda0' :
+               d > 1       ? '#ffffcc' :
+               d < 0        ? 'blue' :
+                              '#ebedf0';
+    }
+
+    // NEVER OPEN OR TOUCH nsw.geojson, File size is very very huge, it'll break ur IDE
+    // $.getJSON("{{url_for('static', filename='nsw.geojson')}}",function(data){
+    // // L.geoJson function is used to parse geojson file and load on to map
+    //     L.geoJson(data, {style: style}).addTo(map);
+    // });
+
+    $.getJSON("https://data.gov.au/geoserver/nsw-local-government-areas/wfs?request=GetFeature&typeName=ckan_f6a00643_1842_48cd_9c2f_df23a3a1dc1e&outputFormat=json",function(data){
+        for(i in data['features']) {
+            name = data['features'][i]['properties']['nsw_lga__3'].toLowerCase()
+            if(json[name]) { data['features'][i]['properties']['confirmed'] = json[name]['positive'] }
+        }
+        // geojson = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
+        geojson = L.geoJson(data, {style: style}).addTo(map);
+
+    });
+
+    // "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit=5"
+
+
+    // THE GUARDIANs
+    // https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json
+
+    // var apiG = fetch('https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json').then(r => r.json());  // Live main API
+    // // https://corona.lmao.ninja/all        // BACKUP API
+    // // own calculations in covid-19.py      // BACKBACKUP API
+    //
+    // let table = document.getElementById('table-body');
+    // Promise.all([apiG]).then(values => {
+    //     console.log(values[0]);
+    //
+    //     totals = values[0].sheets['latest totals'];
+    //     // console.log(latest_total);
+    //     for(i in totals) {
+    //         // <tr>
+    //         //      <td scope="col">State</td>
+    //         //      <td scope="col">Confirmed</td>
+    //         //      <td scope="col">Deaths</td>
+    //         //      <td scope="col">Recovered</dh>
+    //         //      <td scope="col">Tested</td>
+    //         // </tr>
+    //         let tr = document.createElement('tr');
+    //         let state = document.createElement('td');
+    //         state.innerText = `${totals[i]['State or territory']}`;
+    //         let confirmed = document.createElement('td');
+    //         confirmed.innerText = `${totals[i]['Confirmed cases (cumulative)']}`;
+    //         let deaths = document.createElement('td');
+    //         deaths.innerText = `${totals[i]['Deaths']}`;
+    //         let conducted = document.createElement('td');
+    //         conducted.innerText = `${totals[i]['Tests conducted']}`;
+    //         tr.appendChild(state);
+    //         tr.appendChild(confirmed);
+    //         tr.appendChild(deaths);
+    //         tr.appendChild(conducted);
+    //         table.appendChild(tr);
+    //         console.log("HERE");
+    //     }
+    // });
+
+</script>
+{% endblock %}

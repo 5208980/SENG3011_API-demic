@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <section id="dashboard">
+        <div id="dashboard-info" class="text-center">
+            <div class="dashboard-title">Covid-19</div>
+            <div class="dashboard-text">Last Updated: <span id="last_update" class="text-primary"></span></div>
+            <a class="" href="{{ url_for('home') }}"><span class="material-icons">home</span></a>
+        </div>
+
+        <div class="row text-center text-bold pt-5" style="">
+            <div class="col-lg-3" style="">
+                <div id="total_cases" class="count"> </div>
+                Confirmed
+            </div>
+
+            <div class="col-lg-3">
+                <div id="death_cases" class="count text-danger"> </div>
+                Deaths
+            </div>
+
+            <div class="col-lg-3">
+                <div id="recovery_cases" class="count text-success"> </div>
+                Recovered
+            </div>
+
+            <div class="col-lg-3">
+                <div id="currently_infected" class="count"> </div>
+                Active
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div id="global-confirmed-chart" class="chart-small"></div>
+            </div>
+            <div class="col-lg-4">
+                <div id="global-recovered-chart" class="chart-small"></div>
+            </div>
+            <div class="col-lg-4">
+                <div id="global-deaths-chart" class="chart-small"></div>
+            </div>
+        </div>
+    </section>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    function updateData() {
+        var apiG = fetch('https://corona-virus-stats.herokuapp.com/api/v1/cases/general-stats').then(r => r.json());  // Live main API
+        var apiT = fetch('https://covidapi.info/api/v1/global/count').then(r => r.json());
+        // https://corona.lmao.ninja/all        // BACKUP API
+        // own calculations in covid-19.py      // BACKBACKUP API
+
+        var combinedData = { jsonG: {}, jsonC: {} };
+        Promise.all([apiG, apiT]).then(values => {
+            console.log(values[0]);
+
+            let globalCases = values[0].data;
+            document.getElementById('total_cases').innerText = `${globalCases.total_cases}`;
+            document.getElementById('death_cases').innerText = `${globalCases.death_cases}`;
+            document.getElementById('recovery_cases').innerText = `${globalCases.recovery_cases}`;
+            document.getElementById('currently_infected').innerText = `${globalCases.currently_infected}`;
+
+            document.getElementById('last_update').innerText = `${globalCases.last_update}`;
+
+            let globalTimeSeries = values[1];
+            // Color Palete
+            let light = '#82B1FF';
+            let b2 = '#448AFF';
+            let primary = '#2979FF';
+            let b3 = '#2962FF';
+
+            let secondary = '#707070';
+            var options = {
+                title: 'Global',
+                backgroundColor: { fill:'transparent' },
+                titleTextStyle: {
+                    color: 'white',
+                    fontName: 'Lato',
+                    fontSize: 18,
+                    bold: false,
+                },
+                legend: {
+                    position: 'bottom',
+                    textStyle: { fontSize: 12, color: `white` }
+                },
+                vAxis: {
+                    viewWindow: { min: 0 },
+                    textStyle: { fontSize: 12, color: `white` }
+                },
+                hAxis: {
+                    gridlines: { color: 'none' },
+                    textStyle: { fontSize: 12, color: `white` }
+                },
+                animation:{
+                    duration: 1000,
+                    easing: 'out',
+                    startup: true
+                },
+                series: {
+                    0: { color: `${primary}` }
+                },
+                tooltip: {isHtml: true}
+            };
+            google.load("visualization", "1", { packages: ["corechart"] });
+            google.setOnLoadCallback(drawChart1);
+            function drawChart1() {
+                var globalConfirmedInput = new google.visualization.DataTable();
+                globalConfirmedInput.addColumn('date', 'date');
+                globalConfirmedInput.addColumn('number', 'confirmed');
+
+                var globalRecoveredInput = new google.visualization.DataTable();
+                globalRecoveredInput.addColumn('date', 'date');
+                globalRecoveredInput.addColumn('number', 'recovered');
+
+                var globalDeathsInput = new google.visualization.DataTable();
+                globalDeathsInput.addColumn('date', 'date');
+                globalDeathsInput.addColumn('number', 'deaths');
+
+                for (var key in globalTimeSeries.result){
+                    globalConfirmedInput.addRow([new Date(key), globalTimeSeries.result[key].confirmed]);
+                    globalRecoveredInput.addRow([new Date(key), globalTimeSeries.result[key].recovered]);
+                    globalDeathsInput.addRow([new Date(key), globalTimeSeries.result[key].deaths])
+                }
+
+                options['title'] = 'Global';
+                options['series'][0]['color'] = `yellow`;
+                var chart = new google.visualization.ColumnChart(document.getElementById('global-confirmed-chart'));
+                chart.draw(globalConfirmedInput, options);
+                options['series'][0]['color'] = `green`;
+                var chart = new google.visualization.ColumnChart(document.getElementById('global-recovered-chart'));
+                chart.draw(globalRecoveredInput, options);
+                options['series'][0]['color'] = `red`;
+                var chart = new google.visualization.ColumnChart(document.getElementById('global-deaths-chart'));
+                chart.draw(globalDeathsInput, options);
+            }
+
+            animateCount();
+        });
+    }
+
+
+    // Main
+    updateData();
+    setInterval(function(){
+        updateData()
+    }, 300000); // Set to every 5 mins
+</script>
+{% endblock %}

@@ -3,101 +3,171 @@
 {% block body %}
     {% include 'nav.html' %}
 
+    <section class="page-header bg-header">
+        <h2 class="header-content container text-bold">Global and Country Statistic</h2>
+    </section>
+
     <div style="width: 75%; margin: 0 auto; ">
-        <h2>Global and Country Statistic</h2>
         <input type="text" id="country" placeholder="Enter country" list="contry-list" value="Australia">
         <datalist id="contry-list"></datalist>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div id="global_chart" class="chart"></div>
+    <div class="container">
+        <section class="hr">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="global-confirmed-chart" class="chart-small"></div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="row">
+                        <div class="col-md-6 v-align">
+                            As of Today, the world has
+                            <div id="t-g-c" class="content-title font-40">0</div>
+                            confirmed Cases
+                        </div>
+                        <div class="col-md-6 v-align">
+                            gaining
+                            <div id="c-g-c" class="content-title font-40">0</div>
+                            confirmed in since yesterday
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- global confirmed -->
 
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Confirmed</th>
-                        <th scope="col">Recovered</th>
-                        <th scope="col">Deaths</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-bold">Total</td>
-                        <td id="t-g-c">0</td>
-                        <td id="t-g-d">0</td>
-                        <td id="t-g-r">0</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">Change (Past day)</td>
-                        <td id="c-g-c">0</td>
-                        <td id="c-g-d">0</td>
-                        <td id="c-g-r">0</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="country-confirmed-chart" class="chart-small"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row text-center">
+                        <div class="col-md-6 v-align">
+                            compared to <span class="country-name">Australia</span> with
+                            <div id="t-c-c" class="content-title font-40">0</div>
+                            confirmed Cases
+                        </div>
+                        <div class="col-md-6 v-align">
+                            gaining
+                            <div id="c-c-c" class="content-title font-40">0</div>
+                            confirmed in since yesterday
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- country confirmed -->
+        </section>
 
-            <section class="text-center">
-                <div class="">
-                    <h3>Fatality Rate</h3>
-                    <div id="g-fr"></div>
+        <section class="hr">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="global-recovered-chart" class="chart-small"></div>
                 </div>
-                <div class="">
-                    <h3>Recovery Rate</h3>
-                    <div id="g-rr"></div>
+                <div class="col-md-6">
+                    <div class="row text-center">
+                        <div class="col-md-4 v-align">
+                            The world has a total of
+                            <div id="t-g-r" class="content-title font-40">0</div>
+                            recovered,
+                        </div>
+                        <div class="col-md-4 v-align">
+                            with
+                            <div id="c-g-r" class="content-title font-40">0</div>
+                             recovered yesterday
+                        </div>
+                        <div class="col-md-4 v-align">
+                            and a
+                            <div id="g-rr" class="content-title font-40">0</div>
+                            recovery rate
+                        </div>
+                    </div>
                 </div>
-                <div class="">
-                    <h3>Active Cases</h3>
-                    <div id="g-ac"></div>
-                </div>
-            </section>
-        </div>
-        <div class="col-md-6">
+            </div>  <!-- global recovered -->
 
-            <div id="country_chart" class="chart"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="country-recovered-chart" class="chart-small"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row text-center">
+                        <div class="col-md-4 v-align">
+                            <span class="country-name">Australia</span> has a total of
+                            <div id="t-c-r" class="content-title font-40">0</div>
+                            recovered,
+                        </div>
+                        <div class="col-md-4 v-align">
+                            with
+                            <div id="c-c-r" class="content-title font-40">0</div>
+                             recovered yesterday
+                        </div>
+                        <div class="col-md-4 v-align">
+                            and a
+                            <div id="c-rr" class="content-title font-40">0</div>
+                            recovery rate
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- country recovered -->
+        </section>
 
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Confirmed</th>
-                        <th scope="col">Recovered</th>
-                        <th scope="col">Deaths</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-bold">Total</td>
-                        <td id="t-c-c">0</td>
-                        <td id="t-c-d">0</td>
-                        <td id="t-c-r">0</td>
-                    </tr>
-                    <tr>
-                        <td class="text-bold">Change (Past day)</td>
-                        <td id="c-c-c">0</td>
-                        <td id="c-c-d">0</td>
-                        <td id="c-c-r">0</td>
-                    </tr>
-                </tbody>
-            </table>
+        <section class="hr">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="global-deaths-chart" class="chart-small"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row text-center">
+                        <div class="col-lg-4 v-align">
+                            The world has a total of
+                            <div id="t-g-d" class="content-title font-40">0</div>
+                            deaths
+                        </div>
+                        <div class="col-lg-4 v-align">
+                            gaining
+                            <div id="c-g-d" class="content-title font-40">0</div>
+                            deaths yesterday
+                        </div>
+                        <div class="col-lg-4 v-align">
+                            with a
+                            <div id="g-fr" class="content-title font-40">0</div>
+                            death rate
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- global deaths -->
 
-            <section class="text-center">
-                <div class="">
-                    <h3>Fatality Rate</h3>
-                    <div id="c-fr"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="country-deaths-chart" class="chart-small"></div>
                 </div>
-                <div class="">
-                    <h3>Recovery Rate</h3>
-                    <div id="c-rr"></div>
+                <div class="col-md-6">
+                    <div class="row text-center">
+                        <div class="col-lg-4 v-align">
+                            <span class="country-name">Australia</span> has a total of
+                            <div id="t-c-d" class="content-title font-40">0</div>
+                            deaths
+                        </div>
+                        <div class="col-lg-4 v-align">
+                            gaining
+                            <div id="c-c-d" class="content-title font-40">0</div>
+                            deaths yesterday
+                        </div>
+                        <div class="col-lg-4 v-align">
+                            with a
+                            <div id="c-fr" class="content-title font-40">0</div>
+                            death rate
+                        </div>
+                    </div>
                 </div>
-                <div class="">
-                    <h3>Active Cases</h3>
-                    <div id="c-ac"></div>
-                </div>
-            </section>
-        </div>
-    </div>
+            </div>  <!-- country deaths -->
+        </section>
+
+        <section class="row text-center">
+            <div class="col-lg-6">
+                <div id="g-ac" class="content-title font-40"></div>
+            </div>
+            <div class="col-lg-6">
+                <div id="c-ac" class="content-title font-40"></div>
+            </div>
+        </section>  <!-- active -->
+    </div>  <!-- container -->
 
     <section id="news" class="container hr pt-5 pb-5">
         <h2 id="news-header"></h2>
@@ -105,7 +175,7 @@
     </section>
 
     <section id="graphs" class="container hr pt-5 pb-5">
-        <h2>Daily new confirmed cases [10 Most Affected]</h2>
+        <h2 class="content-title">Daily new confirmed cases [10 Most Affected]</h2>
         <div class="row">
         {% for i in range(0, 10) %}
             <div class="col-md-6">
@@ -119,10 +189,10 @@
     </section>
 
     <section id="information" class="container pt-5 pb-5">
-        <h2>Advice and Resources</h2>
+        <h2 class="content-title">Advice and Resources</h2>
 
         <section class="container hr pt-5 pb-5">
-            <h3>Flatten The Curve</h3>
+            <h3 class="content-title">Flatten The Curve</h3>
 
             <div class="row justify-content-center">
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseImg">
@@ -174,7 +244,7 @@
         </section>
 
         <section class="container hr pt-5 pb-5">
-            <h3>Mythbusters</h3>
+            <h3 class="content-title" >Mythbusters</h3>
             <h4 class="pt-2"> Exposing yourself to the sun or to temperatures higher than 25C degrees DOES NOT prevent the coronavirus disease (COVID-19) </h4>
             You can catch COVID-19, no matter how sunny or hot the weather is. Countries with hot weather have reported cases of COVID-19. To protect yourself, make sure you clean your hands frequently and thoroughly and avoid touching your eyes, mouth, and nose.
 
@@ -269,7 +339,6 @@
         let str = '{{ data }}';
         let res = str.replace(/&#34;/g, "\"");
         let head = JSON.parse(res);
-        // console.log(head);
 
         // Color Palete
         let light = '#82B1FF';
@@ -280,28 +349,28 @@
         let secondary = '#707070';
 
         function populateCountryTable(p1, p2, x) {
-            document.getElementById(`t-${x}-c`).innerText = `${p1.confirmed}`;
-            document.getElementById(`t-${x}-d`).innerText = `${p1.deaths}`;
-            document.getElementById(`t-${x}-r`).innerText = `${p1.recovered}`;
+            document.getElementById(`t-${x}-c`).innerText = `${p1.confirmed.toLocaleString('en')}`;
+            document.getElementById(`t-${x}-d`).innerText = `${p1.deaths.toLocaleString('en')}`;
+            document.getElementById(`t-${x}-r`).innerText = `${p1.recovered.toLocaleString('en')}`;
 
-            document.getElementById(`${x}-fr`).innerText = `${(p1.deaths/p1.confirmed).toFixed(4)}%`;
-            document.getElementById(`${x}-rr`).innerText = `${(p1.recovered/p1.confirmed).toFixed(4)}%`;
-            document.getElementById(`${x}-ac`).innerText = `${p1.confirmed-p1.deaths-p1.recovered}`;
+            document.getElementById(`${x}-fr`).innerText = `${(p1.deaths/p1.confirmed).toFixed(3)}%`;
+            document.getElementById(`${x}-rr`).innerText = `${(p1.recovered/p1.confirmed).toFixed(3)}%`;
+            document.getElementById(`${x}-ac`).innerText = `${(p1.confirmed-p1.deaths-p1.recovered).toLocaleString('en')}`;
 
             let ccc = document.getElementById(`c-${x}-c`);
             if(p1.confirmed-p2.confirmed > 0) {
                 ccc.classList.add('text-danger');
-                ccc.innerText = `+${p1.confirmed-p2.confirmed}`
+                ccc.innerText = `+${(p1.confirmed-p2.confirmed).toLocaleString('en')}`
             } else { ccc.innerText = '0'; }
             let ccd = document.getElementById(`c-${x}-d`);
             if(p1.deaths-p2.deaths > 0) {
-                ccd.classList.add('text-success');
-                ccd.innerText = `+${p1.deaths-p2.deaths}`
+                ccd.classList.add('text-danger');
+                ccd.innerText = `+${(p1.deaths-p2.deaths).toLocaleString('en')}`
             } else { ccd.innerText = '0'; }
             let ccr = document.getElementById(`c-${x}-r`);
             if(p1.recovered-p2.recovered > 0) {
-                ccr.classList.add('text-danger');
-                ccr.innerText = `+${p1.recovered-p2.recovered}`
+                ccr.classList.add('text-success');
+                ccr.innerText = `+${(p1.recovered-p2.recovered).toLocaleString('en')}`
             } else { ccr.innerText = '0'; }
         }
 
@@ -309,7 +378,7 @@
             title: 'Global',
             titleTextStyle: {
                 color: '#41454A',
-                fontName: 'Roboto',
+                fontName: 'Lato',
                 fontSize: 18,
                 bold: false,
             },
@@ -317,7 +386,6 @@
                 position: 'bottom',
                 textStyle: { fontSize: 12, color: `${secondary}` }
             },
-            chartArea: {width: '75%', height: '80%'},
             vAxis: {
                 viewWindow: { min: 0 },
                 textStyle: { fontSize: 12, color: `${secondary}` }
@@ -332,8 +400,7 @@
                 startup: true
             },
             series: {
-                0: { color: `${primary}` },
-                1: { color: `${light}` }
+                0: { color: `${primary}` }
             },
             tooltip: {isHtml: true}
         };
@@ -353,37 +420,62 @@
             google.load("visualization", "1", { packages: ["corechart"] });
             google.setOnLoadCallback(drawChart1);
             function drawChart1() {
-                var input = new google.visualization.DataTable();
-                input.addColumn('date', 'date');
-                input.addColumn('number', 'confirmed');
-                input.addColumn('number', 'deaths');
+                var globalConfirmedInput = new google.visualization.DataTable();
+                globalConfirmedInput.addColumn('date', 'date');
+                globalConfirmedInput.addColumn('number', 'confirmed');
+
+                var globalRecoveredInput = new google.visualization.DataTable();
+                globalRecoveredInput.addColumn('date', 'date');
+                globalRecoveredInput.addColumn('number', 'recovered');
+
+                var globalDeathsInput = new google.visualization.DataTable();
+                globalDeathsInput.addColumn('date', 'date');
+                globalDeathsInput.addColumn('number', 'deaths');
+
                 for (var key in combinedData.jsonG.result){
-                    input.addRow([new Date(key), combinedData.jsonG.result[key].confirmed, combinedData.jsonG.result[key].deaths])
+                    globalConfirmedInput.addRow([new Date(key), combinedData.jsonG.result[key].confirmed]);
+                    globalRecoveredInput.addRow([new Date(key), combinedData.jsonG.result[key].recovered]);
+                    globalDeathsInput.addRow([new Date(key), combinedData.jsonG.result[key].deaths])
                 }
 
-                combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 1]] // "carrot"
-
+                // combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 1]];
                 var prevDay = combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 1]];
                 var twoPrevDay = combinedData.jsonG.result[Object.keys(combinedData.jsonG.result)[Object.keys(combinedData.jsonG.result).length - 2]];
                 populateCountryTable(prevDay, twoPrevDay, "g");
+                // drawChart(prevDay, twoPrevDay);
 
                 options['title'] = 'Global';
-                var chart = new google.visualization.LineChart(document.getElementById('global_chart'));
-                chart.draw(input, options);
+                options['series'][0]['color'] = `yellow`;
+                var chart = new google.visualization.AreaChart(document.getElementById('global-confirmed-chart'));
+                chart.draw(globalConfirmedInput, options);
+                options['series'][0]['color'] = `green`;
+                var chart = new google.visualization.AreaChart(document.getElementById('global-recovered-chart'));
+                chart.draw(globalRecoveredInput, options);
+                options['series'][0]['color'] = `red`;
+                var chart = new google.visualization.AreaChart(document.getElementById('global-deaths-chart'));
+                chart.draw(globalDeathsInput, options);
             }
 
             google.setOnLoadCallback(function(){ drawChart2("Australia") });
             function drawChart2(countryName) {
-                var input = new google.visualization.DataTable();
-                input.addColumn('date', 'date');
-                input.addColumn('number', 'confirmed');
-                input.addColumn('number', 'deaths');
+                var countryConfirmedInput = new google.visualization.DataTable();
+                countryConfirmedInput.addColumn('date', 'date');
+                countryConfirmedInput.addColumn('number', 'confirmed');
+
+                var countryRecoveredInput = new google.visualization.DataTable();
+                countryRecoveredInput.addColumn('date', 'date');
+                countryRecoveredInput.addColumn('number', 'recovered');
+
+                var countryDeathsInput = new google.visualization.DataTable();
+                countryDeathsInput.addColumn('date', 'date');
+                countryDeathsInput.addColumn('number', 'deaths');
 
                 let selectedCountry = combinedData.jsonC[countryName];
                 let daysSinceFirstCase = 0;
                 for (var stat in selectedCountry) {
-                    let row = [ new Date(selectedCountry[stat].date), selectedCountry[stat].confirmed, selectedCountry[stat].deaths ];
-                    input.addRow(row);
+                    countryConfirmedInput.addRow([new Date(selectedCountry[stat].date), selectedCountry[stat].confirmed]);
+                    countryRecoveredInput.addRow([new Date(selectedCountry[stat].date), selectedCountry[stat].recovered]);
+                    countryDeathsInput.addRow([new Date(selectedCountry[stat].date), selectedCountry[stat].deaths])
                 }
 
                 var prevDay = selectedCountry[selectedCountry.length - 1];  // Latest on country
@@ -395,8 +487,22 @@
                 newsHeader.innerText = `Lastest News in ${countryName}`;
 
                 options['title'] = `${countryName}`;
-                var chart = new google.visualization.LineChart(document.getElementById('country_chart'));
-                chart.draw(input, options);
+                // var arr = document.getElementsByClassName('country-name');
+                $('.country-name').each(function() {
+                    // console.log("HRE");
+                    var curr = $(this);
+                    curr.text(`${countryName}`);
+                });
+
+                options['series'][0]['color'] = `yellow`;
+                var chart = new google.visualization.AreaChart(document.getElementById('country-confirmed-chart'));
+                chart.draw(countryConfirmedInput, options);
+                options['series'][0]['color'] = `green`;
+                var chart = new google.visualization.AreaChart(document.getElementById('country-recovered-chart'));
+                chart.draw(countryRecoveredInput, options);
+                options['series'][0]['color'] = `red`;
+                var chart = new google.visualization.AreaChart(document.getElementById('country-deaths-chart'));
+                chart.draw(countryDeathsInput, options);
             }
 
             google.setOnLoadCallback(function(){
@@ -434,7 +540,7 @@
                     title: '10 countries most affected + selected country',
                     titleTextStyle: {
                         color: '#41454A',
-                        fontName: 'Roboto',
+                        fontName: 'Lato',
                         fontSize: 18,
                         bold: false,
                     },
@@ -558,6 +664,9 @@
                     chart.draw(inputChart, optionChart);
                 }
             }
+
+            // google.charts.setOnLoadCallback(drawChart);
+
 
             let graphs = document.getElementById('graphs');
             $(window).resize(function(){

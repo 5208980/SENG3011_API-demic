@@ -18,10 +18,15 @@
                     </div>
                 </div>
             </nav>
-            <div class="pt-3"></div>
 
-            <h2 class="text-center">Covid-19 Live Map</h2>
+            <section class="page-header bg-header">
+                <h2 class="header-content container text-bold" style="padding-left: 2.5em">Covid-19 Live HeatMap</h2>
+            </section>
+
             <section class="container pb-5">
+                <button id="displayCases" type="button" class="btn btn-danger">Cases</button>
+                <button id="displayDeaths" type="button" class="btn btn-secondary">Deaths</button>
+
                 <h4>Advice to prevent getting sick</h4>
                 1. Wash your hands often <br>
                 2. Practise social distancing <br>
@@ -95,15 +100,17 @@
     <script type="text/javascript">
         let str = '{{ data }}';
         let res = str.replace(/&#34;/g, "\"");
-       
+
         let json = JSON.parse(res);
-        console.log(json , "sadad")
+        // console.log(json , "sadad")
         let accordion = document.getElementById('accordion');
         let total = { 'Confirmed': 0, 'Deaths': 0, 'Recovered': 0, }
         for(i in json) {
+            console.log(json[i]['Code'].substring(0,2));
             total['Confirmed'] += json[i]['Confirmed'];
             total['Deaths'] += json[i]['Deaths'];
             total['Recovered'] += json[i]['Recovered'];
+
 
             let card = document.createElement('div');
             card.classList.add('card', 'collapsible');
@@ -112,8 +119,11 @@
             cardHeader.classList.add('collapse-header', 'noselect');
             cardHeader.setAttribute('data-target', `#${json[i]['Code']}`);
             cardHeader.setAttribute('data-toggle', 'collapse');
-
             cardHeader.innerText = `${i}`;
+
+            let flag = document.createElement('span');
+            flag.classList.add('flag-icon', `flag-icon-${json[i]['Code'].toLowerCase()}`);
+            cardHeader.appendChild(flag);
 
             let cardCases = document.createElement('span');
             cardCases.classList.add('float-right');
@@ -145,7 +155,7 @@
                 // convert ket to fix mapName
                 // console.log(`${i} ${convertCountry(i)}`);
                 json[convertCountry(i)] = json[i];
-                console.log(json[convertCountry(i)]);
+                // console.log(json[convertCountry(i)]);
                 delete json[i];
             }
         }
@@ -175,6 +185,7 @@
         for(i in countriesData['features']) {
             name = countriesData['features'][i]['properties']['name']
             if(json[name]) {
+                countriesData['features'][i]['properties']['deaths'] = json[name]['Deaths']
                 countriesData['features'][i]['properties']['confirmed'] = json[name]['Confirmed']
             }
         }
@@ -221,10 +232,13 @@
 
         info.update = function (props) {
             this._div.innerHTML =
-                '<h4> Country Info </h4>' +
+                '<h4 class="text-center text-dark">Country Info</h4>' +
+                    '<div>' +
                     (props ?
-    			         '<b>' + props.name + '</b><br />' + (props.confirmed ? props.confirmed : "0 (Data may be invalid)") + ' confirmed cases' + '<div></div>'
-    			         : 'Hover over a country');
+    			         '<div class="text-bold text-center">' + props.name + '</div>' +
+                         (props.confirmed ? props.confirmed : "0 (Data may be invalid)") + ' confirmed cases' + '<br>' +
+                         (props.deaths ? props.deaths : "0 (Data may be invalid)") + ' confirmed deaths'
+    			         : '<span class="text-bold text-center">' + 'Hover over a country' + '</span>') + '</div>';
         };
 
         info.addTo(map);
@@ -269,9 +283,19 @@
         }
 
         // Polygon GeoJSON
-        function style(feature) {
+        function styleCases(feature) {
             return {
                 fillColor: getColor(feature.properties.confirmed),
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                fillOpacity: 0.7
+            };
+        }
+
+        function styleDeaths(feature) {
+            return {
+                fillColor: getColor(feature.properties.deaths),
                 weight: 2,
                 opacity: 1,
                 color: 'white',
@@ -292,6 +316,20 @@
                                   '#ebedf0';
         }
 
-        geojson = L.geoJson(countriesData, {style: style, onEachFeature: onEachFeature}).addTo(map);
+        geojson = L.geoJson(countriesData, {style: styleCases, onEachFeature: onEachFeature}).addTo(map);
+
+        $("#displayDeaths").click(function() {
+            console.log($(this));
+            $(this).addClass("btn-danger").removeClass('btn-secondary');
+            $("#displayCases").addClass("btn-secondary").removeClass("btn-danger");
+
+            geojson = L.geoJson(countriesData, {style: styleDeaths, onEachFeature: onEachFeature}).addTo(map);
+        });
+
+        $("#displayCases").click(function() {
+            $(this).addClass("btn-danger").removeClass('btn-secondary');
+            $("#displayDeaths").addClass("btn-secondary").removeClass("btn-danger");
+            geojson = L.geoJson(countriesData, {style: styleCases, onEachFeature: onEachFeature}).addTo(map);
+        });
     </script>
 {% endblock %}
