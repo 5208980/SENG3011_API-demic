@@ -345,7 +345,6 @@
         let b2 = '#448AFF';
         let primary = '#2979FF';
         let b3 = '#2962FF';
-
         let secondary = '#707070';
 
         function populateCountryTable(p1, p2, x) {
@@ -667,18 +666,15 @@
 
             // google.charts.setOnLoadCallback(drawChart);
 
-
             let graphs = document.getElementById('graphs');
             $(window).resize(function(){
                 drawChart1();
                 drawChart2(document.getElementById('country').value);
-
                 drawFlattenCurve(document.getElementById('country').value);
             });
 
             $('input').change((e) => {
                 drawChart2(e.target.value);
-
                 drawFlattenCurve(e.target.value);
             });
 

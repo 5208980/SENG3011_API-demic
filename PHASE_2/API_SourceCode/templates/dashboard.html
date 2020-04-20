@@ -1,37 +1,49 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-    <section id="dashboard">
-        <div id="dashboard-info" class="text-center">
-            <div class="dashboard-title">Covid-19</div>
+    <section id="dashboard" class="container pt-5">
+        <div id="dashboard-info" class="pb-5">
+            <h2 class="dashboard-title text-bold">Covid 19 Latest Totals</h2>
+            <!-- <hr style="border-top: 1px solid red;"> -->
             <div class="dashboard-text">Last Updated: <span id="last_update" class="text-primary"></span></div>
             <a class="" href="{{ url_for('home') }}"><span class="material-icons">home</span></a>
         </div>
 
-        <div class="row text-center text-bold pt-5" style="">
-            <div class="col-lg-3" style="">
+        <div class="row text-center">
+            <div class="col-lg-3 count-border count-left">
                 <div id="total_cases" class="count"> </div>
                 Confirmed
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-3 count-border count-middle">
                 <div id="death_cases" class="count text-danger"> </div>
                 Deaths
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-3 count-border count-middle">
                 <div id="recovery_cases" class="count text-success"> </div>
                 Recovered
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-3 count-border count-right">
                 <div id="currently_infected" class="count"> </div>
                 Active
             </div>
         </div>
 
-        <div class="row">
+        <style media="screen">
+            .chart_box {
+                width: 50vw;
+                margin: 0 auto;
+            }
+        </style>
+
+        <div class="dashboard-title text-bold pt-3">New confirmed cases daily</div>
+        <div class="chart_box">
+            <div id="global-confirmed-chart" class="pt-5" style="width: 50vw; height: 50vh;"></div>
+        </div>
+
+        <!-- <div class="row">
             <div class="col-lg-4">
                 <div id="global-confirmed-chart" class="chart-small"></div>
             </div>
@@ -41,7 +53,7 @@
             <div class="col-lg-4">
                 <div id="global-deaths-chart" class="chart-small"></div>
             </div>
-        </div>
+        </div> -->
     </section>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -84,15 +96,15 @@
                 },
                 legend: {
                     position: 'bottom',
-                    textStyle: { fontSize: 12, color: `white` }
+                    textStyle: { fontSize: 12,  }
                 },
                 vAxis: {
                     viewWindow: { min: 0 },
-                    textStyle: { fontSize: 12, color: `white` }
+                    textStyle: { fontSize: 12,  }
                 },
                 hAxis: {
                     gridlines: { color: 'none' },
-                    textStyle: { fontSize: 12, color: `white` }
+                    textStyle: { fontSize: 12,  }
                 },
                 animation:{
                     duration: 1000,
@@ -119,25 +131,49 @@
                 globalDeathsInput.addColumn('date', 'date');
                 globalDeathsInput.addColumn('number', 'deaths');
 
+                // for (var key in globalTimeSeries.result){
+                //     globalConfirmedInput.addRow([new Date(key), globalTimeSeries.result[key].confirmed]);
+                //     globalRecoveredInput.addRow([new Date(key), globalTimeSeries.result[key].recovered]);
+                //     globalDeathsInput.addRow([new Date(key), globalTimeSeries.result[key].deaths]);
+                // }
+
+                let timeSeries = [];
                 for (var key in globalTimeSeries.result){
-                    globalConfirmedInput.addRow([new Date(key), globalTimeSeries.result[key].confirmed]);
-                    globalRecoveredInput.addRow([new Date(key), globalTimeSeries.result[key].recovered]);
-                    globalDeathsInput.addRow([new Date(key), globalTimeSeries.result[key].deaths])
+                    timeSeries.push({
+                        'date': key,
+                        'confirmed': globalTimeSeries.result[key].confirmed
+                    });
+                }
+
+                // let timeSeries = globalTimeSeries.result;
+                // console.log(timeSeries);
+                for (var i = 0; i < timeSeries.length; i++) {
+                    if(timeSeries[i+1] !== undefined) {
+                        // let row = [ new Date(selectedCountry[i].date), selectedCountry[i+1].confirmed-selectedCountry[i].confirmed ];
+                        // if(selectedCountry[i].confirmed > 0) { daysSinceFirstCase += 1; }
+                        // inputChart.addRow(row);
+                        console.log(timeSeries[i]);
+                        globalConfirmedInput.addRow([new Date(timeSeries[i].date), timeSeries[i+1].confirmed-timeSeries[i].confirmed]);
+                    }
                 }
 
                 options['title'] = 'Global';
-                options['series'][0]['color'] = `yellow`;
+                options['series'][0]['color'] = `red`;
                 var chart = new google.visualization.ColumnChart(document.getElementById('global-confirmed-chart'));
                 chart.draw(globalConfirmedInput, options);
-                options['series'][0]['color'] = `green`;
-                var chart = new google.visualization.ColumnChart(document.getElementById('global-recovered-chart'));
-                chart.draw(globalRecoveredInput, options);
-                options['series'][0]['color'] = `red`;
-                var chart = new google.visualization.ColumnChart(document.getElementById('global-deaths-chart'));
-                chart.draw(globalDeathsInput, options);
+                // options['series'][0]['color'] = `green`;
+                // var chart = new google.visualization.ColumnChart(document.getElementById('global-recovered-chart'));
+                // chart.draw(globalRecoveredInput, options);
+                // options['series'][0]['color'] = `red`;
+                // var chart = new google.visualization.ColumnChart(document.getElementById('global-deaths-chart'));
+                // chart.draw(globalDeathsInput, options);
             }
 
             animateCount();
+
+            $(window).resize(function(){
+                drawChart1();
+            });
         });
     }
 

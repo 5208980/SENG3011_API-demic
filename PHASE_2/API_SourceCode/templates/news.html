@@ -105,17 +105,20 @@
         var APIDEMICURL = `http://api-demic.herokuapp.com/v1.1/articles?start_date=${start}&end_date=${end}&key_term=covid19&limit=20`;
         let TODOURL = `http://api.todo.cf/v1/article?teamName=API-demic&startDate=${start}&endDate=${end}&key=COVID19&pageSize=20`;
 
+
         // let URL = 'http://api-demic.herokuapp.com/v1.1/articles?start_date=' + start + '&end_date=' + end + '&key_term=covid19&limit=10';
         // let OTHERURL = 'http://api.todo.cf/v1/article?teamName=API-demic&startDate=' + start + '&endDate=' + end + '&key=COVID19&pageSize=10';
         // console.log(URL);
 
         let apiP = fetch(APIDEMICURL).then(r => r.json());
         let todoP = fetch(TODOURL).then(r => r.json());
+        let apiG = fetch('https://corona-virus-stats.herokuapp.com/api/v1/cases/general-stats').then(r => r.json());  // Live main API
 
-        Promise.all([apiP , todoP]).then(values => {
+        Promise.all([apiP , todoP, apiG]).then(values => {
             // console.log(values);
             let apiJson = values[0];
             let todoJson = values[1];
+            let globalCases = values[2].data;
 
             let articleRow = document.getElementById('article');
             let sideNews = document.getElementById('side-news');
@@ -147,15 +150,19 @@
             // });
             // console.log(articles);
 
+            document.getElementById('total-confirmed').innerText = `${globalCases.total_cases}`;
+            document.getElementById('total-deaths').innerText = `${globalCases.death_cases}`;
+            document.getElementById('total-recovered').innerText = `${globalCases.recovery_cases}`;
+
         });
 
-        let total_str = '{{ total }}';
-        total_str = total_str.replace(/&#34;/g, "\"");
-        let total_json = JSON.parse(total_str);
-
-        document.getElementById('total-confirmed').innerHTML = `${formatNumber(total_json['Confirmed'])}`;
-        document.getElementById('total-deaths').innerHTML = `${formatNumber(total_json['Deaths'])}`;
-        document.getElementById('total-recovered').innerHTML = `${formatNumber(total_json['Recovered'])}`;
+        // let total_str = '{{ total }}';
+        // total_str = total_str.replace(/&#34;/g, "\"");
+        // let total_json = JSON.parse(total_str);
+        //
+        // document.getElementById('total-confirmed').innerHTML = `${formatNumber(total_json['Confirmed'])}`;
+        // document.getElementById('total-deaths').innerHTML = `${formatNumber(total_json['Deaths'])}`;
+        // document.getElementById('total-recovered').innerHTML = `${formatNumber(total_json['Recovered'])}`;
 
         function createCol(article) {
             let col = document.createElement("div");

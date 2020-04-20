@@ -2,19 +2,23 @@
 
 {% block body %}
     <div class="row m-0 p-0">
-        <div class="col-lg-4 p-0" style="height: 100vh; overflow: scroll">
-            <nav class="navbar navbar-light sticky-top">
+        <div class="col-lg-4 p-0 overflow-scroll" style="height: 100vh;">
+            <nav class="navbar navbar-color navbar-light sticky-top">
                 <h1 class="navbar-brand mb-0 ml-5">API-demic</h1>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-item nav-link active" href="#">Home</a>
-                        <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">Latest Article</a>
-                        <a class="nav-item nav-link" href="{{ url_for('covid19') }}">COVID Live Map</a>
-                        <a class="nav-item nav-link" href="{{ url_for('info') }}">Infography</a>
-                        <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link active" href="{{ url_for('home') }}"><span class="material-icons">home</span></a>
+                            <a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Live Dashboard</a>
+                            <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">News</a>
+                            <a class="nav-item nav-link" href="{{ url_for('covid19') }}">Live Map</a>
+                            <a class="nav-item nav-link" href="{{ url_for('info') }}">Data Centre</a>
+                            <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+                            <a class="nav-item nav-link" href="{{ url_for('au') }}">For NSW</a>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -24,9 +28,6 @@
             </section>
 
             <section class="container pb-5">
-                <button id="displayCases" type="button" class="btn btn-danger">Cases</button>
-                <button id="displayDeaths" type="button" class="btn btn-secondary">Deaths</button>
-
                 <h4>Advice to prevent getting sick</h4>
                 1. Wash your hands often <br>
                 2. Practise social distancing <br>
@@ -53,6 +54,15 @@
                     <div class="col-sm">
                         <div>Recovered</div>
                         <h4 id="total-recovered">0</h4>
+                    </div>
+                </div>
+
+                <div class="container p-3">
+                    <div class="row">
+                        <div class="col text-center">
+                            <button id="displayCases" type="button" class="btn btn-danger">Cases</button>
+                            <button id="displayDeaths" type="button" class="btn btn-secondary">Deaths</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -96,66 +106,82 @@
     </div>
 
     <script src="{{url_for('static', filename='countries.js')}}"></script>
-
     <script type="text/javascript">
         let str = '{{ data }}';
         let res = str.replace(/&#34;/g, "\"");
+
+        function createDiv(innerText) {
+            let d = document.createElement('div');
+            d.innerText = `${innerText}`;
+            return d;
+        }
+
+        function createSpan(innerText) {
+            let s = document.createElement('span');
+            s.innerText = `${innerText}`;
+            return s;
+        }
+
+        function createFlag(alpha_2) {
+            let f = document.createElement('span');
+            f.classList.add('flag-icon', `flag-icon-${alpha_2}`, 'pr-5');
+            return f;
+        }
+
+        function createIcon(icon) {
+            let i = createSpan(icon);
+            i.classList.add('material-icons');
+            return i;
+        }
 
         let json = JSON.parse(res);
         // console.log(json , "sadad")
         let accordion = document.getElementById('accordion');
         let total = { 'Confirmed': 0, 'Deaths': 0, 'Recovered': 0, }
         for(i in json) {
-            console.log(json[i]['Code'].substring(0,2));
-            total['Confirmed'] += json[i]['Confirmed'];
-            total['Deaths'] += json[i]['Deaths'];
-            total['Recovered'] += json[i]['Recovered'];
+            let country = json[i];
+            total.Confirmed += country.Confirmed;
+            total.Deaths += country.Deaths;
+            total.Recovered += country.Recovered;
 
+            let collapsible = document.createElement('div');
+            collapsible.classList.add('card', 'collapsible');
 
-            let card = document.createElement('div');
-            card.classList.add('card', 'collapsible');
+            let clickable = document.createElement('div');
+            clickable.classList.add('collapse-header', 'noselect');
+            clickable.setAttribute('data-target', `#${country.Code}`);
+            clickable.setAttribute('data-toggle', 'collapse');
+            clickable.style.background = `${getColor(country.Confirmed)}`;
 
-            let cardHeader = document.createElement('div');
-            cardHeader.classList.add('collapse-header', 'noselect');
-            cardHeader.setAttribute('data-target', `#${json[i]['Code']}`);
-            cardHeader.setAttribute('data-toggle', 'collapse');
-            cardHeader.innerText = `${i}`;
+            let flag = createFlag(json[i]['Code'].toLowerCase());
+            clickable.appendChild(flag);
+            let name = createSpan(i);
+            clickable.appendChild(name);
+            let confirmed = createSpan(formatNumber(country.Confirmed));
+            confirmed.classList.add('float-right');
+            let expand = createIcon('expand_more')
+            confirmed.appendChild(expand);
+            clickable.appendChild(confirmed);
 
-            let flag = document.createElement('span');
-            flag.classList.add('flag-icon', `flag-icon-${json[i]['Code'].toLowerCase()}`);
-            cardHeader.appendChild(flag);
+            collapsible.appendChild(clickable);
 
-            let cardCases = document.createElement('span');
-            cardCases.classList.add('float-right');
-            cardCases.innerText = `${formatNumber(json[i]['Confirmed'])}`;
+            let content = document.createElement('div');
+            content.setAttribute('id', `${country.Code}`);
+            content.classList.add('collapse');
+            content.setAttribute('data-parent', '#accordion');
 
-            let cardExpand = document.createElement('span');
-            cardExpand.classList.add('material-icons');
-            cardExpand.innerText = 'expand_more';
-            cardCases.appendChild(cardExpand);
+            let body = document.createElement('div');
+            body.classList.add('card-body', 'text-center');
+            body.innerText = `${formatNumber(country.Confirmed)} Confirmed | ${formatNumber(country.Deaths)} Deaths | ${formatNumber(country.Recovered)} Recovered`;
 
-            cardHeader.appendChild(cardCases);
-            card.appendChild(cardHeader);
-
-            let cardCollapse = document.createElement('div');
-            cardCollapse.setAttribute('id', `${json[i]['Code']}`);
-            cardCollapse.classList.add('collapse');
-            cardCollapse.setAttribute('data-parent', '#accordion');
-
-            let cardBody = document.createElement('div');
-            cardBody.classList.add('card-body', 'text-center');
-            cardBody.innerText = `${formatNumber(json[i]['Confirmed'])} Confirmed | ${formatNumber(json[i]['Deaths'])} Deaths | ${formatNumber(json[i]['Recovered'])} Recovered`;
-
-            cardCollapse.appendChild(cardBody);
-            card.appendChild(cardCollapse);
-
-            accordion.appendChild(card);
+            content.appendChild(body);
+            collapsible.appendChild(content);
+            accordion.appendChild(collapsible);
 
             if(convertCountry(i)) {
-                // convert ket to fix mapName
-                // console.log(`${i} ${convertCountry(i)}`);
+                console.log(i);
+                // convert key to fit GeoJson
                 json[convertCountry(i)] = json[i];
-                // console.log(json[convertCountry(i)]);
                 delete json[i];
             }
         }
@@ -167,15 +193,9 @@
         function convertCountry(d) {
             let dict = {
                 "US": "United States of America",
-                "Côte dIvoire" : "Ivory Coast",
                 "Czechia" : "Czech Republic",
-                "Falkland Islands (Malvinas)" : "Falkland Islands",
                 "North Macedonia" : "Macedonia",
-                "Serbia" : "Republic of Serbia",
-                "Syrian Arab Republic" : "Syria",
                 "Timor-Leste" : "East Timor",
-                "United States" : "United States of America",
-                "Viet Nam" : "Vietnam"
             }
 
             return dict[d];
@@ -237,7 +257,7 @@
                     (props ?
     			         '<div class="text-bold text-center">' + props.name + '</div>' +
                          (props.confirmed ? props.confirmed : "0 (Data may be invalid)") + ' confirmed cases' + '<br>' +
-                         (props.deaths ? props.deaths : "0 (Data may be invalid)") + ' confirmed deaths'
+                         (props.deaths ? props.deaths : "0") + ' confirmed deaths'
     			         : '<span class="text-bold text-center">' + 'Hover over a country' + '</span>') + '</div>';
         };
 

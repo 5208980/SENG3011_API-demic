@@ -72,13 +72,33 @@ def info():
 def about():
     return render_template("about.html")
 
-@app.route("/nsw")
-def nsw():
-    data, data_2 = nsw_positive_cases()
-    data_str = json_to_string(data)
-    data_str_2 = json_to_string(data_2)
+@app.route("/au")
+def au():
+    nsw, nsw_latest_cases = nsw_positive_cases()
+    nsw = json_to_string(nsw)
+    nsw_latest_cases = json_to_string(nsw_latest_cases)
 
-    return render_template("au.html", data=data_str, latest=data_str_2)
+    wa = wa_positive_cases()
+    wa = json_to_string(wa)
+
+    vic = vic_positive_cases()
+    vic = json_to_string(vic)
+
+    qld = qld_positive_cases()
+    qld = json_to_string(qld)
+
+    au, sources = australia_latest()
+    au = json_to_string(au)
+    sources = json_to_string(sources)
+
+    return render_template("au.html", sources=sources, nsw_latest_cases=nsw_latest_cases, au=au, nsw=nsw, wa=wa, vic=vic, qld=qld)
+
+@app.route("/wa")
+def wa():
+    data = wa_positive_cases()
+    data_str = json_to_string(data)
+
+    return render_template("wa.html", data=data_str)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

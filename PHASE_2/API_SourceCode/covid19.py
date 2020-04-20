@@ -7,22 +7,19 @@ from bs4 import BeautifulSoup   # to scrape data from html requests
 from datetime import timedelta, datetime
 from collections import OrderedDict
 from operator import *
+# import pycountry
+
 from countries import countries
-import pycountry
+from countryISO import *
 
 def identify_country(country):
     switcher = {
-        # "US": "United States",
-        "Congo (Brazzaville)": "Republic of the Congo",
-        "Congo (Kinshasa)": "Democratic Republic of the Congo",
-        "Diamond Princess": "",
-        "Holy See": "Holy See (Vatican City State)",
+        "Diamond Princess": "Cruise Ship",
+        "Cote d'Ivoire": "Ivory Coast",
+        "Holy See": "Holy See",
         "Korea, South": "South Korea",
         "Kosovo": "",
-        "Syria": "Syrian Arab Republic",
         "Taiwan*": "Taiwan",
-        "Tanzania": "United Republic of Tanzania",
-        "Vietnam": "Viet Nam",
         "West Bank and Gaza": "",
     }
 
@@ -44,8 +41,6 @@ def generate_data():
 
     df = pd.read_csv(URL, error_bad_lines=False)
 
-    print(list(pycountry.countries)[0])
-
     dataset = {}
     total = {}
     total['Confirmed'] = 0
@@ -57,13 +52,9 @@ def generate_data():
         convert_country = re.sub('\"', '', convert_country)
         data = dataset.get(convert_country, False)
         if not data:
-
             data = {}
-            data['Code'] = ""
-            if countries.get(convert_country, "") != "":
-                if pycountry.countries.get(alpha_3=countries.get(convert_country, "")).alpha_2 == 'TW':
-                    print(pycountry.countries.get(alpha_3=countries.get(convert_country, "")).alpha_2)
-                data['Code'] = pycountry.countries.get(alpha_3=countries.get(convert_country, "")).alpha_2
+            data['Code'] = ISO_3_to_2(countries.get(convert_country, ""))
+
             data['Confirmed'] = row['Confirmed']
             data['Deaths'] = row['Deaths']
             data['Recovered'] = row['Recovered']
@@ -129,9 +120,11 @@ def json_to_string(s):
 import urllib
 
 def nsw_positive_cases():
-    get_limit = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit=20')
+    resource_id = '2776dbb8-f807-4fb2-b1ed-184a6fc2c8aa'; # Location and source
+    # 21304414-1ff1-4243-a5d2-f52778048b29 # location
+    get_limit = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit=20'.format(resource_id))
     limit = get_limit.json()['result']['total']
-    r = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit={}'.format(limit))
+    r = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit={}'.format(resource_id, limit))
     # print(r.json())
 
     dataset = {}
@@ -143,15 +136,16 @@ def nsw_positive_cases():
         data = dataset.get(nsw_lga__3, False)
         if not data:
             tmp = {}
-            tmp['positive'] = 1
-            tmp['latest_confirmed'] = i['notification_date']
+            tmp['count'] = 1
+            tmp['date'] = i['notification_date']
             dataset[nsw_lga__3] = tmp
         else:
-            dataset[nsw_lga__3]['positive'] += 1
+            dataset[nsw_lga__3]['count'] += 1
             dataset[nsw_lga__3]['latest_confirmed'] = i['notification_date']
+
     # return r.json()
 
-    latest_cases = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit={}&offset={}'.format(limit, limit-50))
+    latest_cases = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit={}&offset={}'.format(resource_id, limit, limit-50))
     # print(latest_cases.json()['result']['records'])
     dataset_2 = {}
     data = []
@@ -164,12 +158,108 @@ def nsw_positive_cases():
         # tmp['postcode'] = i['postcode']
         tmp['postcode'] = i['postcode'] if not i['postcode'] is None else "unknown"
         tmp['notification_date'] = i['notification_date']
+        tmp['likely_source_of_infection'] = i['likely_source_of_infection']
 
         data.append(tmp);
 
     dataset_2['records'] = data
 
     return dataset, dataset_2
+
+def wa_positive_cases():
+    cases = requests.get('https://interactive.guim.co.uk/covidfeeds/wa.json'.format())
+    # print(latest_cases.json()['result']['records'])
+    json = {}
+    for i in cases.json():
+        tmp = {}
+        tmp['count'] = i['count']
+        tmp['date'] = i['date']
+        json[re.sub('\([ACTS]\)', '', i['place']).strip().lower()] = tmp
+
+    return json
+
+def vic_positive_cases():
+    cases = requests.get('https://interactive.guim.co.uk/covidfeeds/victoria.json'.format())
+    json = {}
+    for i in cases.json():
+        tmp = {}
+        tmp['count'] = i['count']
+        tmp['date'] = i['date']
+        json[re.sub('\([ACTSB]\)|\(Rc\)', '', i['place']).strip().lower()] = tmp
+
+    return json
+
+def qld_positive_cases():
+    cases = requests.get('https://interactive.guim.co.uk/covidfeeds/queensland.json'.format())
+    # print(latest_cases.json()['result']['records'])
+    json = {}
+    for i in cases.json():
+        tmp = {}
+        tmp['count'] = i['count']
+        tmp['date'] = i['date']
+        json[re.sub('\\n', '', i['place']).strip().lower()] = tmp
+
+    return json
+
+def au_time_series():
+    cases = requests.get('https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json'.format())
+    json = {}
+    json['ACT'] = []
+    json['NSW'] = []
+    json['VIC'] = []
+    json['TAS'] = []
+    json['WA'] = []
+    json['SA'] = []
+    json['QLD'] = []
+    records = cases.json()['sheets']['updates']
+    for record in records:
+        tmp = {}
+        tmp['date'] = record['Date']
+        tmp['cases'] = 0 if record['Cumulative case count'] == '' else int(record['Cumulative case count'])
+        tmp['deaths'] = 0 if record['Cumulative deaths'] == '' else int(record['Cumulative deaths'])
+        tmp['recovered'] = 0 if record['Recovered (cumulative)'] == '' else int(record['Recovered (cumulative)'])
+        tmp['tests'] = 0 if record['Tests conducted (total)'] == '' else int(record['Tests conducted (total)'])
+        tmp['hospitalised'] = 0 if record['Hospitalisations (count)'] == '' else int(record['Hospitalisations (count)'])
+        print(record['State'])
+    return json
+
+def australia_latest():
+    cases = requests.get('https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json'.format())
+    records = cases.json()['sheets']['latest totals']
+    main = {}
+    states = {}
+    for record in records:
+        if(record['State or territory'] != 'National'):
+            tmp = {}
+            tmp['cases'] = 0 if record['Confirmed cases (cumulative)'] == '' else int(record['Confirmed cases (cumulative)'])
+            tmp['deaths'] = 0 if record['Deaths'] == '' else int(record['Deaths'])
+            tmp['recovered'] = 0 if record['Recovered'] == '' else int(record['Recovered'])
+            tmp['tests'] = 0 if record['Tests conducted'] == '' else int(record['Tests conducted'])
+            tmp['hospitalised'] = 0 if record['Current hospitalisation'] == '' else int(record['Current hospitalisation'])
+            states[record['State or territory']] = tmp
+        else:
+            main['last_updated'] = record['Last updated']
+    main['states'] = states
+
+    latest_deaths = cases.json()['sheets']['deaths']
+    arr = []
+    for death in latest_deaths:
+        arr.append({
+            'state': death['State'],
+            'date': death['Date of death'],
+            'details': death['Details'],
+            'source': death['Source']
+        });
+
+    # print(arr.reverse())
+    main['deaths'] = arr
+
+    sites = {}
+    sources = cases.json()['sheets']['sources']
+    for source in sources:
+        sites[source['state']] = source['daily update']
+
+    return main, sites
 
 # nsw_positive_cases()
 
@@ -195,4 +285,4 @@ def nsw_positive_cases():
 #
 # covidWhoAdvice()
 
-generate_data()
+australia_latest()

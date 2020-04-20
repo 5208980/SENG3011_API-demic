@@ -1,84 +1,233 @@
 {% extends "layout.html" %}
 
 {% block body %}
+    {% include 'nav.html' %}
 
-    <!-- <section>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">State</th>
-                    <th scope="col">Confirmed</th>
-                    <th scope="col">Deaths</th>
-                    <th scope="col">Tested</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table>
-    </section> -->
+    <div id="map" style="height: 80vh;"></div>
 
-    <!-- <a class="twitter-timeline"
-          href="https://twitter.com/nswhealth"
-          data-tweet-limit="1">
-    Tweets by @twittername</a>
-    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
+    <a onclick="smooth_scroll_to('info')"><div class="material-icons font-40 text-center" style="height: 20vh; width: 100vw;">expand_more</div></a>
 
-    <!-- <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2152_RC04/embed_loader.js"></script>
-    <script type="text/javascript">
-        trends.embed.renderExploreWidget(
-            "RELATED_TOPICS",
-            {
-                "comparisonItem": [
-                    {   "keyword": "/m/01cpyy",
-                        "geo":"",
-                        "time":"today 12-m"
-                    }
-                ],
-                "category": 0,
-                "property": ""
-            },
-            {
-                "exploreQuery": "q=%2Fm%2F01cpyy&date=today 12-m",
-                "guestPath" : "https://trends.google.com:443/trends/embed/"
-            }); </script>  -->
+    <section class="row pt-5" id="info">
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-hidden" style="height: 614px;">
+                    <h5 class="card-title sticky-top">Total Cases in Australia</h5>
+                    <div id="total_au_cases"></div>
+                    <div class="last_updated"></div>
+                    <div id="casesChart" style="width: 100%; height: 100%; margin: 0 auto; padding: 0"></div>
+                </div>
+            </div>
+        </div>
 
-    <div id="map"></div>
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-hidden" style="height: 614px;">
+                    <h5 class="card-title">Total Tests conducted in Australia</h5>
+                    <div id="total_au_tests"></div>
+                    <div class="last_updated"></div>
+                    <div id="testsChart"style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-hidden" style="height: 614px;">
+                    <h5 class="card-title">Total currently in Hospitals</h5>
+                    <span id="total_au_hospitals"></span><span>(estimate)</span>
+                    <div class="last_updated"></div>
+                    <div id="hospitalsChart"style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll" style="height: 614px;">
+                    <h5 class="card-title">Deaths</h5>
+                    <div id="total_au_deaths"></div>
+                    <div class="last_updated"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">State</th>
+                                <th scope="col">Age - Location</th>
+                                <!-- <th scope="col">Location</th> -->
+                            </tr>
+                        </thead>
+                        <tbody id="latest_deaths">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll bg-white" style="height: 614px;">
+                    <h5 class="card-title">New South Wales Cases by Local Government Area</h5>
+                    <div class="last_updated"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Latest Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Positive Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nsw_cases_by_lga">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll" style="height: 614px;">
+                    <h5 class="card-title">Latest Positives in NSW</h5>
+                    <div class="last_updated"></div>
+                    <ul id="nsw_latest_cases" class="list-group list-group-flush"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll" style="height: 614px;">
+                    <h5 class="card-title">Victoria Cases by Local Government Area</h5>
+                    <div class="last_updated"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Latest Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Positive Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vic_cases_by_lga">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll" style="height: 614px;">
+                    <h5 class="card-title">Western Australia Cases by Local Government Area</h5>
+                    <div class="last_updated"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Latest Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Positive Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wa_cases_by_lga">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll" style="height: 614px;">
+                    <h5 class="card-title">Queensland Cases by Hospital and Health Services</h5>
+                    <div class="last_updated"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Latest Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Positive Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qld_cases_by_lga">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 container pt-3">
+            <div class="card">
+                <div class="card-body overflow-scroll" style="height: 614px;">
+                    <h5 class="card-title">Disclaimer</h5>
+
+                    <div class="container">
+                        The data used has been generated using <a href="https://www.theguardian.com/au" target="blank">
+                        The Guardian Australia</a>. The information provided will
+                        be as real time as possible but is not garentee. The
+                        data sources comes from Australia offical governments sites.
+                        For more insights for each country
+                        <div id="sources" class="list-group list-group-flush">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- If bother add new articles for Australia covid19 -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    let str = '{{ data }}';
-    let res = str.replace(/&#34;/g, "\"");
+    function smooth_scroll_to(target) { document.getElementById(`${target}`).scrollIntoView({behavior: "smooth"}); }
+    function parseJson(str) { return JSON.parse(str.replace(/&#34;/g, "\"")) }
 
-    let json = JSON.parse(res);
-    // console.log(json);
+    let au_json = parseJson('{{ au }}');
 
-    str = '{{ latest }}';
-    res = str.replace(/&#34;/g, "\"");
+    let jsonSources = parseJson('{{ sources }}');
+    let sources = document.getElementById('sources');
+    for(i in jsonSources) {
+        let a = document.createElement('a');
+        a.classList.add('list-group-item', 'list-group-item-action')
+        a.setAttribute('href', `${jsonSources[i]}`); a.setAttribute('target', '_blank');
+        a.innerText = `${i}`;
+        sources.appendChild(a);
+    }
 
-    let jsonLatest = JSON.parse(res);
-    console.log(jsonLatest);
+    function createTr(text) {
+        let t = document.createElement('td'); t.innerText = `${text}`;
+        return t;
+    }
+
+    let latest_deaths = document.getElementById('latest_deaths');
+    let total_au_deaths = 0;
+    let deathsJson = au_json.deaths;
+    deathsJson.reverse().forEach(death => {
+        let tr = document.createElement('tr');
+
+        let dates = death.date.split('/');
+        console.log(dates);
+        let tdD = createTr(`${dates[0]}/${dates[1]}`);
+        tr.appendChild(tdD);
+        let tdS = createTr(death.state);
+        tr.appendChild(tdS);
+        let tdA = createTr(death.details);
+        tr.appendChild(tdA);
+
+        latest_deaths.append(tr);
+        total_au_deaths += 1;
+    });
+
+    document.getElementById('total_au_deaths').innerText = `${total_au_deaths.toLocaleString('en')}`;
+
+    let records = parseJson('{{ nsw_latest_cases }}').records;
+    let group = document.getElementById('nsw_latest_cases');
+    records.reverse().forEach(record => {
+        let item = document.createElement('li');
+        item.classList.add('list-group-item', 'text-capitalize');
+        item.innerText = `${record.nsw_lga__3} | ${record.postcode} | ${record.notification_date.split('T')[0].trim()} | ${record.likely_source_of_infection.split('-')[0].trim()}`;
+        group.appendChild(item);
+    });
 
     var map = L.map('map', {
-        'center': [-33.847927,150.6517881],
-        'zoom': 10,
-        'scrollWheelZoom': false,
-        // 'zoomControl': false,
+        'center': [-23.6980, 133.8807],
+        'zoom': 5, 'minZoom': 5, 'maxZoom': 10,
         'layers': [
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 'attribution': 'Map data &copy; OpenStreetMap contributors'
@@ -86,63 +235,64 @@
         ]
     });
 
-    // var info = L.control({ position: "topright" });
-    //
-    // info.onAdd = function (map) {
-    //     this._div = L.DomUtil.create('div', 'info');
-    //     this.update();
-    //     return this._div;
-    // };
-    //
-    // info.update = function (props) {
-    //     console.log(props);
-    //     this._div.innerHTML =
-    //         '<h4> Info Panel </h4>' +
-    //             (props ?
-    //                  '<b>' + props.nsw_lga__3 + '</b><br />' + (props.confirmed ? props.confirmed : "0") + ' confirmed cases' + '<div></div>'
-    //                  : 'Hover over a country');
-    // };
-    //
-    // info.addTo(map);
-    //
-    // function highlightPolygon(e) {
-    //     var layer = e.target;
-    //
-    //     layer.setStyle({
-    //         weight: 2,
-    //         color: '#666',
-    //         dashArray: '',
-    //         fillOpacity: 0.7
-    //     });
-    //
-    //     layer.bringToFront();
-    //
-    //     info.update(layer.feature.properties);
-    // }
-    //
-    // var geojson;
-    //
-    // function removeHighlight(e) {
-    //     geojson.resetStyle(e.target);
-    //     info.update();
-    // }
-    //
-    // function zoomToFeature(e) {
-    //     // console.log(e.target);
-    //     console.log(e.target.getBounds());
-    //     // console.log(e.target.getBounds().getCenter());
-    //     // map.fitBounds(e.target.getBounds().getCenter());
-    //     map.flyTo(e.target.getBounds().getCenter(), 10);
-    //     info.update(e.target.feature.properties);
-    // }
-    //
-    // function onEachFeature(feature, layer) {
-    //     layer.on({
-    //         mouseover: highlightPolygon,
-    //         mouseout: removeHighlight,
-    //         click: zoomToFeature
-    //     });
-    // }
+    var info = L.control({ position: "topright" });
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+    };
+
+    info.update = function (props) {
+        if(props) {
+            if (props.hasOwnProperty('nsw_lga__3')) {
+                this._div.innerHTML =
+                    '<h4> Info Panel </h4>' +
+                    '<b>' + props.nsw_lga__3 + '</b><br />' +
+                    (props.confirmed ? props.confirmed : "0") + ' confirmed cases';
+            } else if (props.hasOwnProperty('wa_lga_s_3')) {
+                this._div.innerHTML =
+                    '<h4> Info Panel </h4>' +
+                    '<b>' + props.wa_lga_s_3 + '</b><br />' +
+                    (props.confirmed ? props.confirmed : "0") + ' confirmed cases';
+            } else if (props.hasOwnProperty('qld_hhs__3')) {
+                this._div.innerHTML =
+                    '<h4> Info Panel </h4>' +
+                    '<b>' + props.qld_hhs__3 + '</b><br />' +
+                    (props.confirmed ? props.confirmed : "0") + ' confirmed cases';
+            } else if (props.hasOwnProperty('vic_lga__3')) {
+                this._div.innerHTML =
+                    '<h4> Info Panel </h4>' +
+                    '<b>' + props.vic_lga__3 + '</b><br />' +
+                    (props.confirmed ? props.confirmed : "0") + ' confirmed cases';
+            }
+        } else {
+            this._div.innerHTML = '<h4> Info Panel </h4>' + 'Hover over a country';
+        }
+    };
+
+    info.addTo(map);
+
+    function highlightPolygon(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 2,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        layer.bringToFront();
+        info.update(layer.feature.properties);
+    }
+
+    var geojson;
+
+    // Default
+    function removeHighlight(e) { geojson.resetStyle(e.target); info.update(); }
+    function zoomToFeature(e) { map.flyTo(e.target.getBounds().getCenter(), 10); info.update(e.target.feature.properties); }
+    function onEachFeature(feature, layer) { layer.on({ mouseover: highlightPolygon, mouseout: removeHighlight, click: zoomToFeature }); }
 
     function style(feature) {
         return {
@@ -167,63 +317,161 @@
                               '#ebedf0';
     }
 
-    // NEVER OPEN OR TOUCH nsw.geojson, File size is very very huge, it'll break ur IDE
-    // $.getJSON("{{url_for('static', filename='nsw.geojson')}}",function(data){
-    // // L.geoJson function is used to parse geojson file and load on to map
-    //     L.geoJson(data, {style: style}).addTo(map);
-    // });
+    function generateTableCases(lga, json) {
+        let tr = document.createElement('tr');
 
-    $.getJSON("https://data.gov.au/geoserver/nsw-local-government-areas/wfs?request=GetFeature&typeName=ckan_f6a00643_1842_48cd_9c2f_df23a3a1dc1e&outputFormat=json",function(data){
+        dates = json.date.split('T')[0].split('-');
+        let tdD = createTr(`${dates[2]}/${dates[1]}`);
+        tr.appendChild(tdD);
+        let tdN = createTr(lga);
+        tdN.classList.add('text-capitalize');
+        tr.appendChild(tdN);
+        let tdP = createTr(json.count);
+        tr.appendChild(tdP);
+
+        return tr;
+    }
+
+    $.getJSON("{{ url_for('static', filename='wa.json') }}", function(data){
+        let wa_json = parseJson('{{ wa }}');
         for(i in data['features']) {
-            name = data['features'][i]['properties']['nsw_lga__3'].toLowerCase()
-            if(json[name]) { data['features'][i]['properties']['confirmed'] = json[name]['positive'] }
+            name = data['features'][i]['properties']['wa_lga_s_3'].toLowerCase();
+            if(wa_json[name]) { data['features'][i]['properties']['confirmed'] = wa_json[name]['count']; }
         }
-        // geojson = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
-        geojson = L.geoJson(data, {style: style}).addTo(map);
 
+        let wa = document.getElementById('wa_cases_by_lga');
+        for (lga in wa_json) { wa.appendChild(generateTableCases(lga, wa_json[lga])); }
+
+        geojson = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
     });
 
-    // "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit=5"
+    $.getJSON("{{ url_for('static', filename='nsw.json') }}", function(data){
+        let nsw_json = parseJson('{{ nsw }}');
+        for(i in data['features']) {
+            name = data['features'][i]['properties']['nsw_lga__3'].toLowerCase();
+            if(nsw_json[name]) { data['features'][i]['properties']['confirmed'] = nsw_json[name]['count']; }
+        }
+
+        let nsw = document.getElementById('nsw_cases_by_lga');
+        for (lga in nsw_json) { nsw.appendChild(generateTableCases(lga, nsw_json[lga])); }
+
+        geojson = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
+    });
+
+    $.getJSON("{{ url_for('static', filename='vic.json') }}", function(data){
+        let vic_json = parseJson('{{ vic }}');
+        for(i in data['features']) {
+            name = data['features'][i]['properties']['vic_lga__3'].toLowerCase();
+            if(vic_json[name]) { data['features'][i]['properties']['confirmed'] = vic_json[name]['count']; }
+        }
+
+        let vic = document.getElementById('vic_cases_by_lga');
+        for (lga in vic_json) { vic.appendChild(generateTableCases(lga, vic_json[lga])); }
+
+        geojson = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
+    });
+
+    $.getJSON("{{ url_for('static', filename='qld.json') }}", function(data){
+        let qld_json = parseJson('{{ qld }}');
+        for(i in data['features']) {
+            name = data['features'][i]['properties']['qld_hhs__3'].toLowerCase();
+            if(qld_json[name]) { data['features'][i]['properties']['confirmed'] = qld_json[name]['count']; }
+        }
+
+        let qld = document.getElementById('qld_cases_by_lga');
+        for (lga in qld_json) { qld.appendChild(generateTableCases(lga, qld_json[lga])); }
+
+        geojson = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
+    });
+
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        document.querySelectorAll('.last_updated').forEach((tag) => { tag.innerText = `Last updated: ${au_json.last_updated}`; });
+
+        var casesData = new google.visualization.DataTable();
+        casesData.addColumn('string', 'Country');
+        casesData.addColumn('number', 'Cases');
+        casesData.addColumn({ role: 'style' });
+
+        var testsData = new google.visualization.DataTable();
+        testsData.addColumn('string', 'Country');
+        testsData.addColumn('number', 'Tests');
+        testsData.addColumn({ role: 'style' });
+
+        var hospitalsData = new google.visualization.DataTable();
+        hospitalsData.addColumn('string', 'Country');
+        hospitalsData.addColumn('number', 'Hospitalised');
+        hospitalsData.addColumn({ role: 'style' });
+
+        let colourMapper = {
+            'NSW': '#3266cc',
+            'VIC': '#dc3b30',
+            'QLD': '#f19833',
+            'SA': '#4d971c',
+            'ACT': '#9b3998',
+            'NT': '#3f9ac7',
+            'TAS': '#dd4477',
+            'WA': '#65aa03',
+        }
+
+        let total_au_cases = 0;
+        let total_au_tests = 0;
+        let total_au_hospitals = 0;
+        let states = au_json.states;
+        for (var i in states){
+            casesData.addRow([i, states[i].cases, colourMapper[i]]);
+            total_au_cases += states[i].cases;
+            testsData.addRow([i, states[i].tests, colourMapper[i]]);
+            total_au_tests += states[i].tests;
+            hospitalsData.addRow([i, states[i].hospitalised, colourMapper[i]]);
+            total_au_hospitals += states[i].hospitalised;
+        }
+
+        document.getElementById('total_au_cases').innerText = `${total_au_cases.toLocaleString('en')}`;
+        document.getElementById('total_au_tests').innerText = `${total_au_tests.toLocaleString('en')}`;
+        document.getElementById('total_au_hospitals').innerText = `${total_au_hospitals.toLocaleString('en')}`;
+
+        let animation = { duration: 1000, easing: 'out', startup: true}
+        let chartArea = {width: '75%', height: '70%'}
+        let legend = { position: 'bottom' }
+        var casesChartOptions = {
+            pieSliceText: 'label',
+            legend: legend,
+            chartArea: chartArea,
+            backgroundColor: { fill:'transparent' },
+        };
 
 
-    // THE GUARDIANs
-    // https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json
+        var testsChartOptions = {
+            legend: legend,
+            chartArea: chartArea,
+            hAxis: { gridlines: { color: 'none' }, },
+            animation: animation,
+            tooltip: {isHtml: true}
+        };
 
-    // var apiG = fetch('https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json').then(r => r.json());  // Live main API
-    // // https://corona.lmao.ninja/all        // BACKUP API
-    // // own calculations in covid-19.py      // BACKBACKUP API
-    //
-    // let table = document.getElementById('table-body');
-    // Promise.all([apiG]).then(values => {
-    //     console.log(values[0]);
-    //
-    //     totals = values[0].sheets['latest totals'];
-    //     // console.log(latest_total);
-    //     for(i in totals) {
-    //         // <tr>
-    //         //      <td scope="col">State</td>
-    //         //      <td scope="col">Confirmed</td>
-    //         //      <td scope="col">Deaths</td>
-    //         //      <td scope="col">Recovered</dh>
-    //         //      <td scope="col">Tested</td>
-    //         // </tr>
-    //         let tr = document.createElement('tr');
-    //         let state = document.createElement('td');
-    //         state.innerText = `${totals[i]['State or territory']}`;
-    //         let confirmed = document.createElement('td');
-    //         confirmed.innerText = `${totals[i]['Confirmed cases (cumulative)']}`;
-    //         let deaths = document.createElement('td');
-    //         deaths.innerText = `${totals[i]['Deaths']}`;
-    //         let conducted = document.createElement('td');
-    //         conducted.innerText = `${totals[i]['Tests conducted']}`;
-    //         tr.appendChild(state);
-    //         tr.appendChild(confirmed);
-    //         tr.appendChild(deaths);
-    //         tr.appendChild(conducted);
-    //         table.appendChild(tr);
-    //         console.log("HERE");
-    //     }
-    // });
+        var hospitalsChartOptions = {
+            legend: legend,
+            chartArea: chartArea,
+            hAxis: { gridlines: { color: 'none' }, },
+            animation: animation,
+            tooltip: {isHtml: true}
+        };
 
+        var chart = new google.visualization.PieChart(document.getElementById('casesChart'));
+        chart.draw(casesData, casesChartOptions);
+
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('testsChart'));
+        chart.draw(testsData, testsChartOptions);
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('hospitalsChart'));
+        chart.draw(hospitalsData, hospitalsChartOptions);
+    }
+
+    $(window).resize(function(){
+        drawChart();
+    });
 </script>
 {% endblock %}
