@@ -125,7 +125,6 @@ def nsw_positive_cases():
     get_limit = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit=20'.format(resource_id))
     limit = get_limit.json()['result']['total']
     r = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit={}'.format(resource_id, limit))
-    # print(r.json())
 
     dataset = {}
     records = r.json()['result']['records']
@@ -261,7 +260,26 @@ def australia_latest():
 
     return main, sites
 
-# nsw_positive_cases()
+# Be integrated in our API, if we had time
+advices = [
+    {'icon': 'fa-hands-wash', 'tip': 'Wash your hands often'},
+    {'icon': 'fa-people-arrows', 'tip': 'Practise social distancing'},
+    {'icon': 'fa-handshake-slash', 'tip': 'Avoid touching your faces and others'},
+    {'icon': 'fa-virus', 'tip': 'Wear mask to limit exposure when going outside'},
+    {'icon': 'fa-stethoscope', 'tip': 'If you have sick, stay home and call your doctor'},
+    {'icon': 'fa-user-slash', 'tip': 'Be sure to follow your country\\\'s social gathering limit'},
+]
+
+def generateSafetyAdvices():
+
+    json = {}
+    json['advices'] = advices
+    json['length'] = len(advices)
+    return json
+
+nsw_positive_cases()
+
+
 
 # from pytrends.request import TrendReq
 #
@@ -271,18 +289,3 @@ def australia_latest():
 #
 # for i in related_queries.values():
 #     print(i)
-
-
-# def covidWhoAdvice():
-#     html_doc = requests.get('https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public')
-#     soup = BeautifulSoup(html_doc.content, 'html.parser')
-#
-#     main = soup.find(id="PageContent_C003_Col01")
-#     blocks = main.findAll("div", {"class": "content-block"})
-#
-#     for block in blocks:
-#         print(block.get_text())
-#
-# covidWhoAdvice()
-
-australia_latest()

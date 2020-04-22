@@ -8,9 +8,11 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    total_str = json_to_string(generate_total())
 
-    return render_template("index.html", total=total_str)
+    advices = generateSafetyAdvices()
+    advices = json_to_string(advices)
+
+    return render_template("index.html", advices=advices)
 
 @app.route("/dashboard")
 def dashboard():
@@ -92,13 +94,5 @@ def au():
     sources = json_to_string(sources)
 
     return render_template("au.html", sources=sources, nsw_latest_cases=nsw_latest_cases, au=au, nsw=nsw, wa=wa, vic=vic, qld=qld)
-
-@app.route("/wa")
-def wa():
-    data = wa_positive_cases()
-    data_str = json_to_string(data)
-
-    return render_template("wa.html", data=data_str)
-
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
