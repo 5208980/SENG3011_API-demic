@@ -3,22 +3,14 @@
 {% block body %}
     <div class="row m-0 p-0">
         <div class="col-lg-4 p-0 overflow-scroll" style="height: 100vh;">
-            <nav class="navbar navbar-color navbar-light sticky-top">
-                <h1 class="navbar-brand mb-0 ml-5">API-demic</h1>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+            <nav class="navbar navbar-dark sticky-top" style="background-color: #353946;">
+                <h1 class="navbar-brand mb-0 ml-5 text-bold">Covid-Scout</h1>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#n" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon text-white"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                            <a class="nav-item nav-link active" href="{{ url_for('home') }}"><span class="material-icons">home</span></a>
-                            <a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Live Dashboard</a>
-                            <a class="nav-item nav-link" href="{{ url_for('latest_news') }}">News</a>
-                            <a class="nav-item nav-link" href="{{ url_for('covid19') }}">Live Map</a>
-                            <a class="nav-item nav-link" href="{{ url_for('info') }}">Data Centre</a>
-                            <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
-                            <a class="nav-item nav-link" href="{{ url_for('au') }}">For NSW</a>
-                        </div>
+                <div class="collapse navbar-collapse" id="n">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active text-white" href="{{ url_for('home') }}"><span class="material-icons">home</span></a> <a class="nav-item nav-link text-white" href="{{ url_for('dashboard') }}">Dashboard</a> <a class="nav-item nav-link text-white" href="{{ url_for('latest_news') }}">News</a> <a class="nav-item nav-link text-white" href="{{ url_for('covid19') }}">Global Heatmap</a> <a class="nav-item nav-link text-white" href="{{ url_for('info') }}">Data Centre</a> <a class="nav-item nav-link text-white" href="{{ url_for('au') }}">Australia</a> <a class="nav-item nav-link text-white" href="{{ url_for('about') }}">About</a>
                     </div>
                 </div>
             </nav>
@@ -81,21 +73,6 @@
                             <span>22,354 Confirmed | 235 Deaths | 56,457 Recovered</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="card collapsible">
-                    <div class="collapse-header" data-target="#collapseOne" data-toggle="collapse">
-                        China
-                        <span class="float-right">
-                            89,120 <span class="material-icons">expand_more</span>
-                        </span>
-                    </div>
-
-                    <div id="collapseOne" class="collapse" data-parent="#accordion">
-                        <div class="card-body text-center">
-                            <span>22,354 Confirmed | 235 Deaths | 56,457 Recovered</span>
-                        </div>
-                    </div>
                 </div> -->
             </div>  <!-- accordion -->
 
@@ -145,7 +122,7 @@
             total.Recovered += country.Recovered;
 
             let collapsible = document.createElement('div');
-            collapsible.classList.add('card', 'collapsible');
+            collapsible.classList.add('card', 'collapsible', 'collapsible-case');
 
             let clickable = document.createElement('div');
             clickable.classList.add('collapse-header', 'noselect');
@@ -171,6 +148,41 @@
             content.setAttribute('data-parent', '#accordion');
 
             let body = document.createElement('div');
+            body.classList.add('card-body', 'text-center');
+            body.innerText = `${formatNumber(country.Confirmed)} Confirmed | ${formatNumber(country.Deaths)} Deaths | ${formatNumber(country.Recovered)} Recovered`;
+
+            content.appendChild(body);
+            collapsible.appendChild(content);
+            accordion.appendChild(collapsible);
+
+
+            collapsible = document.createElement('div');
+            collapsible.classList.add('card', 'collapsible', 'collapsible-death');
+
+            clickable = document.createElement('div');
+            clickable.classList.add('collapse-header', 'noselect');
+            clickable.setAttribute('data-target', `#${country.Code}`);
+            clickable.setAttribute('data-toggle', 'collapse');
+            clickable.style.background = `${getColor(country.Deaths)}`;
+
+            flag = createFlag(json[i]['Code'].toLowerCase());
+            clickable.appendChild(flag);
+            name = createSpan(i);
+            clickable.appendChild(name);
+            confirmed = createSpan(formatNumber(country.Deaths));
+            confirmed.classList.add('float-right');
+            expand = createIcon('expand_more')
+            confirmed.appendChild(expand);
+            clickable.appendChild(confirmed);
+
+            collapsible.appendChild(clickable);
+
+            content = document.createElement('div');
+            content.setAttribute('id', `${country.Code}`);
+            content.classList.add('collapse');
+            content.setAttribute('data-parent', '#accordion');
+
+            body = document.createElement('div');
             body.classList.add('card-body', 'text-center');
             body.innerText = `${formatNumber(country.Confirmed)} Confirmed | ${formatNumber(country.Deaths)} Deaths | ${formatNumber(country.Recovered)} Recovered`;
 
@@ -336,6 +348,7 @@
                                   '#ebedf0';
         }
 
+        $( ".collapsible-death" ).hide( "slow" );
         geojson = L.geoJson(countriesData, {style: styleCases, onEachFeature: onEachFeature}).addTo(map);
 
         $("#displayDeaths").click(function() {
@@ -343,12 +356,17 @@
             $(this).addClass("btn-danger").removeClass('btn-secondary');
             $("#displayCases").addClass("btn-secondary").removeClass("btn-danger");
 
+            $( ".collapsible-case" ).hide( "slow" );
+            $( ".collapsible-death" ).show( "slow" );
             geojson = L.geoJson(countriesData, {style: styleDeaths, onEachFeature: onEachFeature}).addTo(map);
         });
 
         $("#displayCases").click(function() {
             $(this).addClass("btn-danger").removeClass('btn-secondary');
             $("#displayDeaths").addClass("btn-secondary").removeClass("btn-danger");
+
+            $( ".collapsible-death" ).hide( "slow" );
+            $( ".collapsible-case" ).show( "slow" );
             geojson = L.geoJson(countriesData, {style: styleCases, onEachFeature: onEachFeature}).addTo(map);
         });
     </script>

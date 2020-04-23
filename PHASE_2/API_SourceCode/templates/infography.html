@@ -11,7 +11,6 @@
         <input type="text" id="country" placeholder="Enter country" list="contry-list" value="Australia">
         <datalist id="contry-list"></datalist>
     </div>
-
     <div class="container">
         <section class="hr">
             <div class="row">
@@ -159,20 +158,25 @@
             </div>  <!-- country deaths -->
         </section>
 
-        <section class="row text-center">
-            <div class="col-lg-6">
-                <div id="g-ac" class="content-title font-40"></div>
-            </div>
-            <div class="col-lg-6">
-                <div id="c-ac" class="content-title font-40"></div>
-            </div>
-        </section>  <!-- active -->
+        <section>
+            <h2 class="content-title">Active Cases</h2>
+            <div class="row text-center">
+                <div class="col-lg-6">
+                    <div>Global</div>
+                    <div id="g-ac" class="content-title font-40"></div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="country-name">Australia</div>
+                    <div id="c-ac" class="content-title font-40"></div>
+                </div>
+            </div>  <!-- active -->
+        </section>
     </div>  <!-- container -->
-
+<!--
     <section id="news" class="container hr pt-5 pb-5">
         <h2 id="news-header"></h2>
         <br><br><br><br><br><br><br><br>
-    </section>
+    </section> -->
 
     <section id="graphs" class="container hr pt-5 pb-5">
         <h2 class="content-title">Daily new confirmed cases [10 Most Affected]</h2>
@@ -338,7 +342,12 @@
 
         let str = '{{ data }}';
         let res = str.replace(/&#34;/g, "\"");
+        console.log(res);
         let head = JSON.parse(res);
+
+        let country_most_affected = '{{ data | tojson | safe }}';
+        // let head = JSON.parse(res);
+        console.log(country_most_affected);
 
         // Color Palete
         let light = '#82B1FF';
@@ -481,10 +490,6 @@
                 var twoPrevDay  = selectedCountry[selectedCountry.length - 2];
                 populateCountryTable(prevDay, twoPrevDay, "c");
 
-                // News Sections
-                let newsHeader = document.getElementById('news-header');
-                newsHeader.innerText = `Lastest News in ${countryName}`;
-
                 options['title'] = `${countryName}`;
                 // var arr = document.getElementsByClassName('country-name');
                 $('.country-name').each(function() {
@@ -599,7 +604,9 @@
 
                     for (var stat = 0; stat < selectedCountry.length; stat++) {
                         if(selectedCountry[stat+1] !== undefined) {
-                            let row = [ new Date(selectedCountry[stat].date), selectedCountry[stat+1].confirmed-selectedCountry[stat].confirmed ];
+                            let newCasesValue = selectedCountry[stat+1].confirmed-selectedCountry[stat].confirmed;
+                            if (newCasesValue < 0) { newCasesValue = 0; }
+                            let row = [ new Date(selectedCountry[stat].date), newCasesValue ];
                             if(selectedCountry[stat].confirmed > 0) { daysSinceFirstCase += 1; }
                             inputChart.addRow(row);
                         }

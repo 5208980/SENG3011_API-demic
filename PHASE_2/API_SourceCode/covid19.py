@@ -1,13 +1,13 @@
 import pandas as pd
 import json
 import datetime
+import urllib
 import requests
 import re
 from bs4 import BeautifulSoup   # to scrape data from html requests
 from datetime import timedelta, datetime
 from collections import OrderedDict
 from operator import *
-# import pycountry
 
 from countries import countries
 from countryISO import *
@@ -61,7 +61,6 @@ def generate_data():
             data['Active'] = row['Active']
             dataset[convert_country] = data
         else:
-            # print('already in dataset')
             dataset[convert_country]['Confirmed'] += row['Confirmed']
             dataset[convert_country]['Deaths'] += row['Deaths']
             dataset[convert_country]['Recovered'] += row['Recovered']
@@ -73,7 +72,6 @@ def head_generate_data():
     dataset = generate_data()
     while len(dataset) > 10:
         dataset.popitem()
-
     return dataset
 
 def generate_total():
@@ -82,7 +80,6 @@ def generate_total():
     TODAY = datetime.now()
     FILENAME = '{:02d}-{:02d}-{}.csv'.format(TODAY.month, TODAY.day, TODAY.year)
     URL = '{}{}{}'.format(GIT, PATH, FILENAME)
-
     r = requests.get(URL)
     while not r.ok:
         TODAY = TODAY - timedelta(days=1)
@@ -114,24 +111,19 @@ def validate_date(d):
 def json_to_string(s):
     ret = str(s)
     ret = re.sub('\'', '\"', ret)
-
     return ret
 
-import urllib
-
+# Formats NSW covid19 count in json (make compatible with geoJSON)
+# Formats 50 latest confirmed cases in NSW
 def nsw_positive_cases():
     resource_id = '2776dbb8-f807-4fb2-b1ed-184a6fc2c8aa'; # Location and source
-    # 21304414-1ff1-4243-a5d2-f52778048b29 # location
     get_limit = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit=20'.format(resource_id))
     limit = get_limit.json()['result']['total']
     r = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit={}'.format(resource_id, limit))
-
     dataset = {}
     records = r.json()['result']['records']
     for i in records:
         nsw_lga__3 = re.sub('\(A\)|\(C\)|\(NSW\)', '', i['lga_name19']).strip().lower()
-        # dataset['nsw_lga__3'] = nsw_lga__3
-        # print(nsw_lga__3.strip().lower())
         data = dataset.get(nsw_lga__3, False)
         if not data:
             tmp = {}
@@ -142,41 +134,33 @@ def nsw_positive_cases():
             dataset[nsw_lga__3]['count'] += 1
             dataset[nsw_lga__3]['latest_confirmed'] = i['notification_date']
 
-    # return r.json()
-
     latest_cases = requests.get('https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id={}&limit={}&offset={}'.format(resource_id, limit, limit-50))
-    # print(latest_cases.json()['result']['records'])
     dataset_2 = {}
     data = []
     records = latest_cases.json()['result']['records']
     for i in records:
         nsw_lga__3 = re.sub('\(A\)|\(C\)|\(NSW\)', '', i['lga_name19']).strip().lower()
         tmp = {}
-        # tmp['nsw_lga__3'] = nsw_lga__3
         tmp['nsw_lga__3'] = nsw_lga__3 if nsw_lga__3 != "" else "unknown"
-        # tmp['postcode'] = i['postcode']
         tmp['postcode'] = i['postcode'] if not i['postcode'] is None else "unknown"
         tmp['notification_date'] = i['notification_date']
         tmp['likely_source_of_infection'] = i['likely_source_of_infection']
-
         data.append(tmp);
-
     dataset_2['records'] = data
-
     return dataset, dataset_2
 
+# Formats WA covid19 count in json (make compatible with geoJSON)
 def wa_positive_cases():
     cases = requests.get('https://interactive.guim.co.uk/covidfeeds/wa.json'.format())
-    # print(latest_cases.json()['result']['records'])
     json = {}
     for i in cases.json():
         tmp = {}
         tmp['count'] = i['count']
         tmp['date'] = i['date']
         json[re.sub('\([ACTS]\)', '', i['place']).strip().lower()] = tmp
-
     return json
 
+# Formats VIC covid19 count in json (make compatible with geoJSON)
 def vic_positive_cases():
     cases = requests.get('https://interactive.guim.co.uk/covidfeeds/victoria.json'.format())
     json = {}
@@ -185,19 +169,17 @@ def vic_positive_cases():
         tmp['count'] = i['count']
         tmp['date'] = i['date']
         json[re.sub('\([ACTSB]\)|\(Rc\)', '', i['place']).strip().lower()] = tmp
-
     return json
 
+# Formats QLD covid19 count in json (make compatible with geoJSON)
 def qld_positive_cases():
     cases = requests.get('https://interactive.guim.co.uk/covidfeeds/queensland.json'.format())
-    # print(latest_cases.json()['result']['records'])
     json = {}
     for i in cases.json():
         tmp = {}
         tmp['count'] = i['count']
         tmp['date'] = i['date']
         json[re.sub('\\n', '', i['place']).strip().lower()] = tmp
-
     return json
 
 def au_time_series():
@@ -249,8 +231,6 @@ def australia_latest():
             'details': death['Details'],
             'source': death['Source']
         });
-
-    # print(arr.reverse())
     main['deaths'] = arr
 
     sites = {}
@@ -260,7 +240,7 @@ def australia_latest():
 
     return main, sites
 
-# Be integrated in our API, if we had time
+# Get details for helping stop coronavirus
 advices = [
     {'icon': 'fa-hands-wash', 'tip': 'Wash your hands often'},
     {'icon': 'fa-people-arrows', 'tip': 'Practise social distancing'},
@@ -269,18 +249,44 @@ advices = [
     {'icon': 'fa-stethoscope', 'tip': 'If you have sick, stay home and call your doctor'},
     {'icon': 'fa-user-slash', 'tip': 'Be sure to follow your country\\\'s social gathering limit'},
 ]
-
 def generateSafetyAdvices():
-
     json = {}
     json['advices'] = advices
     json['length'] = len(advices)
     return json
 
-nsw_positive_cases()
+# Using another team's API to obtain more articles
+def getNewArticles():
+    TODAY = datetime.now()
+    LASTWEEK = TODAY - timedelta(days=7)
+    URL = "https://api.todo.cf/v1/article"
+    PARAMS = {
+        "teamName": "API-demic",
+        "startDate": "{}-{:02d}-{:02d}T12:00:00".format(LASTWEEK.year, LASTWEEK.month, LASTWEEK.day),
+        "endDate": "{}-{:02d}-{:02d}T12:00:00".format(TODAY.year, TODAY.month, TODAY.day),
+        "key": "COVID19",
+        "pageSize": "20"
+    }
+    r = requests.get(url = URL, params = PARAMS)
+
+    articles = r.json()['list']
+    json = {}
+    json['articles'] = []
+    for article in articles:
+        tmp = {}
+        tmp['url'] = article['url']
+        tmp['date_of_publication'] = article['date_of_publication']
+        tmp['headline'] = article['headline']
+        tmp['main_text'] = article['main_text']
+        tmp['reports'] = article['reports']
+        json['articles'].append(tmp)
+
+    return json
 
 
+# Testing
 
+getNewArticles()
 # from pytrends.request import TrendReq
 #
 # pytrends = TrendReq(hl='en-US', tz=360)

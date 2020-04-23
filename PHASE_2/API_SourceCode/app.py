@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-
     advices = generateSafetyAdvices()
     advices = json_to_string(advices)
 
@@ -51,17 +50,10 @@ def latest_news():
     else:
         START = x.strftime("%Y") + "-" + str(int(x.strftime("%m")) - 1) + "-" + x.strftime("%d") + "T" + x.strftime("%T")
 
-    return render_template("news.html", data=data_str, total=total_str, start = START, end = END) # Render News on covid this week
+    articles = getNewArticles()
+    print(type(articles))
 
-@app.route("/news/<date>")
-def date_news(date):
-    if not validate_date(date):
-        return render_template("about.html")
-
-    data = json.dumps(head_generate_data())
-    data_str = json_to_string(data)
-
-    return render_template("news.html", start_date=date+"T00:00:01", end_date=date+"T23:59:59", data=data_str)
+    return render_template("news.html", data=data_str, total=total_str, start=START, end=END, articles=articles) # Render News on covid this week
 
 @app.route("/info")
 def info():
