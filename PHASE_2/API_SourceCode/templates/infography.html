@@ -345,10 +345,6 @@
         console.log(res);
         let head = JSON.parse(res);
 
-        let country_most_affected = '{{ data | tojson | safe }}';
-        // let head = JSON.parse(res);
-        console.log(country_most_affected);
-
         // Color Palete
         let light = '#82B1FF';
         let b2 = '#448AFF';
@@ -641,7 +637,7 @@
                     header.appendChild(icon);
                     information.appendChild(header);
                     let text = document.createElement('div');
-                    text.innerText = `${countryName}'s first case was report ${daysSinceFirstCase} ago on ${d.toLocaleString().split(',')[0]}. Currently ${countryName} has reported ${prevDay.confirmed} cases and ${prevDay.deaths} deaths`;
+                    text.innerText = `${countryName}'s first case was report ${daysSinceFirstCase} days ago on ${d.toLocaleString().split(',')[0]}. Currently ${countryName} has reported ${prevDay.confirmed} cases and ${prevDay.deaths} deaths`;
                     information.appendChild(text);
 
                     var optionChart = {

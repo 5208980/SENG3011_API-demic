@@ -168,7 +168,7 @@ def vic_positive_cases():
         tmp = {}
         tmp['count'] = i['count']
         tmp['date'] = i['date']
-        json[re.sub('\([ACTSB]\)|\(Rc\)', '', i['place']).strip().lower()] = tmp
+        json[re.sub('\([ACTSB]\)|\(RC\)', '', i['place']).strip().lower()] = tmp
     return json
 
 # Formats QLD covid19 count in json (make compatible with geoJSON)
@@ -179,7 +179,8 @@ def qld_positive_cases():
         tmp = {}
         tmp['count'] = i['count']
         tmp['date'] = i['date']
-        json[re.sub('\\n', '', i['place']).strip().lower()] = tmp
+        # print(re.sub('\([ACTSB]\)|\(RC\)', '', i['place']))
+        json[re.sub('\([ACTSB]\)|\(RC\)', '', i['place']).strip().lower()] = tmp
     return json
 
 def au_time_series():
@@ -256,37 +257,38 @@ def generateSafetyAdvices():
     return json
 
 # Using another team's API to obtain more articles
-def getNewArticles():
-    TODAY = datetime.now()
-    LASTWEEK = TODAY - timedelta(days=7)
-    URL = "https://api.todo.cf/v1/article"
-    PARAMS = {
-        "teamName": "API-demic",
-        "startDate": "{}-{:02d}-{:02d}T12:00:00".format(LASTWEEK.year, LASTWEEK.month, LASTWEEK.day),
-        "endDate": "{}-{:02d}-{:02d}T12:00:00".format(TODAY.year, TODAY.month, TODAY.day),
-        "key": "COVID19",
-        "pageSize": "20"
-    }
-    r = requests.get(url = URL, params = PARAMS)
+def getNewArticles(start, end):
+   TODAY = datetime.now()
+   LASTWEEK = TODAY - timedelta(days=7)
+   URL = "https://api.todo.cf/v1/article"
+   PARAMS = {
+       "teamName": "API-demic",
+       "startDate": "{}-{:02d}-{:02d}T12:00:00".format(LASTWEEK.year, LASTWEEK.month, LASTWEEK.day),
+       "endDate": "{}-{:02d}-{:02d}T12:00:00".format(TODAY.year, TODAY.month, TODAY.day),
+       "key": "COVID19",
+       "pageSize": "20"
+   }
+   r = requests.get(url = URL, params = PARAMS)
 
-    articles = r.json()['list']
-    json = {}
-    json['articles'] = []
-    for article in articles:
-        tmp = {}
-        tmp['url'] = article['url']
-        tmp['date_of_publication'] = article['date_of_publication']
-        tmp['headline'] = article['headline']
-        tmp['main_text'] = article['main_text']
-        tmp['reports'] = article['reports']
-        json['articles'].append(tmp)
+   articles = r.json()['list']
+   json = {}
+   json['articles'] = []
+   for article in articles:
+       tmp = {}
+       tmp['url'] = article['url']
+       tmp['date_of_publication'] = article['date_of_publication']
+       tmp['headline'] = article['headline']
+       tmp['main_text'] = article['main_text']
+       tmp['reports'] = article['reports']
+       json['articles'].append(tmp)
 
-    return json
+   return json
 
 
+# qld_positive_cases()
 # Testing
 
-getNewArticles()
+# getNewArticles()
 # from pytrends.request import TrendReq
 #
 # pytrends = TrendReq(hl='en-US', tz=360)

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from covid19 import *
 import re
 from datetime import datetime
@@ -23,6 +23,7 @@ def covid19():
     # https://api.covid19api.com/
     data = json.dumps(generate_data())
 
+
     s = str(data)
     s = re.sub('\'', '\"', s)
     s = re.sub('[a-zA-Z]\,', '', s)
@@ -30,7 +31,7 @@ def covid19():
 
     return render_template("covid.html", data=s)
 
-@app.route("/news")
+@app.route("/news", methods=['GET'])
 def latest_news():
     data = json.dumps(head_generate_data())
     total = generate_total()
@@ -38,22 +39,27 @@ def latest_news():
     data_str = json_to_string(data)
     total_str = json_to_string(total)
 
-    x = datetime.now()
 
-    END = x.strftime("%Y") + "-" + x.strftime("%m") + "-" + x.strftime("%d") + "T" + x.strftime("%T")
+    TODAY = datetime.now()
+    LASTWEEK = TODAY - timedelta(days=30)
 
-    START = ""
-    if int(x.strftime("%m")) == 1:
-        START = str(int(x.strftime("%Y")) - 1) + "-12-" + x.strftime("%d") + "T" + x.strftime("%T")
-    elif int(x.strftime("%m")) < 11:
-        START = x.strftime("%Y") + "-0" + str(int(x.strftime("%m")) - 1) + "-" + x.strftime("%d") + "T" + x.strftime("%T")
-    else:
-        START = x.strftime("%Y") + "-" + str(int(x.strftime("%m")) - 1) + "-" + x.strftime("%d") + "T" + x.strftime("%T")
+    start_date = "{}-{:02d}-{:02d}T00:00:00".format(LASTWEEK.year, LASTWEEK.month, LASTWEEK.day)
+    end_date = "{}-{:02d}-{:02d}T00:00:00".format(TODAY.year, TODAY.month, TODAY.day)
 
-    articles = getNewArticles()
-    print(type(articles))
+    # [year, month, day]
+    if(request.args.get('start_date')):
+        start_date = "{}T00:00:00".format(request.args.get('start_date'))
+    if(request.args.get('end_date')):
+        end_date = "{}T00:00:00".format(request.args.get('end_date'))
 
-    return render_template("news.html", data=data_str, total=total_str, start=START, end=END, articles=articles) # Render News on covid this week
+    print(start_date)
+    print(end_date)
+
+    articles = getNewArticles(start_date, end_date)
+    # articles = { 'articles': [] }
+    print(articles)
+
+    return render_template("news.html", data=data_str, total=total_str, start=start_date, end=end_date, articles=articles) # Render News on covid this week
 
 @app.route("/info")
 def info():
