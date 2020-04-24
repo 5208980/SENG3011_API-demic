@@ -12,6 +12,9 @@ from operator import *
 from countries import countries
 from countryISO import *
 
+from pytrends.request import TrendReq
+
+
 def identify_country(country):
     switcher = {
         "Diamond Princess": "Cruise Ship",
@@ -258,18 +261,18 @@ def generateSafetyAdvices():
 
 # Using another team's API to obtain more articles
 def getNewArticles(start, end):
-   TODAY = datetime.now()
-   LASTWEEK = TODAY - timedelta(days=7)
+   # TODAY = datetime.now()
+   # LASTWEEK = TODAY - timedelta(days=7)
    URL = "https://api.todo.cf/v1/article"
    PARAMS = {
        "teamName": "API-demic",
-       "startDate": "{}-{:02d}-{:02d}T12:00:00".format(LASTWEEK.year, LASTWEEK.month, LASTWEEK.day),
-       "endDate": "{}-{:02d}-{:02d}T12:00:00".format(TODAY.year, TODAY.month, TODAY.day),
-       "key": "COVID19",
+       "startDate": start,
+       "endDate": end,
+       "key": "COVID19, coronavirus",
        "pageSize": "20"
    }
    r = requests.get(url = URL, params = PARAMS)
-
+   print(r.url)
    articles = r.json()['list']
    json = {}
    json['articles'] = []
@@ -284,16 +287,18 @@ def getNewArticles(start, end):
 
    return json
 
+def get_trending_searches():
+    list = []
+    pytrends = TrendReq(hl='en-US', tz=360)
+    pytrends.build_payload(kw_list=['coronavirus'])
+    related_queries = pytrends.related_queries()
 
-# qld_positive_cases()
-# Testing
+    for i in related_queries.values():
+        df =  i['top']
+        for index, row in df.iterrows():
+            print(row['query'])
+            list.append(row['query'])
 
-# getNewArticles()
-# from pytrends.request import TrendReq
-#
-# pytrends = TrendReq(hl='en-US', tz=360)
-# pytrends.build_payload(kw_list=['Coronavirus'])
-# related_queries = pytrends.related_queries()
-#
-# for i in related_queries.values():
-#     print(i)
+    return list
+
+# get_trending_searches()
