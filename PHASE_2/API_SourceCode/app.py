@@ -23,7 +23,6 @@ def covid19():
     # https://api.covid19api.com/
     data = json.dumps(generate_data())
 
-
     s = str(data)
     s = re.sub('\'', '\"', s)
     s = re.sub('[a-zA-Z]\,', '', s)
@@ -33,13 +32,6 @@ def covid19():
 
 @app.route("/news", methods=['GET'])
 def latest_news():
-    # data = json.dumps(head_generate_data())
-    # total = generate_total()
-    #
-    # data_str = json_to_string(data)
-    # total_str = json_to_string(total)
-
-
     TODAY = datetime.now()
     LASTWEEK = TODAY - timedelta(days=30)
 

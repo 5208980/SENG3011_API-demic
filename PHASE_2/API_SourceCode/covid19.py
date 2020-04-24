@@ -14,7 +14,7 @@ from countryISO import *
 
 from pytrends.request import TrendReq
 
-
+# match covid-19 countries with country Code
 def identify_country(country):
     switcher = {
         "Diamond Princess": "Cruise Ship",
@@ -28,6 +28,7 @@ def identify_country(country):
 
     return switcher.get(country, country)
 
+# main covid-19 data
 def generate_data():
     GIT = 'https://raw.githubusercontent.com/'
     PATH = 'CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
@@ -71,12 +72,14 @@ def generate_data():
 
     return OrderedDict(sorted(dataset.items(), reverse=True, key=lambda x: getitem(x[1], 'Confirmed')))
 
+# get 10 worst covid-19 affected area
 def head_generate_data():
     dataset = generate_data()
     while len(dataset) > 10:
         dataset.popitem()
     return dataset
 
+# get covid-19
 def generate_total():
     GIT = 'https://raw.githubusercontent.com/'
     PATH = 'CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
@@ -102,6 +105,7 @@ def generate_total():
 
     return total
 
+# validate date
 def validate_date(d):
     try:
         date = datetime.strptime(d, "%Y-%m-%d")
@@ -182,10 +186,10 @@ def qld_positive_cases():
         tmp = {}
         tmp['count'] = i['count']
         tmp['date'] = i['date']
-        # print(re.sub('\([ACTSB]\)|\(RC\)', '', i['place']))
         json[re.sub('\([ACTSB]\)|\(RC\)', '', i['place']).strip().lower()] = tmp
     return json
 
+# get times_series of Australian states
 def au_time_series():
     cases = requests.get('https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json'.format())
     json = {}
@@ -208,6 +212,7 @@ def au_time_series():
         print(record['State'])
     return json
 
+# get latest totals of australian covid-19
 def australia_latest():
     cases = requests.get('https://interactive.guim.co.uk/docsdata/1q5gdePANXci8enuiS4oHUJxcxC13d6bjMRSicakychE.json'.format())
     records = cases.json()['sheets']['latest totals']
@@ -300,5 +305,3 @@ def get_trending_searches():
             list.append(row['query'])
 
     return list
-
-# get_trending_searches()
