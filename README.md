@@ -25,7 +25,9 @@ This repository is a SENG3011 project. The aim is to collect data about health r
 These are API-demics latest versions and endpoints
 ### GET
 [/v1.1/articles?](#GET%20/v1.1/articles)
+
 [/v1.1/articles/latest?](#GET%20/v1.1/articles/latest)
+
 [/v1.1/trending](#GET%20/v1.1/trending)
 
 ___
