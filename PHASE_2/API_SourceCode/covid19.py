@@ -266,28 +266,69 @@ def generateSafetyAdvices():
 
 # Using another team's API to obtain more articles
 def getNewArticles(start, end):
-   # TODAY = datetime.now()
-   # LASTWEEK = TODAY - timedelta(days=7)
-   URL = "https://api.todo.cf/v1/article"
+    # TODAY = datetime.now()
+    # LASTWEEK = TODAY - timedelta(days=7)
+    # URL = "https://teletubbies-who-api.herokuapp.com/article"
+    # URL = "https://api.todo.cf/v1/article"
+    URL = "http://api.sixtyhww.com:3000/search"
+
+    # PARAMS = {
+    #     "teamName": "API-demic",
+    #     "startDate": start,
+    #     "endDate": end,
+    #     "key": "coronavirus",
+    #     "pageSize": "20"
+    # }
+
+    BODY = {
+        "start_date": start,
+        "end_date": end,
+        "keyTerms": "coronavirus",
+        # "pagination": "0-10"
+    }
+    # r = requests.get(url = URL, params = PARAMS)
+    r = requests.post(url = URL, json=BODY)
+
+    json = {}
+    json['articles'] = []
+    print(r.url)
+    print(r.json())
+    if(r.status_code == 400):
+        return json
+    for article in r.json():
+        tmp = {}
+        tmp['url'] = article['url']
+        tmp['date_of_publication'] = article['date_of_publication']
+        tmp['headline'] = article['headline']
+        # tmp['main_text'] = article['main_text']
+        # tmp['reports'] = article['reports']
+        json['articles'].append(tmp)
+
+    return json
+
+# Using another team's API to obtain more articles
+def getOurNewArticles(start, end):
+   URL = "http://api-demic.herokuapp.com/v1.1/articles"
    PARAMS = {
-       "teamName": "API-demic",
-       "startDate": start,
-       "endDate": end,
-       "key": "COVID19, coronavirus",
-       "pageSize": "20"
+       "start_date": start,
+       "end_date": end,
+       "key_term": "coronavirus",
+       "limit": "100"
    }
    r = requests.get(url = URL, params = PARAMS)
-   print(r.url)
-   articles = r.json()['list']
+
    json = {}
    json['articles'] = []
-   for article in articles:
+   if(r.status_code == 400):
+       return json
+   articles = r.json()['articles']
+   for article in reversed(articles):
        tmp = {}
        tmp['url'] = article['url']
        tmp['date_of_publication'] = article['date_of_publication']
        tmp['headline'] = article['headline']
        tmp['main_text'] = article['main_text']
-       tmp['reports'] = article['reports']
+       # tmp['reports'] = article['reports']
        json['articles'].append(tmp)
 
    return json
@@ -301,7 +342,7 @@ def get_trending_searches():
     for i in related_queries.values():
         df =  i['top']
         for index, row in df.iterrows():
-            print(row['query'])
+            # print(row['query'])
             list.append(row['query'])
 
     return list

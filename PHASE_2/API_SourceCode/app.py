@@ -33,24 +33,27 @@ def covid19():
 @app.route("/news", methods=['GET'])
 def latest_news():
     TODAY = datetime.now()
-    LASTWEEK = TODAY - timedelta(days=30)
+    LASTWEEK = TODAY - timedelta(days=7)
 
     start_date = "{}-{:02d}-{:02d}T00:00:00".format(LASTWEEK.year, LASTWEEK.month, LASTWEEK.day)
     end_date = "{}-{:02d}-{:02d}T00:00:00".format(TODAY.year, TODAY.month, TODAY.day)
 
-    if(request.args.get('start_date')):
+    if(request.args.get('start_date') and request.args.get('end_date')):
         start_date = "{}T00:00:00".format(request.args.get('start_date'))
-    if(request.args.get('end_date')):
         end_date = "{}T00:00:00".format(request.args.get('end_date'))
 
     print("s {}".format(start_date))
     print("e {}".format(end_date))
 
     articles = getNewArticles(start_date, end_date)
+    # print(articles)
+
+    ourArticles = getOurNewArticles(start_date, end_date)
+    # print(ourArticles)
 
     trends = get_trending_searches()
 
-    return render_template("news.html", start=start_date, end=end_date, articles=articles, trends=trends) # Render News on covid this week
+    return render_template("news.html", start=start_date, end=end_date, articles=articles, trends=trends, ourArticles=ourArticles) # Render News on covid this week
 
 @app.route("/info")
 def info():
